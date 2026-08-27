@@ -1,0 +1,8 @@
+@prefix modavis: <https://w3id.org/modavis/ontology/core#> .
+@prefix modinst: <https://w3id.org/modavis/ontology/instrument#> .
+@prefix insttype: <https://w3id.org/modavis/vocab/instrument-type/> .
+
+<https://example.org/invalid/instrument-with-malformed-id>
+  a modinst:MusicalInstrument, modavis:MODAVISManagedResource ;
+  modavis:mdvsIdentifier "MDVS:ENTY:NOT-CANONICAL" ;
+  modinst:instrumentType insttype:violin .

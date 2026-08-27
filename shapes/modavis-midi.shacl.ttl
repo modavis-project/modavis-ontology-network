@@ -1,0 +1,206 @@
+@prefix modaudio: <https://w3id.org/modavis/ontology/audio#> .
+@prefix modmidi: <https://w3id.org/modavis/ontology/midi#> .
+@prefix modshape: <https://w3id.org/modavis/shapes/exchange/0.1.0#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+modshape:MidiExtractionBindingShape a sh:NodeShape ;
+    rdfs:label "midi extraction binding shape"@en ;
+    sh:name "midi extraction binding shape"@en ;
+    sh:property modshape:MidiExtractionBindingShape-assignedNoteNumber-PropertyShape-01,
+        modshape:MidiExtractionBindingShape-extractionRegion-PropertyShape-02 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modmidi:MidiExtractionBinding .
+
+modshape:MidiPlaybackBindingShape a sh:NodeShape ;
+    rdfs:label "midi playback binding shape"@en ;
+    sh:name "midi playback binding shape"@en ;
+    sh:property modshape:MidiPlaybackBindingShape-maximumNoteNumber-PropertyShape-01,
+        modshape:MidiPlaybackBindingShape-maximumNoteOnVelocity-PropertyShape-02,
+        modshape:MidiPlaybackBindingShape-minimumNoteNumber-PropertyShape-03,
+        modshape:MidiPlaybackBindingShape-minimumNoteOnVelocity-PropertyShape-04,
+        modshape:MidiPlaybackBindingShape-playbackParameters-PropertyShape-05,
+        modshape:MidiPlaybackBindingShape-rootNoteNumber-PropertyShape-06 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:MidiPlaybackBindingShape-SPARQLConstraint-01,
+        modshape:MidiPlaybackBindingShape-SPARQLConstraint-02,
+        modshape:MidiPlaybackBindingShape-SPARQLConstraint-03 ;
+    sh:targetClass modmidi:MidiPlaybackBinding .
+
+modshape:MidiReferencePitchBindingShape a sh:NodeShape ;
+    rdfs:label "midi reference pitch binding shape"@en ;
+    sh:name "midi reference pitch binding shape"@en ;
+    sh:property modshape:MidiReferencePitchBindingShape-noteNumber-PropertyShape-01,
+        modshape:MidiReferencePitchBindingShape-tuningReference-PropertyShape-02 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modmidi:MidiReferencePitchBinding .
+
+modshape:MidiTuningEntryBindingShape a sh:NodeShape ;
+    rdfs:label "midi tuning entry binding shape"@en ;
+    sh:name "midi tuning entry binding shape"@en ;
+    sh:property modshape:MidiTuningEntryBindingShape-noteNumber-PropertyShape-01,
+        modshape:MidiTuningEntryBindingShape-tuningEntry-PropertyShape-02 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modmidi:MidiTuningEntryBinding .
+
+modshape:MidiExtractionBindingShape-assignedNoteNumber-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "assigned note number property constraint"@en ;
+    sh:datatype xsd:nonNegativeInteger ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 127 ;
+    sh:message "Assigned note number constraint: exactly 1 value(s) are required; values must use the nonNegativeInteger datatype; value must be at most 127."@en ;
+    sh:minCount 1 ;
+    sh:name "assigned note number property constraint"@en ;
+    sh:path modmidi:assignedNoteNumber ;
+    sh:severity sh:Violation .
+
+modshape:MidiExtractionBindingShape-extractionRegion-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "extraction region property constraint"@en ;
+    sh:class modaudio:SampleExtractionRegion ;
+    sh:maxCount 1 ;
+    sh:message "Extraction region constraint: exactly 1 value(s) are required; values must be instances of SampleExtractionRegion."@en ;
+    sh:minCount 1 ;
+    sh:name "extraction region property constraint"@en ;
+    sh:path modmidi:extractionRegion ;
+    sh:severity sh:Violation .
+
+modshape:MidiPlaybackBindingShape-SPARQLConstraint-01 rdfs:label "midi playback binding shape sparqlconstraint 01"@en ;
+    sh:message "A MIDI note-number range cannot have a minimum greater than its maximum."@en ;
+    sh:name "midi playback binding shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modmidi: <https://w3id.org/modavis/ontology/midi#>
+      SELECT $this WHERE {
+        $this modmidi:minimumNoteNumber ?minimum ; modmidi:maximumNoteNumber ?maximum .
+        FILTER (?minimum > ?maximum)
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:MidiPlaybackBindingShape-SPARQLConstraint-02 rdfs:label "midi playback binding shape sparqlconstraint 02"@en ;
+    sh:message "A MIDI note-on velocity range cannot have a minimum greater than its maximum."@en ;
+    sh:name "midi playback binding shape sparqlconstraint 02"@en ;
+    sh:select """
+      PREFIX modmidi: <https://w3id.org/modavis/ontology/midi#>
+      SELECT $this WHERE {
+        $this modmidi:minimumNoteOnVelocity ?minimum ; modmidi:maximumNoteOnVelocity ?maximum .
+        FILTER (?minimum > ?maximum)
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:MidiPlaybackBindingShape-SPARQLConstraint-03 rdfs:label "midi playback binding shape sparqlconstraint 03"@en ;
+    sh:message "The root MIDI note number must fall within any declared note-number range."@en ;
+    sh:name "midi playback binding shape sparqlconstraint 03"@en ;
+    sh:select """
+      PREFIX modmidi: <https://w3id.org/modavis/ontology/midi#>
+      SELECT $this WHERE {
+        { $this modmidi:rootNoteNumber ?root ; modmidi:minimumNoteNumber ?minimum . FILTER (?root < ?minimum) }
+        UNION
+        { $this modmidi:rootNoteNumber ?root ; modmidi:maximumNoteNumber ?maximum . FILTER (?root > ?maximum) }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:MidiPlaybackBindingShape-maximumNoteNumber-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "maximum note number property constraint"@en ;
+    sh:datatype xsd:nonNegativeInteger ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 127 ;
+    sh:message "Maximum note number constraint: at most 1 value(s) are permitted; values must use the nonNegativeInteger datatype; value must be at most 127."@en ;
+    sh:name "maximum note number property constraint"@en ;
+    sh:path modmidi:maximumNoteNumber ;
+    sh:severity sh:Violation .
+
+modshape:MidiPlaybackBindingShape-maximumNoteOnVelocity-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "maximum note on velocity property constraint"@en ;
+    sh:datatype xsd:positiveInteger ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 127 ;
+    sh:message "A MIDI 1.0 note-on velocity selection bound must be from 1 through 127; velocity zero denotes note-off."@en ;
+    sh:name "maximum note on velocity property constraint"@en ;
+    sh:path modmidi:maximumNoteOnVelocity ;
+    sh:severity sh:Violation .
+
+modshape:MidiPlaybackBindingShape-minimumNoteNumber-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "minimum note number property constraint"@en ;
+    sh:datatype xsd:nonNegativeInteger ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 127 ;
+    sh:message "Minimum note number constraint: at most 1 value(s) are permitted; values must use the nonNegativeInteger datatype; value must be at most 127."@en ;
+    sh:name "minimum note number property constraint"@en ;
+    sh:path modmidi:minimumNoteNumber ;
+    sh:severity sh:Violation .
+
+modshape:MidiPlaybackBindingShape-minimumNoteOnVelocity-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "minimum note on velocity property constraint"@en ;
+    sh:datatype xsd:positiveInteger ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 127 ;
+    sh:message "A MIDI 1.0 note-on velocity selection bound must be from 1 through 127; velocity zero denotes note-off."@en ;
+    sh:name "minimum note on velocity property constraint"@en ;
+    sh:path modmidi:minimumNoteOnVelocity ;
+    sh:severity sh:Violation .
+
+modshape:MidiPlaybackBindingShape-playbackParameters-PropertyShape-05 a sh:PropertyShape ;
+    rdfs:label "playback parameters property constraint"@en ;
+    sh:class modaudio:SamplePlaybackParameters ;
+    sh:maxCount 1 ;
+    sh:message "Playback parameters constraint: exactly 1 value(s) are required; values must be instances of SamplePlaybackParameters."@en ;
+    sh:minCount 1 ;
+    sh:name "playback parameters property constraint"@en ;
+    sh:path modmidi:playbackParameters ;
+    sh:severity sh:Violation .
+
+modshape:MidiPlaybackBindingShape-rootNoteNumber-PropertyShape-06 a sh:PropertyShape ;
+    rdfs:label "root note number property constraint"@en ;
+    sh:datatype xsd:nonNegativeInteger ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 127 ;
+    sh:message "Root note number constraint: exactly 1 value(s) are required; values must use the nonNegativeInteger datatype; value must be at most 127."@en ;
+    sh:minCount 1 ;
+    sh:name "root note number property constraint"@en ;
+    sh:path modmidi:rootNoteNumber ;
+    sh:severity sh:Violation .
+
+modshape:MidiReferencePitchBindingShape-noteNumber-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "note number property constraint"@en ;
+    sh:datatype xsd:nonNegativeInteger ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 127 ;
+    sh:message "Note number constraint: exactly 1 value(s) are required; values must use the nonNegativeInteger datatype; value must be at most 127."@en ;
+    sh:minCount 1 ;
+    sh:name "note number property constraint"@en ;
+    sh:path modmidi:noteNumber ;
+    sh:severity sh:Violation .
+
+modshape:MidiReferencePitchBindingShape-tuningReference-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "tuning reference property constraint"@en ;
+    sh:class modaudio:TuningReference ;
+    sh:maxCount 1 ;
+    sh:message "Tuning reference constraint: exactly 1 value(s) are required; values must be instances of TuningReference."@en ;
+    sh:minCount 1 ;
+    sh:name "tuning reference property constraint"@en ;
+    sh:path modmidi:tuningReference ;
+    sh:severity sh:Violation .
+
+modshape:MidiTuningEntryBindingShape-noteNumber-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "note number property constraint"@en ;
+    sh:datatype xsd:nonNegativeInteger ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 127 ;
+    sh:message "Note number constraint: exactly 1 value(s) are required; values must use the nonNegativeInteger datatype; value must be at most 127."@en ;
+    sh:minCount 1 ;
+    sh:name "note number property constraint"@en ;
+    sh:path modmidi:noteNumber ;
+    sh:severity sh:Violation .
+
+modshape:MidiTuningEntryBindingShape-tuningEntry-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "tuning entry property constraint"@en ;
+    sh:class modaudio:TuningEntry ;
+    sh:maxCount 1 ;
+    sh:message "Tuning entry constraint: exactly 1 value(s) are required; values must be instances of TuningEntry."@en ;
+    sh:minCount 1 ;
+    sh:name "tuning entry property constraint"@en ;
+    sh:path modmidi:tuningEntry ;
+    sh:severity sh:Violation .

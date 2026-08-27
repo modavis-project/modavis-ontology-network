@@ -1,0 +1,24 @@
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?scheme ?concept ?label ?definition WHERE {
+  VALUES ?scheme {
+    <https://w3id.org/modavis/vocab/instrument-type>
+    <https://w3id.org/modavis/vocab/functional-role>
+    <https://w3id.org/modavis/vocab/component-membership-type>
+    <https://w3id.org/modavis/vocab/assertion-status>
+    <https://w3id.org/modavis/vocab/assertion-predicate>
+    <https://w3id.org/modavis/vocab/evidence-role>
+    <https://w3id.org/modavis/vocab/event-type>
+    <https://w3id.org/modavis/vocab/representation-status>
+    <https://w3id.org/modavis/vocab/virtual-instrument-production-method>
+    <https://w3id.org/modavis/vocab/virtual-instrument-source-relation>
+    <https://w3id.org/modavis/vocab/compatibility-status>
+    <https://w3id.org/modavis/vocab/checksum-algorithm>
+  }
+  ?scheme a skos:ConceptScheme .
+  ?concept a skos:Concept ;
+           skos:inScheme ?scheme ;
+           skos:prefLabel ?label ;
+           skos:definition ?definition .
+}
+ORDER BY ?scheme ?concept

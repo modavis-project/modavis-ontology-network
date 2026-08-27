@@ -1,0 +1,218 @@
+@prefix ex: <https://example.org/modavis/heritage-knowledge/> .
+@prefix assertionpredicate: <https://w3id.org/modavis/vocab/assertion-predicate/> .
+@prefix assertionstatus: <https://w3id.org/modavis/vocab/assertion-status/> .
+@prefix checksum: <https://w3id.org/modavis/vocab/checksum-algorithm/> .
+@prefix evidencerole: <https://w3id.org/modavis/vocab/evidence-role/> .
+@prefix insttype: <https://w3id.org/modavis/vocab/instrument-type/> .
+@prefix recognitionstatus: <https://w3id.org/modavis/vocab/heritage-recognition-status/> .
+@prefix modassert: <https://w3id.org/modavis/ontology/assertion#> .
+@prefix modavis: <https://w3id.org/modavis/ontology/core#> .
+@prefix modevidence: <https://w3id.org/modavis/ontology/evidence#> .
+@prefix modheritage: <https://w3id.org/modavis/ontology/heritage#> .
+@prefix modinst: <https://w3id.org/modavis/ontology/instrument#> .
+@prefix modmedia: <https://w3id.org/modavis/ontology/media#> .
+@prefix modprov: <https://w3id.org/modavis/ontology/provenance#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:instrument a modinst:MusicalInstrument ;
+  modavis:canonicalLabel "Example heritage pipe organ"@en ;
+  modinst:instrumentType insttype:pipe-organ .
+
+ex:builder-candidate-a a modavis:Person ;
+  modavis:canonicalLabel "Builder candidate A"@en .
+
+ex:builder-candidate-b a modavis:Person ;
+  modavis:canonicalLabel "Builder candidate B"@en .
+
+ex:register-authority a modavis:Organization ;
+  modavis:canonicalLabel "Example municipal heritage register"@en .
+
+ex:editor a modavis:Person ;
+  modavis:canonicalLabel "Example collection editor"@en .
+
+ex:register-policy a modavis:Entity ;
+  modavis:canonicalLabel "Example register criteria, revision 2020"@en .
+
+ex:recognition-period a modavis:TimeSpan ;
+  modavis:startDate "2020-03-15"^^xsd:date ;
+  modavis:rawTemporalExpression "recognized from 15 March 2020" .
+
+ex:proposal-period a modavis:TimeSpan ;
+  modavis:startDate "2019-11-01"^^xsd:date ;
+  modavis:endDate "2020-03-14"^^xsd:date ;
+  modavis:rawTemporalExpression "proposal under review from November 2019 until 14 March 2020" .
+
+ex:recognition-proposal a modheritage:HeritageRecognition ;
+  modheritage:recognizesResource ex:instrument ;
+  modheritage:recognitionAssignedBy ex:register-authority ;
+  modheritage:recognitionBasis ex:register-policy ;
+  modheritage:recognitionStatus recognitionstatus:proposed ;
+  modavis:validDuring ex:proposal-period ;
+  modheritage:recognitionRecordedBy ex:recognition-recording ;
+  modheritage:hasEvidenceRelation ex:proposal-evidence .
+
+ex:heritage-recognition a modheritage:HeritageRecognition ;
+  modheritage:recognizesResource ex:instrument ;
+  modheritage:recognitionAssignedBy ex:register-authority ;
+  modheritage:recognitionBasis ex:register-policy ;
+  modheritage:recognitionStatus recognitionstatus:recognized ;
+  modavis:validDuring ex:recognition-period ;
+  modheritage:recognitionRecordedBy ex:recognition-recording ;
+  modheritage:hasEvidenceRelation ex:recognition-evidence ;
+  modheritage:supersedesRecognition ex:recognition-proposal .
+
+ex:recognition-recording a modprov:EditorialActivity ;
+  prov:wasAssociatedWith ex:editor ;
+  prov:used ex:register-fragment .
+
+ex:source a modevidence:SourceResource ;
+  modavis:canonicalLabel "Example register and attribution dossier"@en ;
+  modevidence:sourceUri "https://example.org/register/items/organ-1"^^xsd:anyURI .
+
+ex:source-snapshot a modevidence:SourceSnapshot ;
+  modevidence:snapshotOf ex:source ;
+  modevidence:hasChecksum ex:source-checksum ;
+  modevidence:snapshotCapturedAt "2026-08-21T14:30:00Z"^^xsd:dateTime ;
+  modevidence:snapshotCapturedBy ex:source-capture .
+
+ex:source-checksum a modevidence:Checksum ;
+  modevidence:checksumAlgorithm checksum:sha-256 ;
+  modevidence:checksumValue "1111111111111111111111111111111111111111111111111111111111111111" .
+
+ex:source-capture a modprov:DigitizationActivity ;
+  prov:wasAssociatedWith ex:editor ;
+  prov:used ex:source .
+
+ex:register-fragment a modevidence:SourceFragment ;
+  modevidence:fragmentOf ex:source-snapshot ;
+  modevidence:hasSelector ex:register-selector .
+
+ex:register-selector a modevidence:Selector ;
+  modevidence:selectorValue "page=3;section=designation" ;
+  modevidence:selectorConformsTo <https://www.w3.org/TR/annotation-model/> .
+
+ex:attribution-fragment-a a modevidence:SourceFragment ;
+  modevidence:fragmentOf ex:source-snapshot ;
+  modevidence:hasSelector ex:attribution-selector-a .
+
+ex:attribution-selector-a a modevidence:Selector ;
+  modevidence:selectorValue "page=8;lines=4-11" ;
+  modevidence:selectorConformsTo <https://www.w3.org/TR/annotation-model/> .
+
+ex:attribution-fragment-b a modevidence:SourceFragment ;
+  modevidence:fragmentOf ex:source-snapshot ;
+  modevidence:hasSelector ex:attribution-selector-b .
+
+ex:attribution-selector-b a modevidence:Selector ;
+  modevidence:selectorValue "page=12;lines=2-9" ;
+  modevidence:selectorConformsTo <https://www.w3.org/TR/annotation-model/> .
+
+ex:recognition-evidence a modevidence:EvidenceRelation ;
+  modevidence:evaluates ex:heritage-recognition ;
+  modevidence:usesFragment ex:register-fragment ;
+  modevidence:evidenceRole evidencerole:supporting .
+
+ex:proposal-evidence a modevidence:EvidenceRelation ;
+  modevidence:evaluates ex:recognition-proposal ;
+  modevidence:usesFragment ex:register-fragment ;
+  modevidence:evidenceRole evidencerole:contextual .
+
+ex:earlier-builder-assertion a modassert:Assertion ;
+  modassert:assertsSubject ex:instrument ;
+  modassert:assertsPredicate assertionpredicate:has-builder ;
+  modassert:assertsObject ex:builder-candidate-a ;
+  modassert:assertionStatus assertionstatus:rejected ;
+  modassert:confidence "0.28"^^xsd:decimal ;
+  modassert:hasEvidenceRelation ex:earlier-assertion-evidence ;
+  modassert:generatedBy ex:initial-extraction .
+
+ex:reviewed-builder-assertion a modassert:Assertion ;
+  modassert:assertsSubject ex:instrument ;
+  modassert:assertsPredicate assertionpredicate:has-builder ;
+  modassert:assertsObject ex:builder-candidate-b ;
+  modassert:assertionStatus assertionstatus:accepted ;
+  modassert:confidence "0.91"^^xsd:decimal ;
+  modassert:hasEvidenceRelation ex:reviewed-assertion-evidence ;
+  modassert:generatedBy ex:historical-review ;
+  modassert:supersedes ex:earlier-builder-assertion .
+
+ex:earlier-assertion-evidence a modevidence:EvidenceRelation ;
+  modevidence:evaluates ex:earlier-builder-assertion ;
+  modevidence:usesFragment ex:attribution-fragment-a ;
+  modevidence:evidenceRole evidencerole:opposing .
+
+ex:reviewed-assertion-evidence a modevidence:EvidenceRelation ;
+  modevidence:evaluates ex:reviewed-builder-assertion ;
+  modevidence:usesFragment ex:attribution-fragment-b ;
+  modevidence:evidenceRole evidencerole:supporting .
+
+ex:initial-extraction a modprov:ExtractionActivity ;
+  prov:wasAssociatedWith ex:editor ;
+  prov:used ex:attribution-fragment-a .
+
+ex:historical-review a modheritage:HistoricalClaimReview ;
+  prov:wasAssociatedWith ex:editor ;
+  modheritage:reviewSubject ex:instrument ;
+  modheritage:reviewsAssertion ex:earlier-builder-assertion ;
+  modheritage:producesAssertion ex:reviewed-builder-assertion ;
+  modheritage:reviewRationale "A signed workshop ledger and matching construction details outweigh the earlier secondary attribution." .
+
+ex:knowledge-collection a modheritage:CuratedKnowledgeCollection ;
+  modavis:canonicalLabel "Example instrument research collection"@en ;
+  modheritage:documentsResource ex:instrument ;
+  modheritage:curatedBy ex:editor ;
+  modheritage:hasKnowledgeSnapshot ex:snapshot-1, ex:snapshot-2 ;
+  modheritage:currentSnapshot ex:snapshot-2 .
+
+ex:snapshot-1 a modheritage:KnowledgeSnapshot ;
+  modheritage:snapshotOfCollection ex:knowledge-collection ;
+  modheritage:includesAssertion ex:earlier-builder-assertion ;
+  modheritage:canonicalizationProfile <https://www.w3.org/TR/2024/REC-rdf-canon-20240521/> ;
+  modheritage:canonicalMaterialization ex:snapshot-materialization-1 ;
+  modheritage:snapshotGraphIri "https://example.org/graphs/instrument-1/revision-1"^^xsd:anyURI ;
+  modheritage:snapshotCreatedAt "2026-08-22T10:00:00Z"^^xsd:dateTime ;
+  modheritage:snapshotCreatedBy ex:initial-maintenance .
+
+ex:snapshot-2 a modheritage:KnowledgeSnapshot ;
+  modheritage:snapshotOfCollection ex:knowledge-collection ;
+  modheritage:includesAssertion ex:reviewed-builder-assertion ;
+  modheritage:canonicalizationProfile <https://www.w3.org/TR/2024/REC-rdf-canon-20240521/> ;
+  modheritage:canonicalMaterialization ex:snapshot-materialization-2 ;
+  modheritage:snapshotGraphIri "https://example.org/graphs/instrument-1/revision-2"^^xsd:anyURI ;
+  modheritage:snapshotCreatedAt "2026-08-23T10:00:00Z"^^xsd:dateTime ;
+  modheritage:snapshotCreatedBy ex:revision-maintenance .
+
+ex:snapshot-materialization-1 a modmedia:Bitstream ;
+  modmedia:mediaType "application/n-quads" ;
+  modmedia:byteSize "2021"^^xsd:nonNegativeInteger ;
+  modmedia:contentUrl "https://example.org/materializations/heritage-snapshot-1.nq"^^xsd:anyURI ;
+  modmedia:hasChecksum ex:snapshot-checksum-1 .
+
+ex:snapshot-materialization-2 a modmedia:Bitstream ;
+  modmedia:mediaType "application/n-quads" ;
+  modmedia:byteSize "2292"^^xsd:nonNegativeInteger ;
+  modmedia:contentUrl "https://example.org/materializations/heritage-snapshot-2.nq"^^xsd:anyURI ;
+  modmedia:hasChecksum ex:snapshot-checksum-2 .
+
+ex:snapshot-checksum-1 a modevidence:Checksum ;
+  modevidence:checksumAlgorithm checksum:sha-256 ;
+  modevidence:checksumValue "137c2102180dbec5f0101d67e9bee2961688cb00c1c332673f1d2ff31928d2bd" .
+
+ex:snapshot-checksum-2 a modevidence:Checksum ;
+  modevidence:checksumAlgorithm checksum:sha-256 ;
+  modevidence:checksumValue "02fa433e900bc08b65a8feff846f2c0cf10b9ee5e47bdd96b0ecd61cb0a4c91c" .
+
+ex:initial-maintenance a modheritage:KnowledgeMaintenanceActivity ;
+  prov:wasAssociatedWith ex:editor ;
+  modheritage:maintainedCollection ex:knowledge-collection ;
+  modheritage:resultingSnapshot ex:snapshot-1 ;
+  modheritage:addedAssertion ex:earlier-builder-assertion .
+
+ex:revision-maintenance a modheritage:KnowledgeMaintenanceActivity ;
+  prov:wasAssociatedWith ex:editor ;
+  modheritage:maintainedCollection ex:knowledge-collection ;
+  modheritage:previousSnapshot ex:snapshot-1 ;
+  modheritage:resultingSnapshot ex:snapshot-2 ;
+  modheritage:addedAssertion ex:reviewed-builder-assertion ;
+  modheritage:removedAssertion ex:earlier-builder-assertion .

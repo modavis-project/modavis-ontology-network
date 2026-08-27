@@ -1,0 +1,12 @@
+PREFIX modevent: <https://w3id.org/modavis/ontology/events#>
+
+SELECT ?event ?record ?affected ?source ?support ?generation WHERE {
+  ?event a modevent:Event ;
+         modevent:affectedEntity ?affected ;
+         modevent:hasSource ?source ;
+         modevent:evidencedBy ?support .
+  ?record a modevent:EventRecord ;
+          modevent:describesEvent ?event ;
+          modevent:generatedBy ?generation .
+}
+ORDER BY ?event

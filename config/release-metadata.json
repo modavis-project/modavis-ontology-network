@@ -1,0 +1,139 @@
+{
+  "project": "MODAVIS Ontology Network",
+  "targetVersion": "0.1.0",
+  "status": "released",
+  "noPublish": false,
+  "publicationDate": "2026-08-27",
+  "releaseAuthorization": {
+    "status": "authorized",
+    "authorizedBy": "Dominik Ukolov",
+    "authorizedAt": "2026-08-27T12:31:00+02:00"
+  },
+  "identifierRoot": "https://w3id.org/modavis/",
+  "creator": {
+    "name": "Dominik Ukolov",
+    "orcid": "https://orcid.org/0000-0002-7904-3892",
+    "affiliations": [
+      "Digital Humanities (Image/Object), Friedrich-Schiller-University Jena",
+      "Research Group DIGITAL ORGANOLOGY, Leipzig University"
+    ]
+  },
+  "publisher": {
+    "name": "Dominik Ukolov",
+    "identifier": "https://orcid.org/0000-0002-7904-3892",
+    "institutionalEndorsementClaimed": false
+  },
+  "publicRepository": "https://github.com/modavis-project/modavis-ontology-network",
+  "publicationHost": "https://modavis-project.github.io/modavis-ontology-network",
+  "archivalRecord": {
+    "provider": "Zenodo",
+    "doi": "10.5281/zenodo.22126086",
+    "url": "https://doi.org/10.5281/zenodo.22126086",
+    "status": "reserved"
+  },
+  "securityContact": "https://github.com/modavis-project/modavis-ontology-network/security/advisories/new",
+  "maintainerContacts": [
+    {
+      "name": "Dominik Ukolov",
+      "orcid": "https://orcid.org/0000-0002-7904-3892",
+      "profile": "https://github.com/modavis-project"
+    }
+  ],
+  "licenses": {
+    "semanticArtifactsAndDocumentation": {
+      "spdx": "CC-BY-4.0",
+      "iri": "https://creativecommons.org/licenses/by/4.0/",
+      "approved": true
+    },
+    "code": {
+      "spdx": "Apache-2.0",
+      "iri": "https://www.apache.org/licenses/LICENSE-2.0",
+      "approved": true
+    }
+  },
+  "reviewPolicy": {
+    "independentReviewRequiredForInitialRelease": false,
+    "independentReviewRecommended": true,
+    "selfReviewLimitationDisclosed": true,
+    "rationale": "The initial 0.1.0 release is individually stewarded. Its lead editor is the named multi-role reviewer, supported by a tool-assisted technical audit; this is disclosed as self-review and is not represented as independent validation. External review remains a post-publication governance priority."
+  },
+  "requiredReviews": {
+    "domain": [
+      {
+        "name": "Dominik Ukolov",
+        "orcid": "https://orcid.org/0000-0002-7904-3892",
+        "affiliation": "Digital Humanities (Image/Object), Friedrich-Schiller-University Jena",
+        "expertise": [
+          "organology",
+          "digital humanities",
+          "musical-instrument documentation"
+        ],
+        "reviewedAt": "2026-08-27",
+        "reviewedCandidate": "0.1.0-rc.7",
+        "outcome": "approved-with-resolved-findings",
+        "findingsResolved": true,
+        "reviewMethod": "maintainer-directed, tool-assisted structured domain review with release-authority inspection before publication",
+        "independentOfLeadEditor": false,
+        "independenceLimitation": "The reviewer is also the MODAVIS lead editor and initial publisher."
+      }
+    ],
+    "ontologyEngineering": [
+      {
+        "name": "Dominik Ukolov",
+        "orcid": "https://orcid.org/0000-0002-7904-3892",
+        "affiliation": "Digital Humanities (Image/Object), Friedrich-Schiller-University Jena",
+        "expertise": [
+          "ontology engineering",
+          "knowledge graphs",
+          "data modeling"
+        ],
+        "reviewedAt": "2026-08-27",
+        "reviewedCandidate": "0.1.0-rc.7",
+        "outcome": "approved-with-resolved-findings",
+        "findingsResolved": true,
+        "reviewMethod": "maintainer-directed, tool-assisted OWL/SKOS/SHACL and release-engineering review with release-authority inspection before publication",
+        "independentOfLeadEditor": false,
+        "independenceLimitation": "The reviewer is also the MODAVIS lead editor and initial publisher."
+      }
+    ],
+    "implementation": [
+      {
+        "name": "Dominik Ukolov",
+        "orcid": "https://orcid.org/0000-0002-7904-3892",
+        "affiliation": "Digital Humanities (Image/Object), Friedrich-Schiller-University Jena",
+        "expertise": [
+          "software development",
+          "database design",
+          "MODAVIS implementation"
+        ],
+        "reviewedAt": "2026-08-27",
+        "reviewedCandidate": "0.1.0-rc.7",
+        "outcome": "approved-with-resolved-findings",
+        "findingsResolved": true,
+        "reviewMethod": "maintainer-directed, tool-assisted cross-implementation and VAO interoperability review with release-authority inspection before publication",
+        "independentOfLeadEditor": false,
+        "independenceLimitation": "The reviewer is also the MODAVIS lead editor and initial publisher."
+      }
+    ]
+  },
+  "dependencies": {
+    "modavisRelease13VocabularySnapshot": {
+      "status": "not-publicly-versioned",
+      "decisionRationale": "No immutable public Release 1.3 vocabulary artifact is identified, so no normative mapping or version pin is claimed in MODAVIS 0.1.0.",
+      "requiredFor": [
+        "any future normative mapping to the operational Release 1.3 vocabularies",
+        "any future claim that the database supplied an immutable public vocabulary snapshot"
+      ],
+      "notRequiredFor": [
+        "governance",
+        "identifier architecture",
+        "ontology module design",
+        "release tooling",
+        "W3ID route preparation",
+        "citation metadata",
+        "non-vocabulary conformance tests",
+        "the curated MODAVIS 0.1.0 seed vocabularies"
+      ]
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "root": "https://w3id.org/modavis/",
+  "status": "prepared-not-deployed",
+  "destinationBase": "https://modavis-project.github.io/modavis-ontology-network",
+  "routes": [
+    {"path": "ontology", "owner": "modavis-ontology-network", "kind": "ontology-network"},
+    {"path": "ontology/{version}", "owner": "modavis-ontology-network", "kind": "immutable-ontology-network-version"},
+    {"path": "ontology/{module}", "owner": "modavis-ontology-network", "kind": "ontology-module"},
+    {"path": "ontology/{module}/{version}", "owner": "modavis-ontology-network", "kind": "immutable-ontology-version"},
+    {"path": "vocab/{scheme}", "owner": "modavis-ontology-network", "kind": "concept-scheme"},
+    {"path": "vocab/{scheme}/{concept}", "owner": "modavis-ontology-network", "kind": "stable-concept"},
+    {"path": "shapes/{profile}/{version}", "owner": "modavis-ontology-network", "kind": "immutable-shacl-profile"},
+    {"path": "context/{version}", "owner": "modavis-ontology-network", "kind": "immutable-jsonld-context"},
+    {"path": "release/{version}", "owner": "modavis-ontology-network", "kind": "ontology-network-release"},
+    {"path": "vao", "owner": "vao-standard", "kind": "reserved-standard-series", "deployment": "out-of-scope"},
+    {"path": "vao/0.4.0", "owner": "vao-standard", "kind": "immutable-standard-release", "deployment": "out-of-scope"},
+    {"path": "vao/0.4.0/schema/{artifact}", "owner": "vao-standard", "kind": "immutable-vao-schema", "deployment": "out-of-scope"},
+    {"path": "vao/0.4.0/context.jsonld", "owner": "vao-standard", "kind": "immutable-vao-context", "deployment": "out-of-scope"},
+    {"path": "vao/0.4.0/vocabulary", "owner": "vao-standard", "kind": "immutable-vao-vocabulary", "deployment": "out-of-scope"},
+    {"path": "vao/0.4.0/modavis-mapping", "owner": "vao-standard", "kind": "immutable-modavis-binding", "deployment": "out-of-scope"},
+    {"path": "vao/0.4.0/shapes", "owner": "vao-standard", "kind": "immutable-vao-shacl", "deployment": "out-of-scope"},
+    {"path": "vao/0.4.0/specification-bundle", "owner": "vao-standard", "kind": "immutable-specification-fixity", "deployment": "out-of-scope"},
+    {"path": "vao/0.4.0/security", "owner": "vao-standard", "kind": "immutable-security-considerations", "deployment": "out-of-scope"},
+    {"path": "vao/profile/{profile}/0.4.0", "owner": "vao-standard", "kind": "immutable-vao-profile", "deployment": "out-of-scope"},
+    {"path": "vao/ontology", "owner": "vao-standard", "kind": "vao-projection-vocabulary", "deployment": "out-of-scope"},
+    {"path": "vao/vocab/{path}", "owner": "vao-standard", "kind": "vao-controlled-vocabulary-term", "deployment": "out-of-scope"}
+  ],
+  "requirements": {
+    "versionedTargetsImmutable": true,
+    "unversionedTargetsLatestStableOnly": true,
+    "contentNegotiation": ["text/html", "text/turtle", "application/ld+json", "application/rdf+xml"],
+    "unknownVersionResponse": 404,
+    "unknownTermResponse": 404,
+    "unsupportedExplicitFormatResponse": 406
+  }
+}

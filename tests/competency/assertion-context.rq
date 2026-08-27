@@ -1,0 +1,9 @@
+PREFIX modassert: <https://w3id.org/modavis/ontology/assertion#>
+PREFIX modcontext: <https://w3id.org/modavis/ontology/context#>
+
+SELECT ?assertion ?dimension ?relation ?value WHERE {
+  ?assertion a modassert:Assertion ; modcontext:hasContextBinding ?binding .
+  ?binding modcontext:dimension ?dimension ;
+           modcontext:contextRelation ?relation ;
+           modcontext:contextValue ?value .
+}

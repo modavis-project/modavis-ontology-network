@@ -1,0 +1,11 @@
+PREFIX modevidence: <https://w3id.org/modavis/ontology/evidence#>
+PREFIX modmedia: <https://w3id.org/modavis/ontology/media#>
+
+SELECT ?representation ?representedResource ?status ?mediaType ?checksum WHERE {
+  ?representation a modmedia:DigitalRepresentation ;
+                  modmedia:representationOf ?representedResource ;
+                  modmedia:representationStatus ?status .
+  OPTIONAL { ?representation modmedia:mediaType ?mediaType . }
+  OPTIONAL { ?representation modmedia:hasChecksum ?checksum . }
+}
+ORDER BY ?representation

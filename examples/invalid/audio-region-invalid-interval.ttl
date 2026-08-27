@@ -1,0 +1,17 @@
+@prefix ex: <https://example.org/modavis/invalid-audio/> .
+@prefix modaudio: <https://w3id.org/modavis/ontology/audio#> .
+@prefix modmedia: <https://w3id.org/modavis/ontology/media#> .
+@prefix repstatus: <https://w3id.org/modavis/vocab/representation-status/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:signal a modaudio:AudioSignal ;
+  modaudio:sampleRate "48000.0"^^xsd:decimal ;
+  modaudio:channelCount "1"^^xsd:positiveInteger ;
+  modaudio:totalFrames "1000"^^xsd:positiveInteger ;
+  modmedia:representationStatus repstatus:captured .
+
+# Invalid: the exclusive end precedes the inclusive start.
+ex:region a modaudio:SignalRegion ;
+  modaudio:appliesToSignal ex:signal ;
+  modaudio:startFrameInclusive "900"^^xsd:nonNegativeInteger ;
+  modaudio:endFrameExclusive "800"^^xsd:positiveInteger .

@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "coveragePolicy": "Every normative module and the governed vocabulary must be assigned at least one executable competency question. Every question has a stable identifier, natural-language formulation, explicit required terms, example inputs, and a non-empty result expectation.",
+  "questions": [
+    {
+      "id": "CQ-CORE-01",
+      "question": "Which identified resources have canonical labels, and which recorded temporal extent qualifies them?",
+      "query": "tests/competency/core-identity-and-time.rq",
+      "modules": ["core"],
+      "requiredTerms": ["https://w3id.org/modavis/ontology/core#IdentifiedResource", "https://w3id.org/modavis/ontology/core#canonicalLabel", "https://w3id.org/modavis/ontology/core#validDuring", "https://w3id.org/modavis/ontology/core#rawTemporalExpression"],
+      "examples": ["examples/valid/event-assertion.ttl", "examples/valid/organ.ttl", "examples/valid/virtual-pipe-organ.ttl"],
+      "expectation": "At least one identified, labelled resource is returned. Temporal qualification remains optional."
+    },
+    {
+      "id": "CQ-INST-01",
+      "question": "Which components belong to an instrument and which contextual functional roles are assigned to them?",
+      "query": "tests/competency/components-and-roles.rq",
+      "modules": ["instrument"],
+      "requiredTerms": ["https://w3id.org/modavis/ontology/instrument#MusicalInstrument", "https://w3id.org/modavis/ontology/instrument#hasComponent", "https://w3id.org/modavis/ontology/instrument#FunctionalRoleAssignment", "https://w3id.org/modavis/ontology/instrument#roleOfComponent", "https://w3id.org/modavis/ontology/instrument#assignedRole"],
+      "examples": ["examples/valid/organ.ttl", "examples/valid/violin.ttl"],
+      "expectation": "Both organ and non-organ components are returned, with roles where asserted."
+    },
+    {
+      "id": "CQ-EVID-01",
+      "question": "Which fixed source snapshot and selected fragment support a citable source resource?",
+      "query": "tests/competency/source-fixity.rq",
+      "modules": ["evidence"],
+      "requiredTerms": ["https://w3id.org/modavis/ontology/evidence#SourceResource", "https://w3id.org/modavis/ontology/evidence#SourceSnapshot", "https://w3id.org/modavis/ontology/evidence#SourceFragment", "https://w3id.org/modavis/ontology/evidence#snapshotOf", "https://w3id.org/modavis/ontology/evidence#snapshotCapturedAt", "https://w3id.org/modavis/ontology/evidence#snapshotCapturedBy", "https://w3id.org/modavis/ontology/evidence#fragmentOf", "https://w3id.org/modavis/ontology/evidence#hasChecksum"],
+      "examples": ["examples/valid/event-assertion.ttl"],
+      "expectation": "At least one source, fixed snapshot, selected fragment, and qualified checksum are returned."
+    },
+    {
+      "id": "CQ-PROV-01",
+      "question": "Which accountable processing activity used which input and generated which output?",
+      "query": "tests/competency/provenance-activity-lineage.rq",
+      "modules": ["provenance"],
+      "requiredTerms": ["https://w3id.org/modavis/ontology/provenance#ProcessingActivity", "https://w3id.org/modavis/ontology/provenance#usedSoftware"],
+      "examples": ["examples/valid/event-assertion.ttl"],
+      "expectation": "At least one responsible processing activity with an input and output is returned."
+    },
+    {
+      "id": "CQ-ASSERT-01",
+      "question": "What subject, predicate, object, source fragment, and evidence role constitute a qualified assertion?",
+      "query": "tests/competency/assertion-evidence.rq",
+      "modules": ["assertion", "evidence"],
+      "requiredTerms": ["https://w3id.org/modavis/ontology/assertion#Assertion", "https://w3id.org/modavis/ontology/assertion#assertsSubject", "https://w3id.org/modavis/ontology/assertion#assertsPredicate", "https://w3id.org/modavis/ontology/assertion#assertsObject", "https://w3id.org/modavis/ontology/assertion#hasEvidenceRelation", "https://w3id.org/modavis/ontology/evidence#usesFragment", "https://w3id.org/modavis/ontology/evidence#evidenceRole"],
+      "examples": ["examples/valid/event-assertion.ttl"],
+      "expectation": "At least one qualified assertion and its evidence fragment are returned."
+    },
+    {
+      "id": "CQ-ASSERT-02",
+      "question": "Which assertions conflict, under which criterion, and which accountable decision chose a member?",
+      "query": "tests/competency/assertion-conflict-decision.rq",
+      "modules": ["assertion"],
+      "requiredTerms": ["https://w3id.org/modavis/ontology/assertion#ConflictSet", "https://w3id.org/modavis/ontology/assertion#ConflictDecision", "https://w3id.org/modavis/ontology/assertion#conflictCriterion", "https://w3id.org/modavis/ontology/assertion#hasConflictMember", "https://w3id.org/modavis/ontology/assertion#chosenAssertion", "https://w3id.org/modavis/ontology/assertion#decidedBy"],
+      "examples": ["examples/valid/event-assertion.ttl"],
+      "expectation": "Every returned decision identifies its conflict, criterion, chosen member, and deciding agent."
+    },
+    {
+      "id": "CQ-EVENT-01",
+      "question": "Which documented event affected which entity, and which source, evidence, record, and generation activity trace it?",
+      "query": "tests/competency/event-trace.rq",
+      "modules": ["events", "evidence", "provenance"],
+      "requiredTerms": ["https://w3id.org/modavis/ontology/events#Event", "https://w3id.org/modavis/ontology/events#EventRecord", "https://w3id.org/modavis/ontology/events#affectedEntity", "https://w3id.org/modavis/ontology/events#hasSource", "https://w3id.org/modavis/ontology/events#evidencedBy", "https://w3id.org/modavis/ontology/events#describesEvent", "https://w3id.org/modavis/ontology/events#generatedBy"],
+      "examples": ["examples/valid/event-assertion.ttl"],
+      "expectation": "At least one historical event is connected to its affected entity, source, evidence, record, and generation activity."
+    },
+    {
+      "id": "CQ-ORGAN-01",
+      "question": "Which qualified memberships connect a pipe organ to its organ components?",
+      "query": "tests/competency/organ-structure.rq",
+      "modules": ["organ", "instrument"],
+      "requiredTerms": ["https://w3id.org/modavis/ontology/organ#PipeOrgan", "https://w3id.org/modavis/ontology/organ#OrganComponent", "https://w3id.org/modavis/ontology/instrument#ComponentMembership", "https://w3id.org/modavis/ontology/instrument#membershipInstrument", "https://w3id.org/modavis/ontology/instrument#childComponent"],
+      "examples": ["examples/valid/organ.ttl"],
+      "expectation": "At least one qualified organ-component membership is returned."
+    },
+    {
+      "id": "CQ-MEDIA-01",
+      "question": "Which digital representation represents which resource, with what status, format, and fixity information?",
+      "query": "tests/competency/media-representation-fixity.rq",
+      "modules": ["media", "evidence"],
+      "requiredTerms": ["https://w3id.org/modavis/ontology/media#DigitalRepresentation", "https://w3id.org/modavis/ontology/media#representationOf", "https://w3id.org/modavis/ontology/media#representationStatus", "https://w3id.org/modavis/ontology/media#mediaType", "https://w3id.org/modavis/ontology/media#hasChecksum"],
+      "examples": ["examples/valid/virtual-pipe-organ.ttl"],
+      "expectation": "At least one digital representation and its represented resource and status are returned."
+    },
+    {
+      "id": "CQ-AUDIO-01",
+      "question": "Which source signal and extraction region produced an audio sample, and which playback, loop, and tuning records use it?",
+      "query": "tests/competency/audio-sample-playback.rq",
+      "modules": ["audio"],
+      "requiredTerms": ["https://w3id.org/modavis/ontology/audio#AudioSample", "https://w3id.org/modavis/ontology/audio#SamplePlaybackParameters", "https://w3id.org/modavis/ontology/audio#extractedFromRegion", "https://w3id.org/modavis/ontology/audio#appliesToSignal", "https://w3id.org/modavis/ontology/audio#playsSample", "https://w3id.org/modavis/ontology/audio#usesLoopPointSet", "https://w3id.org/modavis/ontology/audio#usesTuningMap"],
+      "examples": ["examples/valid/virtual-pipe-organ.ttl"],
+      "expectation": "At least one sample is traced to its source signal and playback parameters."
+    },
+    {
+      "id": "CQ-MIDI-01",
+      "question": "Which MIDI note and note-on velocity selection bounds activate a sampled-playback record?",
+      "query": "tests/competency/midi-playback-binding.rq",
+      "modules": ["midi", "audio"],
+      "requiredTerms": ["https://w3id.org/modavis/ontology/midi#MidiPlaybackBinding", "https://w3id.org/modavis/ontology/midi#playbackParameters", "https://w3id.org/modavis/ontology/midi#rootNoteNumber", "https://w3id.org/modavis/ontology/midi#minimumNoteNumber", "https://w3id.org/modavis/ontology/midi#maximumNoteNumber", "https://w3id.org/modavis/ontology/midi#minimumNoteOnVelocity", "https://w3id.org/modavis/ontology/midi#maximumNoteOnVelocity"],
+      "examples": ["examples/valid/virtual-pipe-organ.ttl"],
+      "expectation": "At least one MIDI playback binding and its note-selection bounds are returned."
+    },
+    {
+      "id": "CQ-CONTEXT-01",
+      "question": "Under which explicit dimension, relation, and identified value does an assertion apply?",
+      "query": "tests/competency/assertion-context.rq",
+      "modules": ["context", "assertion"],
+      "requiredTerms": ["https://w3id.org/modavis/ontology/context#hasContextBinding", "https://w3id.org/modavis/ontology/context#dimension", "https://w3id.org/modavis/ontology/context#contextRelation", "https://w3id.org/modavis/ontology/context#contextValue"],
+      "examples": ["examples/valid/event-assertion.ttl"],
+      "expectation": "At least one assertion-context binding is returned without assuming universal applicability."
+    },
+    {
+      "id": "CQ-VMI-01",
+      "question": "Which product version implements a playable virtual instrument derived from which physical instrument state and using which sample?",
+      "query": "tests/competency/virtual-instrument-source-lineage.rq",
+      "modules": ["virtual-instrument", "instrument", "audio"],
+      "requiredTerms": ["https://w3id.org/modavis/ontology/virtual-instrument#VirtualInstrumentProduct", "https://w3id.org/modavis/ontology/virtual-instrument#hasVersion", "https://w3id.org/modavis/ontology/virtual-instrument#implementsInstrument", "https://w3id.org/modavis/ontology/virtual-instrument#hasSourceRelation", "https://w3id.org/modavis/ontology/virtual-instrument#sourceInstrument", "https://w3id.org/modavis/ontology/virtual-instrument#sourceState"],
+      "examples": ["examples/valid/virtual-pipe-organ.ttl"],
+      "expectation": "The product, version, playable instrument, physical source state, and sample are returned without identity collapse."
+    },
+    {
+      "id": "CQ-HERITAGE-01",
+      "question": "Which agent assigned a contextual heritage status to a resource, and which fixed, governed knowledge snapshot and historical review preserve the resulting assertions?",
+      "query": "tests/competency/heritage-knowledge-governance.rq",
+      "modules": ["heritage"],
+      "requiredTerms": ["https://w3id.org/modavis/ontology/heritage#HeritageRecognition", "https://w3id.org/modavis/ontology/heritage#recognizesResource", "https://w3id.org/modavis/ontology/heritage#recognitionAssignedBy", "https://w3id.org/modavis/ontology/heritage#recognitionStatus", "https://w3id.org/modavis/ontology/heritage#CuratedKnowledgeCollection", "https://w3id.org/modavis/ontology/heritage#documentsResource", "https://w3id.org/modavis/ontology/heritage#currentSnapshot", "https://w3id.org/modavis/ontology/heritage#KnowledgeSnapshot", "https://w3id.org/modavis/ontology/heritage#includesAssertion", "https://w3id.org/modavis/ontology/heritage#canonicalizationProfile", "https://w3id.org/modavis/ontology/heritage#canonicalMaterialization", "https://w3id.org/modavis/ontology/heritage#KnowledgeMaintenanceActivity", "https://w3id.org/modavis/ontology/heritage#resultingSnapshot", "https://w3id.org/modavis/ontology/heritage#addedAssertion", "https://w3id.org/modavis/ontology/heritage#HistoricalClaimReview", "https://w3id.org/modavis/ontology/heritage#reviewSubject", "https://w3id.org/modavis/ontology/heritage#producesAssertion"],
+      "examples": ["examples/valid/heritage-knowledge.ttl"],
+      "expectation": "At least one contextual recognition, governed current snapshot, fixed assertion set, revision activity, and accountable historical review are returned without collapsing resource identities."
+    },
+    {
+      "id": "CQ-VOCAB-01",
+      "question": "Which governed concepts are available in each MODAVIS concept scheme, with which labels and definitions?",
+      "query": "tests/competency/governed-vocabulary-discovery.rq",
+      "modules": ["vocab"],
+      "requiredTerms": ["https://w3id.org/modavis/vocab/instrument-type", "https://w3id.org/modavis/vocab/functional-role", "https://w3id.org/modavis/vocab/assertion-status", "https://w3id.org/modavis/vocab/evidence-role"],
+      "examples": [],
+      "expectation": "Every governed scheme returns at least one documented concept."
+    }
+  ]
+}

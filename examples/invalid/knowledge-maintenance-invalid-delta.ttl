@@ -1,0 +1,20 @@
+@prefix ex: <https://example.org/modavis/invalid/knowledge-delta/> .
+@prefix modassert: <https://w3id.org/modavis/ontology/assertion#> .
+@prefix modheritage: <https://w3id.org/modavis/ontology/heritage#> .
+
+ex:maintenance a modheritage:KnowledgeMaintenanceActivity ;
+  modheritage:maintainedCollection ex:collection ;
+  modheritage:previousSnapshot ex:previous ;
+  modheritage:resultingSnapshot ex:result ;
+  modheritage:addedAssertion ex:assertion-not-in-result .
+
+ex:collection a modheritage:CuratedKnowledgeCollection .
+
+ex:previous a modheritage:KnowledgeSnapshot ;
+  modheritage:snapshotOfCollection ex:collection .
+
+ex:result a modheritage:KnowledgeSnapshot ;
+  modheritage:snapshotOfCollection ex:collection ;
+  modheritage:snapshotCreatedBy ex:maintenance .
+
+ex:assertion-not-in-result a modassert:Assertion .

@@ -1,0 +1,68 @@
+@prefix modevidence: <https://w3id.org/modavis/ontology/evidence#> .
+@prefix modprov: <https://w3id.org/modavis/ontology/provenance#> .
+@prefix modshape: <https://w3id.org/modavis/shapes/exchange/0.1.0#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+modshape:ParameterSetShape a sh:NodeShape ;
+    rdfs:label "parameter set shape"@en ;
+    sh:name "parameter set shape"@en ;
+    sh:property modshape:ParameterSetShape-hasChecksum-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modprov:ParameterSet .
+
+modshape:ProcessingActivityShape a sh:NodeShape ;
+    rdfs:label "processing activity shape"@en ;
+    sh:name "processing activity shape"@en ;
+    sh:property modshape:ProcessingActivityShape-Path-PropertyShape-04,
+        modshape:ProcessingActivityShape-activityType-PropertyShape-01,
+        modshape:ProcessingActivityShape-usedParameterSet-PropertyShape-02,
+        modshape:ProcessingActivityShape-usedSoftware-PropertyShape-03 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modprov:ProcessingActivity .
+
+modshape:ParameterSetShape-hasChecksum-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "has checksum property constraint"@en ;
+    sh:class modevidence:Checksum ;
+    sh:maxCount 1 ;
+    sh:message "An immutable parameter set requires exactly one qualified checksum under the closed MODAVIS 0.1.0 algorithm profile."@en ;
+    sh:minCount 1 ;
+    sh:name "has checksum property constraint"@en ;
+    sh:path modevidence:hasChecksum ;
+    sh:severity sh:Violation .
+
+modshape:ProcessingActivityShape-Path-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "property path property constraint"@en ;
+    sh:message "A processing activity requires an accountable associated agent or identified software agent."@en ;
+    sh:minCount 1 ;
+    sh:name "property path property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path [ sh:alternativePath ( prov:wasAssociatedWith modprov:usedSoftware ) ] ;
+    sh:severity sh:Violation .
+
+modshape:ProcessingActivityShape-activityType-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "activity type property constraint"@en ;
+    sh:message "Activity type constraint: values must have node kind IRI."@en ;
+    sh:name "activity type property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modprov:activityType ;
+    sh:severity sh:Violation .
+
+modshape:ProcessingActivityShape-usedParameterSet-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "used parameter set property constraint"@en ;
+    sh:class modprov:ParameterSet ;
+    sh:message "Used parameter set constraint: values must be instances of ParameterSet."@en ;
+    sh:name "used parameter set property constraint"@en ;
+    sh:path modprov:usedParameterSet ;
+    sh:severity sh:Violation .
+
+modshape:ProcessingActivityShape-usedSoftware-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "used software property constraint"@en ;
+    sh:class prov:SoftwareAgent ;
+    sh:message "Used software constraint: values must be instances of SoftwareAgent."@en ;
+    sh:name "used software property constraint"@en ;
+    sh:path modprov:usedSoftware ;
+    sh:severity sh:Violation .

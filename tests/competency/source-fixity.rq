@@ -1,0 +1,17 @@
+PREFIX modevidence: <https://w3id.org/modavis/ontology/evidence#>
+
+SELECT ?source ?sourceUri ?snapshot ?capturedAt ?capturedBy ?fragment ?selector ?algorithm ?digest WHERE {
+  ?source a modevidence:SourceResource ;
+          modevidence:sourceUri ?sourceUri .
+  ?snapshot a modevidence:SourceSnapshot ;
+            modevidence:snapshotOf ?source ;
+            modevidence:hasChecksum ?checksum ;
+            modevidence:snapshotCapturedAt ?capturedAt ;
+            modevidence:snapshotCapturedBy ?capturedBy .
+  ?checksum modevidence:checksumAlgorithm ?algorithm ;
+            modevidence:checksumValue ?digest .
+  ?fragment a modevidence:SourceFragment ;
+            modevidence:fragmentOf ?snapshot ;
+            modevidence:hasSelector ?selector .
+}
+ORDER BY ?source ?snapshot ?fragment

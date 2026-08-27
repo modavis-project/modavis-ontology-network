@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="public">
+  <uri name="https://w3id.org/modavis/ontology/0.1.0" uri="ontology/modavis-network.ttl"/>
+  <uri name="https://w3id.org/modavis/ontology/core/0.1.0" uri="ontology/modavis-core.ttl"/>
+  <uri name="https://w3id.org/modavis/ontology/instrument/0.1.0" uri="ontology/modavis-instrument.ttl"/>
+  <uri name="https://w3id.org/modavis/ontology/evidence/0.1.0" uri="ontology/modavis-evidence.ttl"/>
+  <uri name="https://w3id.org/modavis/ontology/provenance/0.1.0" uri="ontology/modavis-provenance.ttl"/>
+  <uri name="https://w3id.org/modavis/ontology/assertion/0.1.0" uri="ontology/modavis-assertion.ttl"/>
+  <uri name="https://w3id.org/modavis/ontology/events/0.1.0" uri="ontology/modavis-events.ttl"/>
+  <uri name="https://w3id.org/modavis/ontology/organ/0.1.0" uri="ontology/modavis-organ.ttl"/>
+  <uri name="https://w3id.org/modavis/ontology/media/0.1.0" uri="ontology/modavis-media.ttl"/>
+  <uri name="https://w3id.org/modavis/ontology/audio/0.1.0" uri="ontology/modavis-audio.ttl"/>
+  <uri name="https://w3id.org/modavis/ontology/midi/0.1.0" uri="ontology/modavis-midi.ttl"/>
+  <uri name="https://w3id.org/modavis/ontology/context/0.1.0" uri="ontology/modavis-context.ttl"/>
+  <uri name="https://w3id.org/modavis/ontology/virtual-instrument/0.1.0" uri="ontology/modavis-virtual-instrument.ttl"/>
+  <uri name="https://w3id.org/modavis/ontology/heritage/0.1.0" uri="ontology/modavis-heritage.ttl"/>
+  <uri name="https://w3id.org/modavis/vocab/0.1.0" uri="vocab/modavis-vocab.ttl"/>
+</catalog>

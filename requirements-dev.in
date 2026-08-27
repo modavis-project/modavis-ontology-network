@@ -1,0 +1,7 @@
+# Direct release-development dependencies. requirements-dev.txt is the
+# generated, transitively complete, hash-locked installation contract.
+owlrl==7.6.2
+pyshacl==0.40.1
+pytest==9.1.1
+rdflib==7.6.0
+reuse[charset-normalizer]==6.2.0

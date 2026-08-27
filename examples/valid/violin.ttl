@@ -1,0 +1,18 @@
+@prefix ex: <https://example.org/modavis/violin/> .
+@prefix modavis: <https://w3id.org/modavis/ontology/core#> .
+@prefix modinst: <https://w3id.org/modavis/ontology/instrument#> .
+@prefix insttype: <https://w3id.org/modavis/vocab/instrument-type/> .
+@prefix membership: <https://w3id.org/modavis/vocab/component-membership-type/> .
+@prefix role: <https://w3id.org/modavis/vocab/functional-role/> .
+
+ex:instrument a modinst:MusicalInstrument ; modavis:canonicalLabel "Example violin"@en ;
+  modinst:instrumentType insttype:violin ; modinst:hasComponent ex:body, ex:string ;
+  modinst:hasMembership ex:body-membership, ex:string-membership .
+ex:body a modinst:InstrumentComponent ; modinst:hasRoleAssignment ex:body-role .
+ex:string a modinst:InstrumentComponent ; modinst:hasRoleAssignment ex:string-role .
+ex:body-membership a modinst:ComponentMembership ; modinst:membershipInstrument ex:instrument ;
+  modinst:childComponent ex:body ; modinst:membershipType membership:structural-part .
+ex:string-membership a modinst:ComponentMembership ; modinst:membershipInstrument ex:instrument ;
+  modinst:childComponent ex:string ; modinst:membershipType membership:structural-part .
+ex:body-role a modinst:FunctionalRoleAssignment ; modinst:roleOfComponent ex:body ; modinst:assignedRole role:resonator .
+ex:string-role a modinst:FunctionalRoleAssignment ; modinst:roleOfComponent ex:string ; modinst:assignedRole role:sound-generator .

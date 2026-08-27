@@ -1,0 +1,31 @@
+@prefix ex: <https://example.org/modavis/organ/> .
+@prefix modavis: <https://w3id.org/modavis/ontology/core#> .
+@prefix modinst: <https://w3id.org/modavis/ontology/instrument#> .
+@prefix modorgan: <https://w3id.org/modavis/ontology/organ#> .
+@prefix insttype: <https://w3id.org/modavis/vocab/instrument-type/> .
+@prefix membership: <https://w3id.org/modavis/vocab/component-membership-type/> .
+@prefix role: <https://w3id.org/modavis/vocab/functional-role/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:instrument a modorgan:PipeOrgan ; modavis:canonicalLabel "Example pipe organ"@en ;
+  modinst:instrumentType insttype:pipe-organ ; modinst:hasState ex:current-state ;
+  modinst:hasConfiguration ex:configuration ; modinst:hasComponent ex:division, ex:stop, ex:rank, ex:pipe, ex:keyboard ;
+  modinst:hasMembership ex:stop-rank-membership, ex:rank-pipe-membership .
+ex:current-state a modinst:InstrumentState ; modinst:stateOf ex:instrument ; modavis:validDuring ex:current-period .
+ex:current-period a modavis:TimeSpan ; modavis:rawTemporalExpression "current at the example publication date" .
+ex:configuration a modinst:InstrumentConfiguration ; modinst:configurationOf ex:instrument .
+ex:division a modorgan:OrganDivision .
+ex:stop a modorgan:OrganStop ; modorgan:hasNominalPitchDesignation "8′" ; modorgan:rankCount "1"^^xsd:positiveInteger ;
+  modinst:hasRoleAssignment ex:stop-role ; modorgan:hasRank ex:rank .
+ex:rank a modorgan:OrganRank ; modorgan:rankMember ex:pipe .
+ex:pipe a modorgan:OrganPipe ; modinst:hasRoleAssignment ex:pipe-role .
+ex:keyboard a modorgan:OrganKeyboard .
+ex:stop-rank-membership a modinst:ComponentMembership ; modinst:membershipInstrument ex:instrument ;
+  modinst:parentComponent ex:stop ; modinst:childComponent ex:rank ; modinst:membershipType membership:controlled-by ;
+  modinst:appliesInConfiguration ex:configuration .
+ex:rank-pipe-membership a modinst:ComponentMembership ; modinst:membershipInstrument ex:instrument ;
+  modinst:parentComponent ex:rank ; modinst:childComponent ex:pipe ; modinst:membershipType membership:member-of-collection .
+ex:pipe-role a modinst:FunctionalRoleAssignment ; modinst:roleOfComponent ex:pipe ;
+  modinst:assignedRole role:sound-generator ; modinst:appliesInConfiguration ex:configuration .
+ex:stop-role a modinst:FunctionalRoleAssignment ; modinst:roleOfComponent ex:stop ;
+  modinst:assignedRole role:selector ; modinst:appliesInConfiguration ex:configuration .

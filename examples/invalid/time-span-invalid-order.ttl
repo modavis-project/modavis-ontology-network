@@ -1,0 +1,7 @@
+@prefix ex: <https://example.org/modavis/invalid/> .
+@prefix modavis: <https://w3id.org/modavis/ontology/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:backwards-time-span a modavis:TimeSpan ;
+  modavis:startDate "2026-08-24"^^xsd:date ;
+  modavis:endDate "2026-08-23"^^xsd:date .

@@ -1,0 +1,8 @@
+@prefix ex: <https://example.org/modavis/invalid-media/> .
+@prefix modmedia: <https://w3id.org/modavis/ontology/media#> .
+@prefix repstatus: <https://w3id.org/modavis/vocab/representation-status/> .
+
+# Invalid: representation identity and represented-resource identity collapse.
+ex:self-surrogate a modmedia:DigitalSurrogate ;
+  modmedia:representationOf ex:self-surrogate ;
+  modmedia:representationStatus repstatus:captured .

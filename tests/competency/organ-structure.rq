@@ -1,0 +1,14 @@
+PREFIX modinst: <https://w3id.org/modavis/ontology/instrument#>
+PREFIX modorgan: <https://w3id.org/modavis/ontology/organ#>
+
+SELECT ?organ ?membership ?parent ?component ?membershipType WHERE {
+  ?organ a modorgan:PipeOrgan ;
+         modinst:hasMembership ?membership .
+  ?membership a modinst:ComponentMembership ;
+              modinst:membershipInstrument ?organ ;
+              modinst:childComponent ?component ;
+              modinst:membershipType ?membershipType .
+  ?component a modorgan:OrganComponent .
+  OPTIONAL { ?membership modinst:parentComponent ?parent . }
+}
+ORDER BY ?organ ?membership

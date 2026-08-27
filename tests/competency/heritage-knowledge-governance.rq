@@ -1,0 +1,30 @@
+PREFIX modevidence: <https://w3id.org/modavis/ontology/evidence#>
+PREFIX modheritage: <https://w3id.org/modavis/ontology/heritage#>
+
+SELECT ?resource ?recognition ?recognizingAgent ?recognitionStatus ?collection
+       ?currentSnapshot ?assertion ?review ?canonicalizationProfile ?materialization ?checksum
+WHERE {
+  ?recognition a modheritage:HeritageRecognition ;
+    modheritage:recognizesResource ?resource ;
+    modheritage:recognitionAssignedBy ?recognizingAgent ;
+    modheritage:recognitionStatus ?recognitionStatus .
+
+  ?collection a modheritage:CuratedKnowledgeCollection ;
+    modheritage:documentsResource ?resource ;
+    modheritage:currentSnapshot ?currentSnapshot .
+
+  ?currentSnapshot a modheritage:KnowledgeSnapshot ;
+    modheritage:includesAssertion ?assertion ;
+    modheritage:canonicalizationProfile ?canonicalizationProfile ;
+    modheritage:canonicalMaterialization ?materialization .
+
+  ?materialization modevidence:hasChecksum ?checksum .
+
+  ?maintenance a modheritage:KnowledgeMaintenanceActivity ;
+    modheritage:resultingSnapshot ?currentSnapshot ;
+    modheritage:addedAssertion ?assertion .
+
+  ?review a modheritage:HistoricalClaimReview ;
+    modheritage:reviewSubject ?resource ;
+    modheritage:producesAssertion ?assertion .
+}

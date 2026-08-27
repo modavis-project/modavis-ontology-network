@@ -1,0 +1,12 @@
+PREFIX modaudio: <https://w3id.org/modavis/ontology/audio#>
+
+SELECT ?sample ?sourceSignal ?extractionRegion ?playback ?loopSet ?tuningMap WHERE {
+  ?sample a modaudio:AudioSample ;
+          modaudio:extractedFromRegion ?extractionRegion .
+  ?extractionRegion modaudio:appliesToSignal ?sourceSignal .
+  ?playback a modaudio:SamplePlaybackParameters ;
+            modaudio:playsSample ?sample .
+  OPTIONAL { ?playback modaudio:usesLoopPointSet ?loopSet . }
+  OPTIONAL { ?playback modaudio:usesTuningMap ?tuningMap . }
+}
+ORDER BY ?sample ?playback

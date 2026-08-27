@@ -1,0 +1,7 @@
+@prefix ex: <https://example.org/modavis/invalid/> .
+@prefix modevidence: <https://w3id.org/modavis/ontology/evidence#> .
+@prefix checksum: <https://w3id.org/modavis/vocab/checksum-algorithm/> .
+
+ex:malformed-checksum a modevidence:Checksum ;
+  modevidence:checksumAlgorithm checksum:sha-256 ;
+  modevidence:checksumValue "NOT-A-SHA-256-DIGEST" .

@@ -1,0 +1,237 @@
+@prefix modavis: <https://w3id.org/modavis/ontology/core#> .
+@prefix modshape: <https://w3id.org/modavis/shapes/exchange/0.1.0#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+modshape:IdentifiedResourceShape a sh:NodeShape ;
+    rdfs:label "identified resource shape"@en ;
+    sh:message "An identified resource must have an IRI. Stable HTTP IRIs provide normative MODAVIS identity; legacy MDVS v1 strings are optional compatibility data."@en ;
+    sh:name "identified resource shape"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:property modshape:IdentifiedResourceShape-canonicalLabel-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modavis:IdentifiedResource .
+
+modshape:IdentifierShape a sh:NodeShape ;
+    rdfs:label "identifier shape"@en ;
+    sh:name "identifier shape"@en ;
+    sh:property modshape:IdentifierShape-identifierScheme-PropertyShape-01,
+        modshape:IdentifierShape-identifierValue-PropertyShape-02 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modavis:Identifier .
+
+modshape:NameShape a sh:NodeShape ;
+    rdfs:label "name shape"@en ;
+    sh:name "name shape"@en ;
+    sh:property modshape:NameShape-nameValue-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modavis:Name .
+
+modshape:TimeSpanShape a sh:NodeShape ;
+    rdfs:label "time span shape"@en ;
+    sh:message "A time span requires a start, end, or raw temporal expression."@en ;
+    sh:name "time span shape"@en ;
+    sh:or ( modshape:TimeSpanShape-or-Alternative-NodeShape-01 modshape:TimeSpanShape-or-Alternative-NodeShape-02 modshape:TimeSpanShape-or-Alternative-NodeShape-03 modshape:TimeSpanShape-or-Alternative-NodeShape-04 modshape:TimeSpanShape-or-Alternative-NodeShape-05 ) ;
+    sh:property modshape:TimeSpanShape-endDate-PropertyShape-01,
+        modshape:TimeSpanShape-endDateTime-PropertyShape-02,
+        modshape:TimeSpanShape-rawTemporalExpression-PropertyShape-03,
+        modshape:TimeSpanShape-startDate-PropertyShape-04,
+        modshape:TimeSpanShape-startDateTime-PropertyShape-05,
+        modshape:TimeSpanShape-temporalCertainty-PropertyShape-06,
+        modshape:TimeSpanShape-temporalPrecision-PropertyShape-07 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:TimeSpanShape-SPARQLConstraint-01 ;
+    sh:targetClass modavis:TimeSpan .
+
+modshape:IdentifiedResourceShape-canonicalLabel-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "canonical label property constraint"@en ;
+    sh:datatype rdf:langString ;
+    sh:message "Canonical label constraint: values must use the langString datatype; at most one value is permitted per language."@en ;
+    sh:name "canonical label property constraint"@en ;
+    sh:path modavis:canonicalLabel ;
+    sh:severity sh:Violation ;
+    sh:uniqueLang true .
+
+modshape:IdentifierShape-identifierScheme-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "identifier scheme property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "A reified identifier requires exactly one identified assigning scheme."@en ;
+    sh:minCount 1 ;
+    sh:name "identifier scheme property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modavis:identifierScheme ;
+    sh:severity sh:Violation .
+
+modshape:IdentifierShape-identifierValue-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "identifier value property constraint"@en ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:message "A reified identifier requires one non-empty lexical value."@en ;
+    sh:minCount 1 ;
+    sh:minLength 1 ;
+    sh:name "identifier value property constraint"@en ;
+    sh:path modavis:identifierValue ;
+    sh:severity sh:Violation .
+
+modshape:NameShape-nameValue-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "name value property constraint"@en ;
+    sh:datatype rdf:langString ;
+    sh:maxCount 1 ;
+    sh:message "A reified name requires exactly one language-tagged lexical value."@en ;
+    sh:minCount 1 ;
+    sh:name "name value property constraint"@en ;
+    sh:path modavis:nameValue ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-SPARQLConstraint-01 rdfs:label "time span shape sparqlconstraint 01"@en ;
+    sh:message "A time span must not mix xsd:date and xsd:dateTime boundary systems on the same node."@en ;
+    sh:name "time span shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modavis: <https://w3id.org/modavis/ontology/core#>
+      SELECT $this WHERE {
+        $this ?dateProperty ?dateValue ; ?dateTimeProperty ?dateTimeValue .
+        FILTER (?dateProperty IN (modavis:startDate, modavis:endDate))
+        FILTER (?dateTimeProperty IN (modavis:startDateTime, modavis:endDateTime))
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-endDate-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "end date property constraint"@en ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+    sh:message "End date constraint: at most 1 value(s) are permitted; values must use the date datatype."@en ;
+    sh:name "end date property constraint"@en ;
+    sh:path modavis:endDate ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-endDate-PropertyShape-09 a sh:PropertyShape ;
+    rdfs:label "end date property constraint"@en ;
+    sh:message "End date constraint: at least 1 value(s) are required."@en ;
+    sh:minCount 1 ;
+    sh:name "end date property constraint"@en ;
+    sh:path modavis:endDate ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-endDateTime-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "end date time property constraint"@en ;
+    sh:datatype xsd:dateTime ;
+    sh:maxCount 1 ;
+    sh:message "An end date-time must be a timezone-qualified xsd:dateTime and occur at most once."@en ;
+    sh:name "end date time property constraint"@en ;
+    sh:path modavis:endDateTime ;
+    sh:pattern "(Z|[+-](0[0-9]|1[0-4]):[0-5][0-9])$" ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-endDateTime-PropertyShape-11 a sh:PropertyShape ;
+    rdfs:label "end date time property constraint"@en ;
+    sh:message "End date time constraint: at least 1 value(s) are required."@en ;
+    sh:minCount 1 ;
+    sh:name "end date time property constraint"@en ;
+    sh:path modavis:endDateTime ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-or-Alternative-NodeShape-01 a sh:NodeShape ;
+    rdfs:label "time span shape or alternative node shape 01"@en ;
+    sh:name "time span shape or alternative node shape 01"@en ;
+    sh:property modshape:TimeSpanShape-startDate-PropertyShape-08 ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-or-Alternative-NodeShape-02 a sh:NodeShape ;
+    rdfs:label "time span shape or alternative node shape 02"@en ;
+    sh:name "time span shape or alternative node shape 02"@en ;
+    sh:property modshape:TimeSpanShape-endDate-PropertyShape-09 ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-or-Alternative-NodeShape-03 a sh:NodeShape ;
+    rdfs:label "time span shape or alternative node shape 03"@en ;
+    sh:name "time span shape or alternative node shape 03"@en ;
+    sh:property modshape:TimeSpanShape-startDateTime-PropertyShape-10 ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-or-Alternative-NodeShape-04 a sh:NodeShape ;
+    rdfs:label "time span shape or alternative node shape 04"@en ;
+    sh:name "time span shape or alternative node shape 04"@en ;
+    sh:property modshape:TimeSpanShape-endDateTime-PropertyShape-11 ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-or-Alternative-NodeShape-05 a sh:NodeShape ;
+    rdfs:label "time span shape or alternative node shape 05"@en ;
+    sh:name "time span shape or alternative node shape 05"@en ;
+    sh:property modshape:TimeSpanShape-rawTemporalExpression-PropertyShape-12 ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-rawTemporalExpression-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "raw temporal expression property constraint"@en ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:message "A raw temporal expression, when supplied, must be a non-empty string."@en ;
+    sh:minLength 1 ;
+    sh:name "raw temporal expression property constraint"@en ;
+    sh:path modavis:rawTemporalExpression ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-rawTemporalExpression-PropertyShape-12 a sh:PropertyShape ;
+    rdfs:label "raw temporal expression property constraint"@en ;
+    sh:message "Raw temporal expression constraint: at least 1 value(s) are required."@en ;
+    sh:minCount 1 ;
+    sh:name "raw temporal expression property constraint"@en ;
+    sh:path modavis:rawTemporalExpression ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-startDate-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "start date property constraint"@en ;
+    sh:datatype xsd:date ;
+    sh:lessThanOrEquals modavis:endDate ;
+    sh:maxCount 1 ;
+    sh:message "A time span's start date cannot be later than its end date."@en ;
+    sh:name "start date property constraint"@en ;
+    sh:path modavis:startDate ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-startDate-PropertyShape-08 a sh:PropertyShape ;
+    rdfs:label "start date property constraint"@en ;
+    sh:message "Start date constraint: at least 1 value(s) are required."@en ;
+    sh:minCount 1 ;
+    sh:name "start date property constraint"@en ;
+    sh:path modavis:startDate ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-startDateTime-PropertyShape-05 a sh:PropertyShape ;
+    rdfs:label "start date time property constraint"@en ;
+    sh:datatype xsd:dateTime ;
+    sh:lessThanOrEquals modavis:endDateTime ;
+    sh:maxCount 1 ;
+    sh:message "A start date-time must include a timezone and cannot be later than the end date-time."@en ;
+    sh:name "start date time property constraint"@en ;
+    sh:path modavis:startDateTime ;
+    sh:pattern "(Z|[+-](0[0-9]|1[0-4]):[0-5][0-9])$" ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-startDateTime-PropertyShape-10 a sh:PropertyShape ;
+    rdfs:label "start date time property constraint"@en ;
+    sh:message "Start date time constraint: at least 1 value(s) are required."@en ;
+    sh:minCount 1 ;
+    sh:name "start date time property constraint"@en ;
+    sh:path modavis:startDateTime ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-temporalCertainty-PropertyShape-06 a sh:PropertyShape ;
+    rdfs:label "temporal certainty property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Temporal certainty constraint: at most 1 value(s) are permitted; values must have node kind IRI."@en ;
+    sh:name "temporal certainty property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modavis:temporalCertainty ;
+    sh:severity sh:Violation .
+
+modshape:TimeSpanShape-temporalPrecision-PropertyShape-07 a sh:PropertyShape ;
+    rdfs:label "temporal precision property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Temporal precision constraint: at most 1 value(s) are permitted; values must have node kind IRI."@en ;
+    sh:name "temporal precision property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modavis:temporalPrecision ;
+    sh:severity sh:Violation .

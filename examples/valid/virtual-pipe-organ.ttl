@@ -1,0 +1,202 @@
+@prefix ex: <https://example.org/modavis/virtual-organ/> .
+@prefix modavis: <https://w3id.org/modavis/ontology/core#> .
+@prefix modaudio: <https://w3id.org/modavis/ontology/audio#> .
+@prefix modevidence: <https://w3id.org/modavis/ontology/evidence#> .
+@prefix modinst: <https://w3id.org/modavis/ontology/instrument#> .
+@prefix modmedia: <https://w3id.org/modavis/ontology/media#> .
+@prefix modmidi: <https://w3id.org/modavis/ontology/midi#> .
+@prefix modprov: <https://w3id.org/modavis/ontology/provenance#> .
+@prefix modvmi: <https://w3id.org/modavis/ontology/virtual-instrument#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix checksum: <https://w3id.org/modavis/vocab/checksum-algorithm/> .
+@prefix compatstatus: <https://w3id.org/modavis/vocab/compatibility-status/> .
+@prefix evidencerole: <https://w3id.org/modavis/vocab/evidence-role/> .
+@prefix insttype: <https://w3id.org/modavis/vocab/instrument-type/> .
+@prefix repstatus: <https://w3id.org/modavis/vocab/representation-status/> .
+@prefix vmiproduction: <https://w3id.org/modavis/vocab/virtual-instrument-production-method/> .
+@prefix vmisource: <https://w3id.org/modavis/vocab/virtual-instrument-source-relation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Physical source identity and the state actually sampled.
+ex:source-organ a modinst:MusicalInstrument ;
+  modavis:canonicalLabel "Example physical source pipe organ"@en ;
+  modinst:instrumentType insttype:pipe-organ ;
+  modinst:hasState ex:source-organ-state-2025 .
+
+ex:source-organ-state-2025 a modinst:InstrumentState ;
+  modinst:stateOf ex:source-organ ;
+  modavis:validDuring ex:capture-date .
+
+ex:capture-date a modavis:TimeSpan ;
+  modavis:startDate "2025-06-14"^^xsd:date ;
+  modavis:endDate "2025-06-14"^^xsd:date .
+
+# Playable instrument identity, stable product identity, version, and package.
+ex:playable-organ a modvmi:VirtualMusicalInstrument, modmedia:DigitalSurrogate ;
+  modavis:canonicalLabel "Example sampled virtual pipe organ"@en ;
+  modinst:instrumentType insttype:virtual-musical-instrument, insttype:pipe-organ ;
+  modmedia:representationOf ex:source-organ ;
+  modmedia:representationStatus repstatus:captured .
+
+ex:product a modvmi:VirtualInstrumentProduct ;
+  modavis:canonicalLabel "Example Organ Library"@en ;
+  modvmi:realizesInstrument ex:playable-organ ;
+  modvmi:hasVersion ex:version-1 .
+
+ex:version-1 a modvmi:VirtualInstrumentVersion ;
+  modvmi:versionOfProduct ex:product ;
+  modvmi:versionLabel "1.0.0" ;
+  modvmi:releaseDate "2026-08-23"^^xsd:date ;
+  modvmi:implementsInstrument ex:playable-organ ;
+  modvmi:productionMethod vmiproduction:sampled ;
+  modvmi:hasPackage ex:package-1 ;
+  modvmi:hasCompatibilityStatement ex:host-compatibility ;
+  modvmi:hasSourceRelation ex:source-relation ;
+  modaudio:usesPlaybackParameters ex:principal-c4-playback ;
+  modaudio:hasTuningMap ex:tuning-map .
+
+ex:package-1 a modvmi:VirtualInstrumentPackage, modmedia:Bitstream ;
+  modvmi:packageOfVersion ex:version-1 ;
+  modmedia:mediaType "application/zip" ;
+  modmedia:byteSize "24576000"^^xsd:nonNegativeInteger ;
+  modmedia:contentUrl "https://example.org/download/example-organ-1.0.0.zip"^^xsd:anyURI ;
+  modmedia:hasChecksum ex:package-checksum .
+
+ex:package-checksum a modevidence:Checksum ;
+  modevidence:checksumAlgorithm checksum:sha-256 ;
+  modevidence:checksumValue "1111111111111111111111111111111111111111111111111111111111111111" .
+
+ex:host-compatibility a modvmi:CompatibilityStatement ;
+  modvmi:compatibilityVersion ex:version-1 ;
+  modvmi:compatibilityTarget <https://example.org/runtime/host-2.4> ;
+  modvmi:compatibilityStatus compatstatus:compatible ;
+  modvmi:hasEvidenceRelation ex:compatibility-evidence .
+
+# The source claim is qualified and evidence-backed; it is not owl:sameAs.
+ex:source-relation a modvmi:InstrumentSourceRelation ;
+  modvmi:sourceRelationSubject ex:version-1 ;
+  modvmi:sourceInstrument ex:source-organ ;
+  modvmi:sourceState ex:source-organ-state-2025 ;
+  modvmi:sourceRelationType vmisource:sampled-from ;
+  modvmi:sourceConfidence "1.0"^^xsd:decimal ;
+  modvmi:hasEvidenceRelation ex:source-evidence .
+
+ex:source-record a modevidence:SourceResource ;
+  modevidence:sourceUri "https://example.org/documentation/capture-log"^^xsd:anyURI .
+
+ex:source-snapshot a modevidence:SourceSnapshot ;
+  modevidence:snapshotOf ex:source-record ;
+  modevidence:hasChecksum ex:source-snapshot-checksum ;
+  modevidence:snapshotCapturedAt "2025-06-14T18:05:00+02:00"^^xsd:dateTime ;
+  modevidence:snapshotCapturedBy ex:source-documentation-capture .
+
+ex:source-snapshot-checksum a modevidence:Checksum ;
+  modevidence:checksumAlgorithm checksum:sha-256 ;
+  modevidence:checksumValue "2222222222222222222222222222222222222222222222222222222222222222" .
+
+ex:source-documentation-capture a modprov:DigitizationActivity ;
+  prov:wasAssociatedWith ex:capture-documentarian ;
+  prov:used ex:source-record .
+
+ex:capture-documentarian a modavis:Person ;
+  modavis:canonicalLabel "Example capture documentarian"@en .
+
+ex:source-fragment a modevidence:SourceFragment ;
+  modevidence:fragmentOf ex:source-snapshot ;
+  modevidence:hasSelector ex:source-selector .
+
+ex:source-selector a modevidence:Selector ;
+  modevidence:selectorValue "page=3;lines=4-12" ;
+  modevidence:selectorConformsTo <https://www.w3.org/TR/annotation-model/> .
+
+ex:source-evidence a modevidence:EvidenceRelation ;
+  modevidence:evaluates ex:source-relation ;
+  modevidence:usesFragment ex:source-fragment ;
+  modevidence:evidenceRole evidencerole:supporting ;
+  modevidence:extractionConfidence "1.0"^^xsd:decimal .
+
+ex:compatibility-evidence a modevidence:EvidenceRelation ;
+  modevidence:evaluates ex:host-compatibility ;
+  modevidence:usesFragment ex:source-fragment ;
+  modevidence:evidenceRole evidencerole:supporting ;
+  modevidence:extractionConfidence "1.0"^^xsd:decimal .
+
+# A fixed sample, exact source-clock intervals, loop decision, and playback map.
+ex:principal-c4 a modaudio:AudioSample, modmedia:Bitstream, modmedia:DigitalRepresentation ;
+  modaudio:sampleRate "96000.0"^^xsd:decimal ;
+  modaudio:channelCount "2"^^xsd:positiveInteger ;
+  modaudio:totalFrames "960000"^^xsd:positiveInteger ;
+  modmedia:mediaType "audio/wav" ;
+  modmedia:byteSize "5760000"^^xsd:nonNegativeInteger ;
+  modmedia:representationStatus repstatus:captured ;
+  modmedia:representationOf ex:source-organ-state-2025 ;
+  modmedia:hasChecksum ex:sample-checksum ;
+  modaudio:extractedFromRegion ex:principal-c4-extraction .
+
+ex:sample-checksum a modevidence:Checksum ;
+  modevidence:checksumAlgorithm checksum:sha-256 ;
+  modevidence:checksumValue "3333333333333333333333333333333333333333333333333333333333333333" .
+
+ex:principal-c4-extraction a modaudio:SampleExtractionRegion ;
+  modaudio:appliesToSignal ex:capture-master ;
+  modaudio:startFrameInclusive "96000"^^xsd:nonNegativeInteger ;
+  modaudio:endFrameExclusive "1056000"^^xsd:positiveInteger ;
+  modaudio:assignmentMethod <https://example.org/audio-assignment-method/documented> ;
+  modaudio:assignmentConfidence "1.0"^^xsd:decimal .
+
+ex:capture-master a modaudio:AudioSignal, modmedia:DigitalRepresentation ;
+  modaudio:sampleRate "96000.0"^^xsd:decimal ;
+  modaudio:channelCount "2"^^xsd:positiveInteger ;
+  modaudio:totalFrames "1200000"^^xsd:positiveInteger ;
+  modmedia:mediaType "audio/wav" ;
+  modmedia:representationStatus repstatus:captured ;
+  modmedia:representationOf ex:source-organ-state-2025 .
+
+ex:principal-c4-loop a modaudio:SustainLoopRegion ;
+  modaudio:appliesToSignal ex:principal-c4 ;
+  modaudio:startFrameInclusive "240000"^^xsd:nonNegativeInteger ;
+  modaudio:endFrameExclusive "720000"^^xsd:positiveInteger ;
+  modaudio:crossfadeFrames "4096"^^xsd:nonNegativeInteger ;
+  modaudio:boundaryConfidence "0.97"^^xsd:decimal .
+
+ex:principal-c4-loop-set a modaudio:LoopPointSet ;
+  modaudio:appliesToSignal ex:principal-c4 ;
+  modaudio:hasLoopRegion ex:principal-c4-loop ;
+  modaudio:loopabilityAssessment <https://example.org/loopability/reviewed-loopable> ;
+  modaudio:confidence "0.97"^^xsd:decimal .
+
+ex:principal-c4-playback a modaudio:SamplePlaybackParameters ;
+  modaudio:playsSample ex:principal-c4 ;
+  modaudio:usesLoopPointSet ex:principal-c4-loop-set ;
+  modaudio:usesTuningMap ex:tuning-map ;
+  modaudio:sourceFundamentalHz "261.44"^^xsd:decimal ;
+  modaudio:targetFrequencyHz "261.625565"^^xsd:decimal .
+
+ex:tuning-map a modaudio:TuningMap ;
+  modaudio:hasTuningReference ex:a4-reference ;
+  modaudio:tuningSystem <https://example.org/tuning-systems/12-tet> ;
+  modaudio:tuningEntries ex:tuning-c4 .
+
+ex:tuning-c4 a modaudio:TuningEntry ;
+  modaudio:logicalControl ex:c4-control ;
+  modaudio:targetFrequencyHz "261.625565"^^xsd:decimal .
+
+ex:c4-control a modavis:IdentifiedResource .
+ex:a4-reference a modaudio:TuningReference ;
+  modaudio:referencePitchDesignation "A4" ;
+  modaudio:referenceFrequencyHz "440.0"^^xsd:decimal .
+
+# MIDI is an optional binding layer rather than part of protocol-neutral audio semantics.
+ex:principal-c4-midi a modmidi:MidiPlaybackBinding ;
+  modmidi:playbackParameters ex:principal-c4-playback ;
+  modmidi:rootNoteNumber "60"^^xsd:nonNegativeInteger ;
+  modmidi:minimumNoteNumber "58"^^xsd:nonNegativeInteger ;
+  modmidi:maximumNoteNumber "62"^^xsd:nonNegativeInteger ;
+  modmidi:minimumNoteOnVelocity "1"^^xsd:positiveInteger ;
+  modmidi:maximumNoteOnVelocity "127"^^xsd:positiveInteger .
+ex:principal-c4-extraction-midi a modmidi:MidiExtractionBinding ;
+  modmidi:extractionRegion ex:principal-c4-extraction ; modmidi:assignedNoteNumber "60"^^xsd:nonNegativeInteger .
+ex:tuning-c4-midi a modmidi:MidiTuningEntryBinding ;
+  modmidi:tuningEntry ex:tuning-c4 ; modmidi:noteNumber "60"^^xsd:nonNegativeInteger .
+ex:a4-midi a modmidi:MidiReferencePitchBinding ;
+  modmidi:tuningReference ex:a4-reference ; modmidi:noteNumber "69"^^xsd:nonNegativeInteger .

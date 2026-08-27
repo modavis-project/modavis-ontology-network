@@ -1,0 +1,91 @@
+@prefix ex: <https://example.org/modavis/assertion-event/> .
+@prefix modavis: <https://w3id.org/modavis/ontology/core#> .
+@prefix modassert: <https://w3id.org/modavis/ontology/assertion#> .
+@prefix modcontext: <https://w3id.org/modavis/ontology/context#> .
+@prefix modevent: <https://w3id.org/modavis/ontology/events#> .
+@prefix modevidence: <https://w3id.org/modavis/ontology/evidence#> .
+@prefix modinst: <https://w3id.org/modavis/ontology/instrument#> .
+@prefix modprov: <https://w3id.org/modavis/ontology/provenance#> .
+@prefix assertionstatus: <https://w3id.org/modavis/vocab/assertion-status/> .
+@prefix assertionpredicate: <https://w3id.org/modavis/vocab/assertion-predicate/> .
+@prefix evidencerole: <https://w3id.org/modavis/vocab/evidence-role/> .
+@prefix checksum: <https://w3id.org/modavis/vocab/checksum-algorithm/> .
+@prefix eventtype: <https://w3id.org/modavis/vocab/event-type/> .
+@prefix insttype: <https://w3id.org/modavis/vocab/instrument-type/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:restoration a modevent:Activity ; modevent:eventType eventtype:restoration ;
+  modevent:affectedEntity ex:instrument ; modevent:hasParticipant ex:builder-a ;
+  modevent:hasTimeSpan ex:restoration-year ; modevent:tookPlaceAt ex:church ;
+  modevent:hasSource ex:report ; modevent:evidencedBy ex:event-evidence .
+ex:event-record a modevent:EventRecord ; modevent:describesEvent ex:restoration ; modevent:generatedBy ex:normalization .
+ex:restoration-year a modavis:TimeSpan ; modavis:startDate "1901-01-01"^^xsd:date ;
+  modavis:endDate "1901-12-31"^^xsd:date ; modavis:rawTemporalExpression "1901" .
+ex:church a modavis:Place ; modavis:canonicalLabel "Example church"@en .
+ex:builder-a a modavis:Person ; modavis:canonicalLabel "Builder A"@en .
+ex:builder-b a modavis:Person ; modavis:canonicalLabel "Builder B"@en .
+ex:editor a modavis:Person ; modavis:canonicalLabel "Example editor"@en .
+ex:instrument a modinst:MusicalInstrument ; modinst:instrumentType insttype:pipe-organ .
+ex:report a modevidence:SourceResource ; modavis:canonicalLabel "Example restoration report"@en ;
+  modevidence:sourceUri "https://example.org/report/1"^^xsd:anyURI .
+ex:snapshot a modevidence:SourceSnapshot ; modevidence:snapshotOf ex:report ;
+  modevidence:hasChecksum ex:snapshot-checksum ;
+  modevidence:snapshotCapturedAt "2026-08-20T09:15:00Z"^^xsd:dateTime ;
+  modevidence:snapshotCapturedBy ex:report-capture .
+ex:snapshot-checksum a modevidence:Checksum ;
+  modevidence:checksumAlgorithm checksum:sha-256 ;
+  modevidence:checksumValue "4444444444444444444444444444444444444444444444444444444444444444" .
+ex:report-capture a modprov:DigitizationActivity ; prov:wasAssociatedWith ex:editor ;
+  prov:used ex:report .
+ex:fragment-a a modevidence:SourceFragment ; modevidence:fragmentOf ex:snapshot ; modevidence:hasSelector ex:selector-a .
+ex:selector-a a modevidence:Selector ; modevidence:selectorValue "page=42;lines=7-9" ;
+  modevidence:selectorConformsTo <https://www.w3.org/TR/annotation-model/> .
+ex:fragment-b a modevidence:SourceFragment ; modevidence:fragmentOf ex:snapshot ; modevidence:hasSelector ex:selector-b .
+ex:selector-b a modevidence:Selector ; modevidence:selectorValue "page=44;lines=2-4" ;
+  modevidence:selectorConformsTo <https://www.w3.org/TR/annotation-model/> .
+
+ex:builder-assertion-a a modassert:Assertion ; modassert:assertsSubject ex:instrument ;
+  modassert:assertsPredicate assertionpredicate:has-builder ; modassert:assertsObject ex:builder-a ;
+  modassert:assertionStatus assertionstatus:accepted ; modassert:confidence "0.86"^^xsd:decimal ;
+  modassert:hasEvidenceRelation ex:evidence-a ; modassert:generatedBy ex:normalization ;
+  modcontext:hasContextBinding ex:historical-context .
+ex:builder-assertion-b a modassert:Assertion ; modassert:assertsSubject ex:instrument ;
+  modassert:assertsPredicate assertionpredicate:has-builder ; modassert:assertsObject ex:builder-b ;
+  modassert:assertionStatus assertionstatus:rejected ; modassert:confidence "0.31"^^xsd:decimal ;
+  modassert:hasEvidenceRelation ex:evidence-b ; modassert:generatedBy ex:normalization .
+ex:evidence-a a modevidence:EvidenceRelation ; modevidence:evaluates ex:builder-assertion-a ;
+  modevidence:usesFragment ex:fragment-a ; modevidence:evidenceRole evidencerole:supporting ;
+  modevidence:extractionConfidence "0.94"^^xsd:decimal .
+ex:evidence-b a modevidence:EvidenceRelation ; modevidence:evaluates ex:builder-assertion-b ;
+  modevidence:usesFragment ex:fragment-b ; modevidence:evidenceRole evidencerole:opposing ;
+  modevidence:extractionConfidence "0.88"^^xsd:decimal .
+ex:event-evidence a modevidence:EvidenceRelation ; modevidence:evaluates ex:restoration ;
+  modevidence:usesFragment ex:fragment-a ; modevidence:evidenceRole evidencerole:supporting ;
+  modevidence:extractionConfidence "0.94"^^xsd:decimal .
+ex:conflict a modassert:ConflictSet ;
+  modassert:hasConflictMember ex:builder-assertion-a, ex:builder-assertion-b ;
+  modassert:conflictCriterion ex:single-builder-criterion .
+ex:single-builder-criterion a modassert:ConflictCriterion ;
+  modavis:canonicalLabel "Only one accepted builder for the documented construction scope"@en .
+ex:decision a modassert:ConflictDecision ; modassert:decisionFor ex:conflict ;
+  modassert:chosenAssertion ex:builder-assertion-a ; modassert:decidedBy ex:editor ;
+  modassert:decisionRationale "The earlier signed report directly identifies Builder A." .
+ex:normalization a modprov:NormalizationActivity ; prov:wasAssociatedWith ex:normalizer ;
+  prov:used ex:fragment-a ; prov:generated ex:builder-assertion-a .
+ex:normalizer a prov:SoftwareAgent .
+
+ex:historical-period a modcontext:ContextDimension ; modcontext:valueModel <https://www.w3.org/TR/owl-time/> .
+ex:historical-context a modcontext:ContextBinding ; modcontext:contextualizesAssertion ex:builder-assertion-a ;
+  modcontext:dimension ex:historical-period ;
+  modcontext:contextRelation <https://example.org/context-relations/applies-during> ;
+  modcontext:contextValue ex:restoration-year .
+
+ex:builder-projection a modassert:Projection ; modassert:projectsAssertion ex:builder-assertion-a ;
+  modassert:projectionSubject ex:instrument ;
+  modassert:projectionPredicateIri "https://w3id.org/modavis/ontology/instrument#hasBuilder"^^xsd:anyURI ;
+  modassert:projectionObject ex:builder-a ;
+  modassert:projectionGraphIri "https://example.org/modavis/assertion-event/accepted"^^xsd:anyURI ;
+  modassert:projectionRule <https://example.org/projection-rules/accepted-assertion-v1> ;
+  modassert:projectionRuleVersion "1.0" ; modassert:projectionGeneratedBy ex:projection-activity .
+ex:projection-activity a prov:Activity .

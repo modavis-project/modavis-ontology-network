@@ -1,0 +1,32 @@
+@prefix ex: <https://example.org/modavis/invalid-engineering/> .
+@prefix modavis: <https://w3id.org/modavis/ontology/core#> .
+@prefix modaudio: <https://w3id.org/modavis/ontology/audio#> .
+@prefix modevidence: <https://w3id.org/modavis/ontology/evidence#> .
+@prefix modmedia: <https://w3id.org/modavis/ontology/media#> .
+@prefix modmidi: <https://w3id.org/modavis/ontology/midi#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# A reified identifier must declare its assigning scheme.
+ex:identifier a modavis:Identifier ;
+  modavis:identifierValue "local-1" .
+
+# One qualified evidence relation cannot be reused for separate targets.
+ex:evidence a modevidence:EvidenceRelation ;
+  modevidence:evaluates ex:target-a, ex:target-b .
+
+# Derivation is directed lineage and cannot be cyclic.
+ex:asset-a a modmedia:DigitalAsset ; modmedia:derivedFrom ex:asset-b .
+ex:asset-b a modmedia:DigitalAsset ; modmedia:derivedFrom ex:asset-a .
+
+# MIDI 1.0 note-on velocity zero denotes note-off and is not a playback
+# selection velocity.
+ex:sample a modaudio:AudioSample ;
+  modaudio:sampleRate "48000.0"^^xsd:decimal ;
+  modaudio:channelCount "1"^^xsd:positiveInteger ;
+  modaudio:totalFrames "1"^^xsd:positiveInteger .
+ex:playback a modaudio:SamplePlaybackParameters ;
+  modaudio:playsSample ex:sample .
+ex:midi-binding a modmidi:MidiPlaybackBinding ;
+  modmidi:playbackParameters ex:playback ;
+  modmidi:rootNoteNumber "60"^^xsd:nonNegativeInteger ;
+  modmidi:minimumNoteOnVelocity "0"^^xsd:nonNegativeInteger .

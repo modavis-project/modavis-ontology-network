@@ -1,0 +1,88 @@
+@prefix modassert: <https://w3id.org/modavis/ontology/assertion#> .
+@prefix modcontext: <https://w3id.org/modavis/ontology/context#> .
+@prefix modshape: <https://w3id.org/modavis/shapes/exchange/0.1.0#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+modshape:ContextBindingShape a sh:NodeShape ;
+    rdfs:label "context binding shape"@en ;
+    sh:message "The focus node must satisfy the named logical, node-kind, or lexical constraint declared by this shape."@en ;
+    sh:name "context binding shape"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:property modshape:ContextBindingShape-contextRelation-PropertyShape-01,
+        modshape:ContextBindingShape-contextValue-PropertyShape-02,
+        modshape:ContextBindingShape-contextualizesAssertion-PropertyShape-03,
+        modshape:ContextBindingShape-dimension-PropertyShape-04 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:ContextBindingShape-SPARQLConstraint-01 ;
+    sh:targetClass modcontext:ContextBinding .
+
+modshape:ContextDimensionShape a sh:NodeShape ;
+    rdfs:label "context dimension shape"@en ;
+    sh:message "The focus node must satisfy the named logical, node-kind, or lexical constraint declared by this shape."@en ;
+    sh:name "context dimension shape"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:property modshape:ContextDimensionShape-valueModel-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modcontext:ContextDimension .
+
+modshape:ContextBindingShape-SPARQLConstraint-01 rdfs:label "context binding shape sparqlconstraint 01"@en ;
+    sh:message "Every context binding linked from an assertion must identify that same assertion."@en ;
+    sh:name "context binding shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modcontext: <https://w3id.org/modavis/ontology/context#>
+      SELECT $this WHERE {
+        ?assertion modcontext:hasContextBinding $this .
+        FILTER NOT EXISTS { $this modcontext:contextualizesAssertion ?assertion . }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:ContextBindingShape-contextRelation-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "context relation property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Context relation constraint: exactly 1 value(s) are required; values must have node kind IRI."@en ;
+    sh:minCount 1 ;
+    sh:name "context relation property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modcontext:contextRelation ;
+    sh:severity sh:Violation .
+
+modshape:ContextBindingShape-contextValue-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "context value property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Context value constraint: exactly 1 value(s) are required; values must have node kind IRI."@en ;
+    sh:minCount 1 ;
+    sh:name "context value property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modcontext:contextValue ;
+    sh:severity sh:Violation .
+
+modshape:ContextBindingShape-contextualizesAssertion-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "contextualizes assertion property constraint"@en ;
+    sh:class modassert:Assertion ;
+    sh:maxCount 1 ;
+    sh:message "Contextualizes assertion constraint: exactly 1 value(s) are required; values must be instances of Assertion."@en ;
+    sh:minCount 1 ;
+    sh:name "contextualizes assertion property constraint"@en ;
+    sh:path modcontext:contextualizesAssertion ;
+    sh:severity sh:Violation .
+
+modshape:ContextBindingShape-dimension-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "dimension property constraint"@en ;
+    sh:class modcontext:ContextDimension ;
+    sh:maxCount 1 ;
+    sh:message "Dimension constraint: exactly 1 value(s) are required; values must be instances of ContextDimension."@en ;
+    sh:minCount 1 ;
+    sh:name "dimension property constraint"@en ;
+    sh:path modcontext:dimension ;
+    sh:severity sh:Violation .
+
+modshape:ContextDimensionShape-valueModel-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "value model property constraint"@en ;
+    sh:message "Value model constraint: values must have node kind IRI."@en ;
+    sh:name "value model property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modcontext:valueModel ;
+    sh:severity sh:Violation .

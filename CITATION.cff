@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use the MODAVIS Ontology Network, cite this immutable 0.1.0 release."
+title: "MODAVIS Ontology Network"
+type: dataset
+version: "0.1.0"
+doi: "10.5281/zenodo.22126086"
+date-released: "2026-08-27"
+authors:
+  - family-names: Ukolov
+    given-names: Dominik
+    orcid: "https://orcid.org/0000-0002-7904-3892"
+    affiliation: "Digital Humanities (Image/Object), Friedrich-Schiller-University Jena; Research Group DIGITAL ORGANOLOGY, Leipzig University"
+abstract: "A modular OWL, SKOS, and SHACL ontology network for evidence-backed, time-aware, and provenance-aware knowledge about musical instruments, their heritage contexts, digital representations, media, audio, and virtual instruments."
+license: CC-BY-4.0
+repository-code: "https://github.com/modavis-project/modavis-ontology-network"
+repository-artifact: "https://github.com/modavis-project/modavis-ontology-network/releases/tag/0.1.0"
+url: "https://w3id.org/modavis/ontology"
+keywords:
+  - musical instrument heritage
+  - digital organology
+  - ontology
+  - linked data
+  - provenance
+  - cultural heritage
+  - knowledge graph
+  - SHACL

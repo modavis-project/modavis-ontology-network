@@ -1,0 +1,51 @@
+{
+  "title": "MODAVIS Ontology Network 0.1.0",
+  "upload_type": "dataset",
+  "publication_date": "2026-08-27",
+  "description": "<p>MODAVIS 0.1.0 is a modular OWL, SKOS, and SHACL ontology network for evidence-backed, time-aware, and provenance-aware knowledge about musical instruments, their heritage contexts, digital representations, media, audio, and virtual instruments.</p><p>The release contains immutable ontology modules, governed vocabularies, validation profiles, a JSON-LD context, examples, competency questions, documentation, a DCAT catalog, release manifests, checksums, and reproducible publication tooling. Pipe organs are a demanding flagship case rather than the universal model.</p><p>Structural conformance does not certify the truth, adequacy, representativeness, or rights status of historical, scientific, attributional, or heritage claims. The initial release records accountable maintainer self-review and does not claim independent peer review or institutional endorsement.</p>",
+  "creators": [
+    {
+      "name": "Ukolov, Dominik",
+      "orcid": "0000-0002-7904-3892",
+      "affiliation": "Digital Humanities (Image/Object), Friedrich-Schiller-University Jena; Research Group DIGITAL ORGANOLOGY, Leipzig University"
+    }
+  ],
+  "access_right": "open",
+  "license": "CC-BY-4.0",
+  "keywords": [
+    "musical instrument heritage",
+    "digital organology",
+    "ontology",
+    "knowledge graph",
+    "linked data",
+    "provenance",
+    "cultural heritage",
+    "OWL",
+    "SKOS",
+    "SHACL"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://w3id.org/modavis/ontology/0.1.0",
+      "relation": "isSupplementTo",
+      "resource_type": "dataset"
+    },
+    {
+      "identifier": "https://github.com/modavis-project/modavis-ontology-network/tree/0.1.0",
+      "relation": "isDerivedFrom",
+      "resource_type": "software"
+    }
+  ],
+  "references": [
+    "W3C. RDF 1.1 Concepts and Abstract Syntax. W3C Recommendation, 25 February 2014.",
+    "W3C. OWL 2 Web Ontology Language Document Overview (Second Edition). W3C Recommendation, 11 December 2012.",
+    "W3C. SKOS Simple Knowledge Organization System Reference. W3C Recommendation, 18 August 2009.",
+    "W3C. PROV-O: The PROV Ontology. W3C Recommendation, 30 April 2013.",
+    "W3C. Web Annotation Vocabulary. W3C Recommendation, 23 February 2017.",
+    "W3C. Shapes Constraint Language (SHACL). W3C Recommendation, 20 July 2017.",
+    "W3C. JSON-LD 1.1. W3C Recommendation, 16 July 2020.",
+    "W3C. Data Catalog Vocabulary (DCAT) - Version 3. W3C Recommendation, 22 August 2024.",
+    "W3C. RDF Dataset Canonicalization (RDFC-1.0). W3C Recommendation, 21 May 2024."
+  ],
+  "notes": "Semantic artifacts and documentation are licensed under CC BY 4.0. Release tooling and test code are licensed under Apache License 2.0. The release was evaluated with executable competency questions, independent semantic engines, deterministic archive checksums, and byte-identical Python 3.11/3.14 builds. Contributor affiliations identify research context and do not imply institutional endorsement."
+}

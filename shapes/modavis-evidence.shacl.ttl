@@ -1,0 +1,279 @@
+@prefix checksum: <https://w3id.org/modavis/vocab/checksum-algorithm/> .
+@prefix evidencerole: <https://w3id.org/modavis/vocab/evidence-role/> .
+@prefix modevidence: <https://w3id.org/modavis/ontology/evidence#> .
+@prefix modshape: <https://w3id.org/modavis/shapes/exchange/0.1.0#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+modshape:ChecksumShape a sh:NodeShape ;
+    rdfs:label "checksum shape"@en ;
+    sh:name "checksum shape"@en ;
+    sh:property modshape:ChecksumShape-checksumAlgorithm-PropertyShape-01,
+        modshape:ChecksumShape-checksumValue-PropertyShape-02 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modevidence:Checksum .
+
+modshape:EvidenceRelationShape a sh:NodeShape ;
+    rdfs:label "evidence relation shape"@en ;
+    sh:name "evidence relation shape"@en ;
+    sh:property modshape:EvidenceRelationShape-evaluates-PropertyShape-01,
+        modshape:EvidenceRelationShape-evidenceRole-PropertyShape-02,
+        modshape:EvidenceRelationShape-extractionConfidence-PropertyShape-03,
+        modshape:EvidenceRelationShape-usesFragment-PropertyShape-04 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modevidence:EvidenceRelation .
+
+modshape:SHA256ChecksumShape a sh:NodeShape ;
+    rdfs:label "sha256 checksum shape"@en ;
+    sh:name "sha256 checksum shape"@en ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:SHA256ChecksumShape-SPARQLConstraint-01 ;
+    sh:targetClass modevidence:Checksum .
+
+modshape:SelectorShape a sh:NodeShape ;
+    rdfs:label "selector shape"@en ;
+    sh:message "A selector requires a non-empty value and at least one declared selector type or conformance specification."@en ;
+    sh:name "selector shape"@en ;
+    sh:or ( modshape:SelectorShape-or-Alternative-NodeShape-01 modshape:SelectorShape-or-Alternative-NodeShape-02 ) ;
+    sh:property modshape:SelectorShape-selectorConformsTo-PropertyShape-01,
+        modshape:SelectorShape-selectorType-PropertyShape-02,
+        modshape:SelectorShape-selectorValue-PropertyShape-03 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modevidence:Selector .
+
+modshape:SourceFragmentShape a sh:NodeShape ;
+    rdfs:label "source fragment shape"@en ;
+    sh:name "source fragment shape"@en ;
+    sh:property modshape:SourceFragmentShape-fragmentOf-PropertyShape-01,
+        modshape:SourceFragmentShape-hasSelector-PropertyShape-02 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modevidence:SourceFragment .
+
+modshape:SourceResourceShape a sh:NodeShape ;
+    rdfs:label "source resource shape"@en ;
+    sh:name "source resource shape"@en ;
+    sh:property modshape:SourceResourceShape-sourceUri-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modevidence:SourceResource .
+
+modshape:SourceSnapshotShape a sh:NodeShape ;
+    rdfs:label "source snapshot shape"@en ;
+    sh:name "source snapshot shape"@en ;
+    sh:property modshape:SourceSnapshotShape-hasChecksum-PropertyShape-01,
+        modshape:SourceSnapshotShape-snapshotCapturedAt-PropertyShape-03,
+        modshape:SourceSnapshotShape-snapshotCapturedBy-PropertyShape-04,
+        modshape:SourceSnapshotShape-snapshotOf-PropertyShape-02 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modevidence:SourceSnapshot .
+
+modshape:ChecksumShape-checksumAlgorithm-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "checksum algorithm property constraint"@en ;
+    sh:in ( checksum:sha-256 ) ;
+    sh:maxCount 1 ;
+    sh:message "A MODAVIS 0.1.0 checksum requires exactly one digest algorithm from the closed release scheme."@en ;
+    sh:minCount 1 ;
+    sh:name "checksum algorithm property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modevidence:checksumAlgorithm ;
+    sh:severity sh:Violation .
+
+modshape:ChecksumShape-checksumValue-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "checksum value property constraint"@en ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:message "A checksum requires one non-empty normalized digest value."@en ;
+    sh:minCount 1 ;
+    sh:minLength 1 ;
+    sh:name "checksum value property constraint"@en ;
+    sh:path modevidence:checksumValue ;
+    sh:severity sh:Violation .
+
+modshape:EvidenceRelationShape-evaluates-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "evaluates property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "A qualified evidence relation evaluates exactly one identified target; create separate relations for separate targets."@en ;
+    sh:minCount 1 ;
+    sh:name "evaluates property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modevidence:evaluates ;
+    sh:severity sh:Violation .
+
+modshape:EvidenceRelationShape-evidenceRole-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "evidence role property constraint"@en ;
+    sh:in ( evidencerole:supporting evidencerole:opposing evidencerole:contextual ) ;
+    sh:maxCount 1 ;
+    sh:message "Evidence role constraint: exactly 1 value(s) are required; values must have node kind IRI; values must belong to the enumerated release set."@en ;
+    sh:minCount 1 ;
+    sh:name "evidence role property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modevidence:evidenceRole ;
+    sh:severity sh:Violation .
+
+modshape:EvidenceRelationShape-extractionConfidence-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "extraction confidence property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 1 ;
+    sh:message "Extraction confidence constraint: at most 1 value(s) are permitted; values must use the decimal datatype; value must be at least 0; value must be at most 1."@en ;
+    sh:minInclusive 0 ;
+    sh:name "extraction confidence property constraint"@en ;
+    sh:path modevidence:extractionConfidence ;
+    sh:severity sh:Violation .
+
+modshape:EvidenceRelationShape-usesFragment-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "uses fragment property constraint"@en ;
+    sh:class modevidence:SourceFragment ;
+    sh:maxCount 1 ;
+    sh:message "Uses fragment constraint: exactly 1 value(s) are required; values must be instances of SourceFragment."@en ;
+    sh:minCount 1 ;
+    sh:name "uses fragment property constraint"@en ;
+    sh:path modevidence:usesFragment ;
+    sh:severity sh:Violation .
+
+modshape:SHA256ChecksumShape-SPARQLConstraint-01 rdfs:label "sha256 checksum shape sparqlconstraint 01"@en ;
+    sh:message "A checksum declared as SHA-256 must contain exactly 64 lowercase hexadecimal characters."@en ;
+    sh:name "sha256 checksum shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modevidence: <https://w3id.org/modavis/ontology/evidence#>
+      PREFIX checksum: <https://w3id.org/modavis/vocab/checksum-algorithm/>
+      SELECT $this WHERE {
+        $this modevidence:checksumAlgorithm checksum:sha-256 ;
+              modevidence:checksumValue ?value .
+        FILTER (!REGEX(STR(?value), "^[0-9a-f]{64}$"))
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:SelectorShape-or-Alternative-NodeShape-01 a sh:NodeShape ;
+    rdfs:label "selector shape or alternative node shape 01"@en ;
+    sh:name "selector shape or alternative node shape 01"@en ;
+    sh:property modshape:SelectorShape-selectorType-PropertyShape-04 ;
+    sh:severity sh:Violation .
+
+modshape:SelectorShape-or-Alternative-NodeShape-02 a sh:NodeShape ;
+    rdfs:label "selector shape or alternative node shape 02"@en ;
+    sh:name "selector shape or alternative node shape 02"@en ;
+    sh:property modshape:SelectorShape-selectorConformsTo-PropertyShape-05 ;
+    sh:severity sh:Violation .
+
+modshape:SelectorShape-selectorConformsTo-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "selector conforms to property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Selector conforms to constraint: at most 1 value(s) are permitted; values must have node kind IRI."@en ;
+    sh:name "selector conforms to property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modevidence:selectorConformsTo ;
+    sh:severity sh:Violation .
+
+modshape:SelectorShape-selectorConformsTo-PropertyShape-05 a sh:PropertyShape ;
+    rdfs:label "selector conforms to property constraint"@en ;
+    sh:message "Selector conforms to constraint: at least 1 value(s) are required."@en ;
+    sh:minCount 1 ;
+    sh:name "selector conforms to property constraint"@en ;
+    sh:path modevidence:selectorConformsTo ;
+    sh:severity sh:Violation .
+
+modshape:SelectorShape-selectorType-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "selector type property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Selector type constraint: at most 1 value(s) are permitted; values must have node kind IRI."@en ;
+    sh:name "selector type property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modevidence:selectorType ;
+    sh:severity sh:Violation .
+
+modshape:SelectorShape-selectorType-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "selector type property constraint"@en ;
+    sh:message "Selector type constraint: at least 1 value(s) are required."@en ;
+    sh:minCount 1 ;
+    sh:name "selector type property constraint"@en ;
+    sh:path modevidence:selectorType ;
+    sh:severity sh:Violation .
+
+modshape:SelectorShape-selectorValue-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "selector value property constraint"@en ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:message "Selector value constraint: exactly 1 value(s) are required; values must use the string datatype; lexical length must be at least 1."@en ;
+    sh:minCount 1 ;
+    sh:minLength 1 ;
+    sh:name "selector value property constraint"@en ;
+    sh:path modevidence:selectorValue ;
+    sh:severity sh:Violation .
+
+modshape:SourceFragmentShape-fragmentOf-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "fragment of property constraint"@en ;
+    sh:class modevidence:SourceSnapshot ;
+    sh:maxCount 1 ;
+    sh:message "Fragment of constraint: exactly 1 value(s) are required; values must be instances of SourceSnapshot."@en ;
+    sh:minCount 1 ;
+    sh:name "fragment of property constraint"@en ;
+    sh:path modevidence:fragmentOf ;
+    sh:severity sh:Violation .
+
+modshape:SourceFragmentShape-hasSelector-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "has selector property constraint"@en ;
+    sh:class modevidence:Selector ;
+    sh:message "Has selector constraint: at least 1 value(s) are required; values must be instances of Selector."@en ;
+    sh:minCount 1 ;
+    sh:name "has selector property constraint"@en ;
+    sh:path modevidence:hasSelector ;
+    sh:severity sh:Violation .
+
+modshape:SourceResourceShape-sourceUri-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "source uri property constraint"@en ;
+    sh:datatype xsd:anyURI ;
+    sh:message "Source uri constraint: values must use the anyURI datatype; lexical form must match the declared pattern."@en ;
+    sh:name "source uri property constraint"@en ;
+    sh:path modevidence:sourceUri ;
+    sh:pattern "^[A-Za-z][A-Za-z0-9+.-]*:" ;
+    sh:severity sh:Violation .
+
+modshape:SourceSnapshotShape-hasChecksum-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "has checksum property constraint"@en ;
+    sh:class modevidence:Checksum ;
+    sh:maxCount 1 ;
+    sh:message "A fixed source snapshot requires exactly one qualified checksum under the closed MODAVIS 0.1.0 algorithm profile."@en ;
+    sh:minCount 1 ;
+    sh:name "has checksum property constraint"@en ;
+    sh:path modevidence:hasChecksum ;
+    sh:severity sh:Violation .
+
+modshape:SourceSnapshotShape-snapshotCapturedAt-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "snapshot captured at property constraint"@en,
+        "source snapshot capture time property constraint"@en ;
+    sh:datatype xsd:dateTime ;
+    sh:maxCount 1 ;
+    sh:message "A source snapshot requires exactly one timezone-qualified xsd:dateTime capture instant."@en ;
+    sh:minCount 1 ;
+    sh:name "snapshot captured at property constraint"@en,
+        "source snapshot capture time property constraint"@en ;
+    sh:path modevidence:snapshotCapturedAt ;
+    sh:pattern "(Z|[+-](0[0-9]|1[0-4]):[0-5][0-9])$" ;
+    sh:severity sh:Violation .
+
+modshape:SourceSnapshotShape-snapshotCapturedBy-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "snapshot captured by property constraint"@en,
+        "source snapshot capture activity property constraint"@en ;
+    sh:class prov:Activity ;
+    sh:maxCount 1 ;
+    sh:message "A source snapshot requires exactly one accountable generating activity."@en ;
+    sh:minCount 1 ;
+    sh:name "snapshot captured by property constraint"@en,
+        "source snapshot capture activity property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modevidence:snapshotCapturedBy ;
+    sh:severity sh:Violation .
+
+modshape:SourceSnapshotShape-snapshotOf-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "snapshot of property constraint"@en ;
+    sh:class modevidence:SourceResource ;
+    sh:maxCount 1 ;
+    sh:message "Snapshot of constraint: exactly 1 value(s) are required; values must be instances of SourceResource."@en ;
+    sh:minCount 1 ;
+    sh:name "snapshot of property constraint"@en ;
+    sh:path modevidence:snapshotOf ;
+    sh:severity sh:Violation .

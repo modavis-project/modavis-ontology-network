@@ -1,0 +1,12 @@
+PREFIX modprov: <https://w3id.org/modavis/ontology/provenance#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+SELECT ?activity ?responsibleAgent ?input ?output WHERE {
+  ?activity a modprov:ProcessingActivity ;
+            prov:used ?input ;
+            prov:generated ?output .
+  { ?activity prov:wasAssociatedWith ?responsibleAgent . }
+  UNION
+  { ?activity modprov:usedSoftware ?responsibleAgent . }
+}
+ORDER BY ?activity ?input ?output

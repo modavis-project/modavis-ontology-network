@@ -1,0 +1,325 @@
+@prefix membership: <https://w3id.org/modavis/vocab/component-membership-type/> .
+@prefix modavis: <https://w3id.org/modavis/ontology/core#> .
+@prefix modinst: <https://w3id.org/modavis/ontology/instrument#> .
+@prefix modshape: <https://w3id.org/modavis/shapes/exchange/0.1.0#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix role: <https://w3id.org/modavis/vocab/functional-role/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+modshape:ComponentMembershipShape a sh:NodeShape ;
+    rdfs:label "component membership shape"@en ;
+    sh:name "component membership shape"@en ;
+    sh:property modshape:ComponentMembershipShape-appliesInConfiguration-PropertyShape-01,
+        modshape:ComponentMembershipShape-appliesInState-PropertyShape-02,
+        modshape:ComponentMembershipShape-childComponent-PropertyShape-03,
+        modshape:ComponentMembershipShape-membershipInstrument-PropertyShape-04,
+        modshape:ComponentMembershipShape-membershipType-PropertyShape-05,
+        modshape:ComponentMembershipShape-parentComponent-PropertyShape-06 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:ComponentMembershipShape-SPARQLConstraint-01,
+        modshape:ComponentMembershipShape-SPARQLConstraint-02,
+        modshape:ComponentMembershipShape-SPARQLConstraint-03,
+        modshape:ComponentMembershipShape-SPARQLConstraint-04 ;
+    sh:targetClass modinst:ComponentMembership .
+
+modshape:FunctionalRoleAssignmentShape a sh:NodeShape ;
+    rdfs:label "functional role assignment shape"@en ;
+    sh:name "functional role assignment shape"@en ;
+    sh:property modshape:FunctionalRoleAssignmentShape-appliesInConfiguration-PropertyShape-02,
+        modshape:FunctionalRoleAssignmentShape-appliesInState-PropertyShape-03,
+        modshape:FunctionalRoleAssignmentShape-assignedRole-PropertyShape-04,
+        modshape:FunctionalRoleAssignmentShape-roleOfComponent-PropertyShape-05,
+        modshape:FunctionalRoleAssignmentShape-validDuring-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:FunctionalRoleAssignmentShape-SPARQLConstraint-01 ;
+    sh:targetClass modinst:FunctionalRoleAssignment .
+
+modshape:InstrumentComponentShape a sh:NodeShape ;
+    rdfs:label "instrument component shape"@en ;
+    sh:name "instrument component shape"@en ;
+    sh:severity sh:Violation ;
+    sh:targetClass modinst:InstrumentComponent .
+
+modshape:InstrumentConfigurationShape a sh:NodeShape ;
+    rdfs:label "instrument configuration shape"@en ;
+    sh:name "instrument configuration shape"@en ;
+    sh:property modshape:InstrumentConfigurationShape-configurationOf-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:InstrumentConfigurationShape-SPARQLConstraint-01 ;
+    sh:targetClass modinst:InstrumentConfiguration .
+
+modshape:InstrumentIdentityLayerShape a sh:NodeShape ;
+    rdfs:label "instrument identity layer shape"@en ;
+    sh:name "instrument identity layer shape"@en ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:InstrumentIdentityLayerShape-SPARQLConstraint-01 ;
+    sh:targetClass modinst:InstrumentConfiguration,
+        modinst:InstrumentState,
+        modinst:MusicalInstrument .
+
+modshape:InstrumentStateShape a sh:NodeShape ;
+    rdfs:label "instrument state shape"@en ;
+    sh:name "instrument state shape"@en ;
+    sh:property modshape:InstrumentStateShape-stateOf-PropertyShape-02,
+        modshape:InstrumentStateShape-validDuring-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modinst:InstrumentState .
+
+modshape:MusicalInstrumentShape a sh:NodeShape ;
+    rdfs:label "musical instrument shape"@en ;
+    sh:name "musical instrument shape"@en ;
+    sh:property modshape:MusicalInstrumentShape-instrumentType-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modinst:MusicalInstrument .
+
+modshape:ComponentMembershipShape-SPARQLConstraint-01 rdfs:label "component membership shape sparqlconstraint 01"@en ;
+    sh:message "A component membership cannot relate a component to itself."@en ;
+    sh:name "component membership shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modinst: <https://w3id.org/modavis/ontology/instrument#>
+      SELECT $this WHERE {
+        $this modinst:parentComponent ?component ;
+              modinst:childComponent ?component .
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:ComponentMembershipShape-SPARQLConstraint-02 rdfs:label "component membership shape sparqlconstraint 02"@en ;
+    sh:message "A membership configuration must belong to the membership instrument."@en ;
+    sh:name "component membership shape sparqlconstraint 02"@en ;
+    sh:select """
+      PREFIX modinst: <https://w3id.org/modavis/ontology/instrument#>
+      SELECT $this WHERE {
+        $this modinst:membershipInstrument ?instrument ;
+              modinst:appliesInConfiguration ?configuration .
+        FILTER NOT EXISTS { ?configuration modinst:configurationOf ?instrument . }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:ComponentMembershipShape-SPARQLConstraint-03 rdfs:label "component membership shape sparqlconstraint 03"@en ;
+    sh:message "A membership state must describe the membership instrument."@en ;
+    sh:name "component membership shape sparqlconstraint 03"@en ;
+    sh:select """
+      PREFIX modinst: <https://w3id.org/modavis/ontology/instrument#>
+      SELECT $this WHERE {
+        $this modinst:membershipInstrument ?instrument ;
+              modinst:appliesInState ?state .
+        FILTER NOT EXISTS { ?state modinst:stateOf ?instrument . }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:ComponentMembershipShape-SPARQLConstraint-04 rdfs:label "component membership shape sparqlconstraint 04"@en ;
+    sh:message "A hasMembership discovery link must originate from the membership instrument or recorded parent component."@en ;
+    sh:name "component membership shape sparqlconstraint 04"@en ;
+    sh:select """
+      PREFIX modinst: <https://w3id.org/modavis/ontology/instrument#>
+      SELECT $this WHERE {
+        ?owner modinst:hasMembership $this .
+        FILTER NOT EXISTS { $this modinst:membershipInstrument ?owner . }
+        FILTER NOT EXISTS { $this modinst:parentComponent ?owner . }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:FunctionalRoleAssignmentShape-SPARQLConstraint-01 rdfs:label "functional role assignment shape sparqlconstraint 01"@en ;
+    sh:message "A role assignment's state and configuration qualifiers must concern the same musical instrument."@en ;
+    sh:name "functional role assignment shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modinst: <https://w3id.org/modavis/ontology/instrument#>
+      SELECT $this WHERE {
+        $this modinst:appliesInConfiguration ?configuration ;
+              modinst:appliesInState ?state .
+        ?configuration modinst:configurationOf ?configurationInstrument .
+        ?state modinst:stateOf ?stateInstrument .
+        FILTER (?configurationInstrument != ?stateInstrument)
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentConfigurationShape-SPARQLConstraint-01 rdfs:label "instrument configuration shape sparqlconstraint 01"@en ;
+    sh:message "A hasConfiguration link must originate from the configuration's instrument or from a state of that instrument."@en ;
+    sh:name "instrument configuration shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modinst: <https://w3id.org/modavis/ontology/instrument#>
+      SELECT $this WHERE {
+        $this modinst:configurationOf ?instrument .
+        ?owner modinst:hasConfiguration $this .
+        FILTER (?owner != ?instrument)
+        FILTER NOT EXISTS { ?owner modinst:stateOf ?instrument . }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:ComponentMembershipShape-appliesInConfiguration-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "applies in configuration property constraint"@en ;
+    sh:class modinst:InstrumentConfiguration ;
+    sh:maxCount 1 ;
+    sh:message "Applies in configuration constraint: at most 1 value(s) are permitted; values must be instances of InstrumentConfiguration."@en ;
+    sh:name "applies in configuration property constraint"@en ;
+    sh:path modinst:appliesInConfiguration ;
+    sh:severity sh:Violation .
+
+modshape:ComponentMembershipShape-appliesInState-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "applies in state property constraint"@en ;
+    sh:class modinst:InstrumentState ;
+    sh:maxCount 1 ;
+    sh:message "Applies in state constraint: at most 1 value(s) are permitted; values must be instances of InstrumentState."@en ;
+    sh:name "applies in state property constraint"@en ;
+    sh:path modinst:appliesInState ;
+    sh:severity sh:Violation .
+
+modshape:ComponentMembershipShape-childComponent-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "child component property constraint"@en ;
+    sh:class modinst:InstrumentComponent ;
+    sh:maxCount 1 ;
+    sh:message "Child component constraint: exactly 1 value(s) are required; values must be instances of InstrumentComponent."@en ;
+    sh:minCount 1 ;
+    sh:name "child component property constraint"@en ;
+    sh:path modinst:childComponent ;
+    sh:severity sh:Violation .
+
+modshape:ComponentMembershipShape-membershipInstrument-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "membership instrument property constraint"@en ;
+    sh:class modinst:MusicalInstrument ;
+    sh:maxCount 1 ;
+    sh:message "Membership instrument constraint: exactly 1 value(s) are required; values must be instances of MusicalInstrument."@en ;
+    sh:minCount 1 ;
+    sh:name "membership instrument property constraint"@en ;
+    sh:path modinst:membershipInstrument ;
+    sh:severity sh:Violation .
+
+modshape:ComponentMembershipShape-membershipType-PropertyShape-05 a sh:PropertyShape ;
+    rdfs:label "membership type property constraint"@en ;
+    sh:in ( membership:structural-part membership:member-of-collection membership:controlled-by membership:connected-to ) ;
+    sh:maxCount 1 ;
+    sh:message "Membership type constraint: exactly 1 value(s) are required; values must have node kind IRI; values must belong to the enumerated release set."@en ;
+    sh:minCount 1 ;
+    sh:name "membership type property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modinst:membershipType ;
+    sh:severity sh:Violation .
+
+modshape:ComponentMembershipShape-parentComponent-PropertyShape-06 a sh:PropertyShape ;
+    rdfs:label "parent component property constraint"@en ;
+    sh:class modinst:InstrumentComponent ;
+    sh:maxCount 1 ;
+    sh:message "Parent component constraint: at most 1 value(s) are permitted; values must be instances of InstrumentComponent."@en ;
+    sh:name "parent component property constraint"@en ;
+    sh:path modinst:parentComponent ;
+    sh:severity sh:Violation .
+
+modshape:FunctionalRoleAssignmentShape-appliesInConfiguration-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "applies in configuration property constraint"@en ;
+    sh:class modinst:InstrumentConfiguration ;
+    sh:maxCount 1 ;
+    sh:message "Applies in configuration constraint: at most 1 value(s) are permitted; values must be instances of InstrumentConfiguration."@en ;
+    sh:name "applies in configuration property constraint"@en ;
+    sh:path modinst:appliesInConfiguration ;
+    sh:severity sh:Violation .
+
+modshape:FunctionalRoleAssignmentShape-appliesInState-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "applies in state property constraint"@en ;
+    sh:class modinst:InstrumentState ;
+    sh:maxCount 1 ;
+    sh:message "Applies in state constraint: at most 1 value(s) are permitted; values must be instances of InstrumentState."@en ;
+    sh:name "applies in state property constraint"@en ;
+    sh:path modinst:appliesInState ;
+    sh:severity sh:Violation .
+
+modshape:FunctionalRoleAssignmentShape-assignedRole-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "assigned role property constraint"@en ;
+    sh:in ( role:sound-generator role:resonator role:sound-initiator role:sound-modulator role:selector role:playing-interface role:action-mechanism ) ;
+    sh:maxCount 1 ;
+    sh:message "Assigned role constraint: exactly 1 value(s) are required; values must have node kind IRI; values must belong to the enumerated release set."@en ;
+    sh:minCount 1 ;
+    sh:name "assigned role property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modinst:assignedRole ;
+    sh:severity sh:Violation .
+
+modshape:FunctionalRoleAssignmentShape-roleOfComponent-PropertyShape-05 a sh:PropertyShape ;
+    rdfs:label "role of component property constraint"@en ;
+    sh:class modinst:InstrumentComponent ;
+    sh:maxCount 1 ;
+    sh:message "Role of component constraint: exactly 1 value(s) are required; values must be instances of InstrumentComponent."@en ;
+    sh:minCount 1 ;
+    sh:name "role of component property constraint"@en ;
+    sh:path modinst:roleOfComponent ;
+    sh:severity sh:Violation .
+
+modshape:FunctionalRoleAssignmentShape-validDuring-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "valid during property constraint"@en ;
+    sh:class modavis:TimeSpan ;
+    sh:maxCount 1 ;
+    sh:message "Valid during constraint: at most 1 value(s) are permitted; values must be instances of TimeSpan."@en ;
+    sh:name "valid during property constraint"@en ;
+    sh:path modavis:validDuring ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentConfigurationShape-configurationOf-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "configuration of property constraint"@en ;
+    sh:class modinst:MusicalInstrument ;
+    sh:maxCount 1 ;
+    sh:message "An instrument configuration requires exactly one instrument for which it is defined."@en ;
+    sh:minCount 1 ;
+    sh:name "configuration of property constraint"@en ;
+    sh:path modinst:configurationOf ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentIdentityLayerShape-SPARQLConstraint-01 rdfs:label "instrument identity layer shape sparqlconstraint 01"@en ;
+    sh:message "A resource cannot occupy more than one of the distinct musical-instrument, instrument-state, and instrument-configuration identity layers."@en ;
+    sh:name "instrument identity layer shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modinst: <https://w3id.org/modavis/ontology/instrument#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      SELECT DISTINCT $this WHERE {
+        $this a ?leftType, ?rightType .
+        ?leftType rdfs:subClassOf* ?leftLayer .
+        ?rightType rdfs:subClassOf* ?rightLayer .
+        FILTER (?leftLayer IN (
+          modinst:MusicalInstrument,
+          modinst:InstrumentState,
+          modinst:InstrumentConfiguration
+        ))
+        FILTER (?rightLayer IN (
+          modinst:MusicalInstrument,
+          modinst:InstrumentState,
+          modinst:InstrumentConfiguration
+        ))
+        FILTER (?leftLayer != ?rightLayer)
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentStateShape-stateOf-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "state of property constraint"@en ;
+    sh:class modinst:MusicalInstrument ;
+    sh:maxCount 1 ;
+    sh:message "State of constraint: exactly 1 value(s) are required; values must be instances of MusicalInstrument."@en ;
+    sh:minCount 1 ;
+    sh:name "state of property constraint"@en ;
+    sh:path modinst:stateOf ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentStateShape-validDuring-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "valid during property constraint"@en ;
+    sh:class modavis:TimeSpan ;
+    sh:maxCount 1 ;
+    sh:message "An instrument state requires exactly one temporal extent; use distinct state resources for distinct extents."@en ;
+    sh:minCount 1 ;
+    sh:name "valid during property constraint"@en ;
+    sh:path modavis:validDuring ;
+    sh:severity sh:Violation .
+
+modshape:MusicalInstrumentShape-instrumentType-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "instrument type property constraint"@en ;
+    sh:message "A released instrument requires at least one governed instrument type."@en ;
+    sh:minCount 1 ;
+    sh:name "instrument type property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modinst:instrumentType ;
+    sh:severity sh:Violation .

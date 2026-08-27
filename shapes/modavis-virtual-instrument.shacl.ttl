@@ -1,0 +1,316 @@
+@prefix compatstatus: <https://w3id.org/modavis/vocab/compatibility-status/> .
+@prefix modevidence: <https://w3id.org/modavis/ontology/evidence#> .
+@prefix modinst: <https://w3id.org/modavis/ontology/instrument#> .
+@prefix modshape: <https://w3id.org/modavis/shapes/exchange/0.1.0#> .
+@prefix modvmi: <https://w3id.org/modavis/ontology/virtual-instrument#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix vmiproduction: <https://w3id.org/modavis/vocab/virtual-instrument-production-method/> .
+@prefix vmisource: <https://w3id.org/modavis/vocab/virtual-instrument-source-relation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+modshape:CompatibilityStatementShape a sh:NodeShape ;
+    rdfs:label "compatibility statement shape"@en ;
+    sh:name "compatibility statement shape"@en ;
+    sh:property modshape:CompatibilityStatementShape-compatibilityStatus-PropertyShape-01,
+        modshape:CompatibilityStatementShape-compatibilityTarget-PropertyShape-02,
+        modshape:CompatibilityStatementShape-compatibilityVersion-PropertyShape-03,
+        modshape:CompatibilityStatementShape-hasEvidenceRelation-PropertyShape-04 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:CompatibilityStatementShape-SPARQLConstraint-01 ;
+    sh:targetClass modvmi:CompatibilityStatement .
+
+modshape:InstrumentSourceRelationShape a sh:NodeShape ;
+    rdfs:label "instrument source relation shape"@en ;
+    sh:name "instrument source relation shape"@en ;
+    sh:property modshape:InstrumentSourceRelationShape-hasEvidenceRelation-PropertyShape-01,
+        modshape:InstrumentSourceRelationShape-sourceConfidence-PropertyShape-02,
+        modshape:InstrumentSourceRelationShape-sourceInstrument-PropertyShape-03,
+        modshape:InstrumentSourceRelationShape-sourceRelationSubject-PropertyShape-04,
+        modshape:InstrumentSourceRelationShape-sourceRelationType-PropertyShape-05,
+        modshape:InstrumentSourceRelationShape-sourceState-PropertyShape-06 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:InstrumentSourceRelationShape-SPARQLConstraint-01,
+        modshape:InstrumentSourceRelationShape-SPARQLConstraint-02 ;
+    sh:targetClass modvmi:InstrumentSourceRelation .
+
+modshape:VirtualInstrumentIdentityLayerShape a sh:NodeShape ;
+    rdfs:label "virtual instrument identity layer shape"@en ;
+    sh:name "virtual instrument identity layer shape"@en ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:VirtualInstrumentIdentityLayerShape-SPARQLConstraint-01 ;
+    sh:targetClass modvmi:VirtualInstrumentPackage,
+        modvmi:VirtualInstrumentProduct,
+        modvmi:VirtualInstrumentVersion,
+        modvmi:VirtualMusicalInstrument .
+
+modshape:VirtualInstrumentPackageShape a sh:NodeShape ;
+    rdfs:label "virtual instrument package shape"@en ;
+    sh:name "virtual instrument package shape"@en ;
+    sh:property modshape:VirtualInstrumentPackageShape-packageOfVersion-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modvmi:VirtualInstrumentPackage .
+
+modshape:VirtualInstrumentProductionMethodShape a sh:NodeShape ;
+    rdfs:label "virtual instrument production method shape"@en ;
+    sh:name "virtual instrument production method shape"@en ;
+    sh:property modshape:VirtualInstrumentProductionMethodShape-productionMethod-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modvmi:VirtualInstrumentVersion,
+        modvmi:VirtualMusicalInstrument .
+
+modshape:VirtualInstrumentVersionShape a sh:NodeShape ;
+    rdfs:label "virtual instrument version shape"@en ;
+    sh:name "virtual instrument version shape"@en ;
+    sh:property modshape:VirtualInstrumentVersionShape-implementsInstrument-PropertyShape-01,
+        modshape:VirtualInstrumentVersionShape-releaseDate-PropertyShape-02,
+        modshape:VirtualInstrumentVersionShape-versionLabel-PropertyShape-03,
+        modshape:VirtualInstrumentVersionShape-versionOfProduct-PropertyShape-04 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modvmi:VirtualInstrumentVersion .
+
+modshape:CompatibilityStatementShape-SPARQLConstraint-01 rdfs:label "compatibility statement shape sparqlconstraint 01"@en ;
+    sh:message "Every compatibility evidence relation must identify the compatibility statement it evaluates."@en ;
+    sh:name "compatibility statement shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modevidence: <https://w3id.org/modavis/ontology/evidence#>
+      PREFIX modvmi: <https://w3id.org/modavis/ontology/virtual-instrument#>
+      SELECT $this WHERE {
+        $this modvmi:hasEvidenceRelation ?relation .
+        FILTER NOT EXISTS { ?relation modevidence:evaluates $this . }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:CompatibilityStatementShape-compatibilityStatus-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "compatibility status property constraint"@en ;
+    sh:in ( compatstatus:compatible compatstatus:compatible-with-limitations compatstatus:incompatible compatstatus:indeterminate ) ;
+    sh:maxCount 1 ;
+    sh:message "Compatibility status constraint: exactly 1 value(s) are required; values must have node kind IRI; values must belong to the enumerated release set."@en ;
+    sh:minCount 1 ;
+    sh:name "compatibility status property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modvmi:compatibilityStatus ;
+    sh:severity sh:Violation .
+
+modshape:CompatibilityStatementShape-compatibilityTarget-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "compatibility target property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Compatibility target constraint: exactly 1 value(s) are required; values must have node kind IRI."@en ;
+    sh:minCount 1 ;
+    sh:name "compatibility target property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modvmi:compatibilityTarget ;
+    sh:severity sh:Violation .
+
+modshape:CompatibilityStatementShape-compatibilityVersion-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "compatibility version property constraint"@en ;
+    sh:class modvmi:VirtualInstrumentVersion ;
+    sh:maxCount 1 ;
+    sh:message "Compatibility version constraint: exactly 1 value(s) are required; values must be instances of VirtualInstrumentVersion."@en ;
+    sh:minCount 1 ;
+    sh:name "compatibility version property constraint"@en ;
+    sh:path modvmi:compatibilityVersion ;
+    sh:severity sh:Violation .
+
+modshape:CompatibilityStatementShape-hasEvidenceRelation-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "has evidence relation property constraint"@en ;
+    sh:class modevidence:EvidenceRelation ;
+    sh:message "A compatibility statement requires evidence identifying the test, documentation, or review basis."@en ;
+    sh:minCount 1 ;
+    sh:name "has evidence relation property constraint"@en ;
+    sh:path modvmi:hasEvidenceRelation ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentSourceRelationShape-SPARQLConstraint-01 rdfs:label "instrument source relation shape sparqlconstraint 01"@en ;
+    sh:message "A source state must be a state of the source instrument named by the same relation."@en ;
+    sh:name "instrument source relation shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modinst: <https://w3id.org/modavis/ontology/instrument#>
+      PREFIX modvmi: <https://w3id.org/modavis/ontology/virtual-instrument#>
+      SELECT $this WHERE {
+        $this modvmi:sourceInstrument ?instrument ; modvmi:sourceState ?state .
+        FILTER NOT EXISTS { ?state modinst:stateOf ?instrument . }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentSourceRelationShape-SPARQLConstraint-02 rdfs:label "instrument source relation shape sparqlconstraint 02"@en ;
+    sh:message "Every source-relation evidence relation must identify the source relation it evaluates."@en ;
+    sh:name "instrument source relation shape sparqlconstraint 02"@en ;
+    sh:select """
+      PREFIX modevidence: <https://w3id.org/modavis/ontology/evidence#>
+      PREFIX modvmi: <https://w3id.org/modavis/ontology/virtual-instrument#>
+      SELECT $this WHERE {
+        $this modvmi:hasEvidenceRelation ?relation .
+        FILTER NOT EXISTS { ?relation modevidence:evaluates $this . }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentSourceRelationShape-hasEvidenceRelation-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "has evidence relation property constraint"@en ;
+    sh:class modevidence:EvidenceRelation ;
+    sh:message "An accepted source relation requires at least one qualified evidence relation."@en ;
+    sh:minCount 1 ;
+    sh:name "has evidence relation property constraint"@en ;
+    sh:path modvmi:hasEvidenceRelation ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentSourceRelationShape-or-Alternative-NodeShape-01 a sh:NodeShape ;
+    rdfs:label "instrument source relation shape or alternative node shape 01"@en ;
+    sh:class modvmi:VirtualMusicalInstrument ;
+    sh:name "instrument source relation shape or alternative node shape 01"@en ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentSourceRelationShape-or-Alternative-NodeShape-02 a sh:NodeShape ;
+    rdfs:label "instrument source relation shape or alternative node shape 02"@en ;
+    sh:class modvmi:VirtualInstrumentProduct ;
+    sh:name "instrument source relation shape or alternative node shape 02"@en ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentSourceRelationShape-or-Alternative-NodeShape-03 a sh:NodeShape ;
+    rdfs:label "instrument source relation shape or alternative node shape 03"@en ;
+    sh:class modvmi:VirtualInstrumentVersion ;
+    sh:name "instrument source relation shape or alternative node shape 03"@en ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentSourceRelationShape-sourceConfidence-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "source confidence property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 1 ;
+    sh:message "Source-relation confidence must be a decimal from zero through one."@en ;
+    sh:minInclusive 0 ;
+    sh:name "source confidence property constraint"@en ;
+    sh:path modvmi:sourceConfidence ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentSourceRelationShape-sourceInstrument-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "source instrument property constraint"@en ;
+    sh:class modinst:MusicalInstrument ;
+    sh:maxCount 1 ;
+    sh:message "A source relation must identify exactly one resource typed as a musical instrument."@en ;
+    sh:minCount 1 ;
+    sh:name "source instrument property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modvmi:sourceInstrument ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentSourceRelationShape-sourceRelationSubject-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "source relation subject property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "A source relation subject must be a playable virtual instrument, stable product, or version."@en ;
+    sh:minCount 1 ;
+    sh:name "source relation subject property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:or ( modshape:InstrumentSourceRelationShape-or-Alternative-NodeShape-01 modshape:InstrumentSourceRelationShape-or-Alternative-NodeShape-02 modshape:InstrumentSourceRelationShape-or-Alternative-NodeShape-03 ) ;
+    sh:path modvmi:sourceRelationSubject ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentSourceRelationShape-sourceRelationType-PropertyShape-05 a sh:PropertyShape ;
+    rdfs:label "source relation type property constraint"@en ;
+    sh:in ( vmisource:sampled-from vmisource:modeled-after vmisource:historical-reconstruction vmisource:composite-source vmisource:inspired-by ) ;
+    sh:maxCount 1 ;
+    sh:message "Source relation type constraint: exactly 1 value(s) are required; values must have node kind IRI; values must belong to the enumerated release set."@en ;
+    sh:minCount 1 ;
+    sh:name "source relation type property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modvmi:sourceRelationType ;
+    sh:severity sh:Violation .
+
+modshape:InstrumentSourceRelationShape-sourceState-PropertyShape-06 a sh:PropertyShape ;
+    rdfs:label "source state property constraint"@en ;
+    sh:class modinst:InstrumentState ;
+    sh:maxCount 1 ;
+    sh:message "A source state, when supplied, must be typed as an instrument state."@en ;
+    sh:name "source state property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modvmi:sourceState ;
+    sh:severity sh:Violation .
+
+modshape:VirtualInstrumentIdentityLayerShape-SPARQLConstraint-01 rdfs:label "virtual instrument identity layer shape sparqlconstraint 01"@en ;
+    sh:message "A resource cannot occupy more than one of the distinct virtual-instrument, product, version, and package identity layers."@en ;
+    sh:name "virtual instrument identity layer shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modvmi: <https://w3id.org/modavis/ontology/virtual-instrument#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      SELECT DISTINCT $this WHERE {
+        $this a ?leftType, ?rightType .
+        ?leftType rdfs:subClassOf* ?leftLayer .
+        ?rightType rdfs:subClassOf* ?rightLayer .
+        FILTER (?leftLayer IN (
+          modvmi:VirtualMusicalInstrument,
+          modvmi:VirtualInstrumentProduct,
+          modvmi:VirtualInstrumentVersion,
+          modvmi:VirtualInstrumentPackage
+        ))
+        FILTER (?rightLayer IN (
+          modvmi:VirtualMusicalInstrument,
+          modvmi:VirtualInstrumentProduct,
+          modvmi:VirtualInstrumentVersion,
+          modvmi:VirtualInstrumentPackage
+        ))
+        FILTER (?leftLayer != ?rightLayer)
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:VirtualInstrumentPackageShape-packageOfVersion-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "package of version property constraint"@en ;
+    sh:class modvmi:VirtualInstrumentVersion ;
+    sh:message "A virtual-instrument package requires at least one distributed version."@en ;
+    sh:minCount 1 ;
+    sh:name "package of version property constraint"@en ;
+    sh:path modvmi:packageOfVersion ;
+    sh:severity sh:Violation .
+
+modshape:VirtualInstrumentProductionMethodShape-productionMethod-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "production method property constraint"@en ;
+    sh:in ( vmiproduction:sampled vmiproduction:physical-modeling vmiproduction:algorithmic-synthesis vmiproduction:convolution-based vmiproduction:hybrid ) ;
+    sh:maxCount 1 ;
+    sh:message "A production method must use one concept from the closed MODAVIS 0.1.0 production-method scheme."@en ;
+    sh:name "production method property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modvmi:productionMethod ;
+    sh:severity sh:Violation .
+
+modshape:VirtualInstrumentVersionShape-implementsInstrument-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "implements instrument property constraint"@en ;
+    sh:class modvmi:VirtualMusicalInstrument ;
+    sh:message "A virtual-instrument version must identify at least one playable virtual instrument it implements."@en ;
+    sh:minCount 1 ;
+    sh:name "implements instrument property constraint"@en ;
+    sh:path modvmi:implementsInstrument ;
+    sh:severity sh:Violation .
+
+modshape:VirtualInstrumentVersionShape-releaseDate-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "release date property constraint"@en ;
+    sh:datatype xsd:date ;
+    sh:maxCount 1 ;
+    sh:message "Release date constraint: at most 1 value(s) are permitted; values must use the date datatype."@en ;
+    sh:name "release date property constraint"@en ;
+    sh:path modvmi:releaseDate ;
+    sh:severity sh:Violation .
+
+modshape:VirtualInstrumentVersionShape-versionLabel-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "version label property constraint"@en ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:message "A virtual-instrument version requires one non-empty source-preserving version label."@en ;
+    sh:minCount 1 ;
+    sh:minLength 1 ;
+    sh:name "version label property constraint"@en ;
+    sh:path modvmi:versionLabel ;
+    sh:severity sh:Violation .
+
+modshape:VirtualInstrumentVersionShape-versionOfProduct-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "version of product property constraint"@en ;
+    sh:class modvmi:VirtualInstrumentProduct ;
+    sh:maxCount 1 ;
+    sh:message "A virtual-instrument version requires exactly one stable product identity."@en ;
+    sh:minCount 1 ;
+    sh:name "version of product property constraint"@en ;
+    sh:path modvmi:versionOfProduct ;
+    sh:severity sh:Violation .

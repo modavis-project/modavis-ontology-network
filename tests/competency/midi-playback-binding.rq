@@ -1,0 +1,12 @@
+PREFIX modmidi: <https://w3id.org/modavis/ontology/midi#>
+
+SELECT ?binding ?playback ?rootNote ?minimumNote ?maximumNote ?minimumVelocity ?maximumVelocity WHERE {
+  ?binding a modmidi:MidiPlaybackBinding ;
+           modmidi:playbackParameters ?playback ;
+           modmidi:rootNoteNumber ?rootNote .
+  OPTIONAL { ?binding modmidi:minimumNoteNumber ?minimumNote . }
+  OPTIONAL { ?binding modmidi:maximumNoteNumber ?maximumNote . }
+  OPTIONAL { ?binding modmidi:minimumNoteOnVelocity ?minimumVelocity . }
+  OPTIONAL { ?binding modmidi:maximumNoteOnVelocity ?maximumVelocity . }
+}
+ORDER BY ?binding

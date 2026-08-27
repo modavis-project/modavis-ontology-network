@@ -1,0 +1,14 @@
+PREFIX modaudio: <https://w3id.org/modavis/ontology/audio#>
+PREFIX modvmi: <https://w3id.org/modavis/ontology/virtual-instrument#>
+
+SELECT ?product ?version ?virtualInstrument ?sourceInstrument ?sourceState ?sample
+WHERE {
+  ?product a modvmi:VirtualInstrumentProduct ;
+           modvmi:hasVersion ?version .
+  ?version modvmi:implementsInstrument ?virtualInstrument ;
+           modvmi:hasSourceRelation ?relation ;
+           modaudio:usesPlaybackParameters ?playback .
+  ?relation modvmi:sourceInstrument ?sourceInstrument ;
+            modvmi:sourceState ?sourceState .
+  ?playback modaudio:playsSample ?sample .
+}

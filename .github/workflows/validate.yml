@@ -1,0 +1,121 @@
+name: validate-release-candidate
+
+on:
+  workflow_call:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.14"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - name: Install Apache for W3ID behavioral tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends apache2
+      - run: python -m pip install --require-hashes -r requirements-dev.txt
+      - run: reuse lint
+      - name: Read package version
+        run: echo "MODAVIS_PACKAGE_VERSION=$(tr -d '\n' < VERSION)" >> "$GITHUB_ENV"
+      - run: python -m pytest -q
+      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Independent Apache Jena SHACL validation
+        run: |
+          curl --fail --location --silent --show-error --output "$RUNNER_TEMP/apache-jena-6.1.0.tar.gz" https://archive.apache.org/dist/jena/binaries/apache-jena-6.1.0.tar.gz
+          echo '6aa4bb8eeb41c0d05c30f3c91a7eb065bd867af00a6a95fd10f7873b90271c62734b28aebd7ae648d5be6b1e185c9037df90633c471a68b791b19026fd03ea3a  '"$RUNNER_TEMP/apache-jena-6.1.0.tar.gz" | sha512sum --check
+          cd "$RUNNER_TEMP"
+          tar -xzf apache-jena-6.1.0.tar.gz
+          cd "$GITHUB_WORKSPACE"
+          "$RUNNER_TEMP/apache-jena-6.1.0/bin/riot" --formatted=TURTLE ontology/*.ttl vocab/*.ttl examples/valid/*.ttl > "$RUNNER_TEMP/modavis-data.ttl"
+          "$RUNNER_TEMP/apache-jena-6.1.0/bin/riot" --formatted=TURTLE shapes/*.ttl > "$RUNNER_TEMP/modavis-shapes.ttl"
+          "$RUNNER_TEMP/apache-jena-6.1.0/bin/shacl" validate --shapes "$RUNNER_TEMP/modavis-shapes.ttl" --data "$RUNNER_TEMP/modavis-data.ttl" > "$RUNNER_TEMP/jena-shacl-report.ttl"
+          grep --quiet 'sh:conforms[[:space:]]*true' "$RUNNER_TEMP/jena-shacl-report.ttl"
+          for MODAVIS_INVALID_FIXTURE in examples/invalid/*.ttl; do
+            "$RUNNER_TEMP/apache-jena-6.1.0/bin/riot" --formatted=TURTLE ontology/*.ttl vocab/*.ttl "$MODAVIS_INVALID_FIXTURE" > "$RUNNER_TEMP/modavis-invalid-data.ttl"
+            "$RUNNER_TEMP/apache-jena-6.1.0/bin/shacl" validate --shapes "$RUNNER_TEMP/modavis-shapes.ttl" --data "$RUNNER_TEMP/modavis-invalid-data.ttl" > "$RUNNER_TEMP/jena-invalid-report.ttl"
+            grep --quiet 'sh:conforms[[:space:]]*false' "$RUNNER_TEMP/jena-invalid-report.ttl"
+          done
+      - name: Independent ROBOT OWL 2 RL profile validation
+        run: |
+          curl --fail --location --silent --show-error --output "$RUNNER_TEMP/robot.jar" https://github.com/ontodev/robot/releases/download/v1.9.10/robot.jar
+          echo '16a73c074f3df359a7338a84b4e0788785fe06117f931bb9796e9619ea776105  '"$RUNNER_TEMP/robot.jar" | sha256sum --check
+          java -jar "$RUNNER_TEMP/robot.jar" --catalog catalog-v001.xml validate-profile --profile RL --input ontology/modavis-network.ttl --output "$RUNNER_TEMP/owl-rl-validation.txt"
+          ! grep --quiet 'NOT in profile' "$RUNNER_TEMP/owl-rl-validation.txt"
+          grep --quiet 'Ontology and imports closure in profile' "$RUNNER_TEMP/owl-rl-validation.txt"
+      - name: HermiT consistency and satisfiability validation
+        run: |
+          mkdir -p "$RUNNER_TEMP/modavis-reasoning/modules"
+          for MODAVIS_ONTOLOGY_FILE in ontology/*.ttl vocab/*.ttl; do
+            MODAVIS_ONTOLOGY_STEM="$(basename "$MODAVIS_ONTOLOGY_FILE" .ttl)"
+            java -jar "$RUNNER_TEMP/robot.jar" reason \
+              --catalog catalog-v001.xml \
+              --input "$MODAVIS_ONTOLOGY_FILE" \
+              --reasoner HermiT \
+              --equivalent-classes-allowed asserted-only \
+              --exclude-duplicate-axioms true \
+              --dump-unsatisfiable "$RUNNER_TEMP/modavis-reasoning/modules/$MODAVIS_ONTOLOGY_STEM-unsatisfiable.owl" \
+              --output "$RUNNER_TEMP/modavis-reasoning/modules/$MODAVIS_ONTOLOGY_STEM-reasoned.owl"
+            test ! -s "$RUNNER_TEMP/modavis-reasoning/modules/$MODAVIS_ONTOLOGY_STEM-unsatisfiable.owl"
+          done
+          java -jar "$RUNNER_TEMP/robot.jar" merge \
+            --catalog catalog-v001.xml \
+            --input ontology/modavis-network.ttl \
+            --collapse-import-closure true \
+            --include-annotations true \
+            --output "$RUNNER_TEMP/modavis-reasoning/network-closure.owl"
+          java -jar "$RUNNER_TEMP/robot.jar" reason \
+            --input "$RUNNER_TEMP/modavis-reasoning/network-closure.owl" \
+            --reasoner HermiT \
+            --equivalent-classes-allowed asserted-only \
+            --exclude-duplicate-axioms true \
+            --dump-unsatisfiable "$RUNNER_TEMP/modavis-reasoning/network-unsatisfiable.owl" \
+            --output "$RUNNER_TEMP/modavis-reasoning/network-reasoned.owl"
+          test ! -s "$RUNNER_TEMP/modavis-reasoning/network-unsatisfiable.owl"
+      - run: python scripts/build_publication_preview.py --check
+      - run: python scripts/check_prepublication.py
+      - run: python scripts/check_w3id.py --require-apache
+      - run: python scripts/build_release_candidate.py --output-directory "$RUNNER_TEMP/modavis-release"
+      - run: python scripts/check_w3id.py --site "$RUNNER_TEMP/modavis-release/site" --require-apache
+      - name: Verify detached archive checksum
+        working-directory: ${{ runner.temp }}/modavis-release
+        run: sha256sum -c "modavis-ontology-$MODAVIS_PACKAGE_VERSION.zip.sha256"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: modavis-ontology-${{ github.sha }}-py${{ matrix.python }}
+          path: |
+            ${{ runner.temp }}/modavis-release/modavis-ontology-${{ env.MODAVIS_PACKAGE_VERSION }}.zip
+            ${{ runner.temp }}/modavis-release/modavis-ontology-${{ env.MODAVIS_PACKAGE_VERSION }}.zip.sha256
+          if-no-files-found: error
+
+  cross-python-reproducibility:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
+        with:
+          pattern: modavis-ontology-${{ github.sha }}-py*
+          path: artifacts
+      - name: Require byte-identical Python 3.11 and 3.14 release archives
+        run: |
+          cmp artifacts/modavis-ontology-${{ github.sha }}-py3.11/*.zip artifacts/modavis-ontology-${{ github.sha }}-py3.14/*.zip
+          cmp artifacts/modavis-ontology-${{ github.sha }}-py3.11/*.zip.sha256 artifacts/modavis-ontology-${{ github.sha }}-py3.14/*.zip.sha256

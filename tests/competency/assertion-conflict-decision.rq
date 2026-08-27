@@ -1,0 +1,12 @@
+PREFIX modassert: <https://w3id.org/modavis/ontology/assertion#>
+
+SELECT ?conflict ?criterion ?member ?decision ?chosen ?decidingAgent WHERE {
+  ?conflict a modassert:ConflictSet ;
+            modassert:conflictCriterion ?criterion ;
+            modassert:hasConflictMember ?member .
+  ?decision a modassert:ConflictDecision ;
+            modassert:decisionFor ?conflict ;
+            modassert:chosenAssertion ?chosen ;
+            modassert:decidedBy ?decidingAgent .
+}
+ORDER BY ?conflict ?member

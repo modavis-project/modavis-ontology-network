@@ -1,0 +1,11 @@
+PREFIX modavis: <https://w3id.org/modavis/ontology/core#>
+
+SELECT ?resource ?label ?timeSpan ?temporalExpression WHERE {
+  ?resource a modavis:IdentifiedResource ;
+            modavis:canonicalLabel ?label .
+  OPTIONAL {
+    ?resource modavis:validDuring ?timeSpan .
+    OPTIONAL { ?timeSpan modavis:rawTemporalExpression ?temporalExpression . }
+  }
+}
+ORDER BY ?resource ?label

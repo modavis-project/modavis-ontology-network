@@ -1,0 +1,703 @@
+@prefix modaudio: <https://w3id.org/modavis/ontology/audio#> .
+@prefix modshape: <https://w3id.org/modavis/shapes/exchange/0.1.0#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+modshape:AudioSignalShape a sh:NodeShape ;
+    rdfs:label "audio signal shape"@en ;
+    sh:name "audio signal shape"@en ;
+    sh:property modshape:AudioSignalShape-channelCount-PropertyShape-01,
+        modshape:AudioSignalShape-sampleRate-PropertyShape-02,
+        modshape:AudioSignalShape-totalFrames-PropertyShape-03 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modaudio:AudioSignal .
+
+modshape:LoopPointSetShape a sh:NodeShape ;
+    rdfs:label "loop point set shape"@en ;
+    sh:name "loop point set shape"@en ;
+    sh:property modshape:LoopPointSetShape-appliesToSignal-PropertyShape-01,
+        modshape:LoopPointSetShape-confidence-PropertyShape-02,
+        modshape:LoopPointSetShape-hasLoopRegion-PropertyShape-03,
+        modshape:LoopPointSetShape-loopabilityAssessment-PropertyShape-04 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:LoopPointSetShape-SPARQLConstraint-01 ;
+    sh:targetClass modaudio:LoopPointSet .
+
+modshape:SampleExtractionRegionShape a sh:NodeShape ;
+    rdfs:label "sample extraction region shape"@en ;
+    sh:name "sample extraction region shape"@en ;
+    sh:property modshape:SampleExtractionRegionShape-assignmentConfidence-PropertyShape-01,
+        modshape:SampleExtractionRegionShape-assignmentMethod-PropertyShape-02,
+        modshape:SampleExtractionRegionShape-captureSequenceIndex-PropertyShape-03,
+        modshape:SampleExtractionRegionShape-takeNumber-PropertyShape-04 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modaudio:SampleExtractionRegion .
+
+modshape:SamplePlaybackParametersShape a sh:NodeShape ;
+    rdfs:label "sample playback parameters shape"@en ;
+    sh:name "sample playback parameters shape"@en ;
+    sh:property modshape:SamplePlaybackParametersShape-channelPolicy-PropertyShape-01,
+        modshape:SamplePlaybackParametersShape-controlReleasePolicy-PropertyShape-02,
+        modshape:SamplePlaybackParametersShape-gainDB-PropertyShape-03,
+        modshape:SamplePlaybackParametersShape-latencyCompensationFrames-PropertyShape-04,
+        modshape:SamplePlaybackParametersShape-normalizationGainDB-PropertyShape-05,
+        modshape:SamplePlaybackParametersShape-pitchTrackingPolicy-PropertyShape-06,
+        modshape:SamplePlaybackParametersShape-playsSample-PropertyShape-07,
+        modshape:SamplePlaybackParametersShape-roundRobinGroup-PropertyShape-08,
+        modshape:SamplePlaybackParametersShape-roundRobinIndex-PropertyShape-09,
+        modshape:SamplePlaybackParametersShape-selectionPriority-PropertyShape-10,
+        modshape:SamplePlaybackParametersShape-sourceFundamentalHz-PropertyShape-11,
+        modshape:SamplePlaybackParametersShape-targetFrequencyHz-PropertyShape-12,
+        modshape:SamplePlaybackParametersShape-tuningOffsetCents-PropertyShape-13,
+        modshape:SamplePlaybackParametersShape-usesLoopPointSet-PropertyShape-14,
+        modshape:SamplePlaybackParametersShape-usesReleaseRegion-PropertyShape-15,
+        modshape:SamplePlaybackParametersShape-usesTuningMap-PropertyShape-16 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:SamplePlaybackParametersShape-SPARQLConstraint-01,
+        modshape:SamplePlaybackParametersShape-SPARQLConstraint-02,
+        modshape:SamplePlaybackParametersShape-SPARQLConstraint-03 ;
+    sh:targetClass modaudio:SamplePlaybackParameters .
+
+modshape:SignalRegionShape a sh:NodeShape ;
+    rdfs:label "signal region shape"@en ;
+    sh:name "signal region shape"@en ;
+    sh:property modshape:SignalRegionShape-appliesToSignal-PropertyShape-01,
+        modshape:SignalRegionShape-boundaryCensoring-PropertyShape-02,
+        modshape:SignalRegionShape-boundaryConfidence-PropertyShape-03,
+        modshape:SignalRegionShape-endFrameExclusive-PropertyShape-04,
+        modshape:SignalRegionShape-exitPolicy-PropertyShape-05,
+        modshape:SignalRegionShape-playbackMode-PropertyShape-06,
+        modshape:SignalRegionShape-referenceChannelIndex-PropertyShape-07,
+        modshape:SignalRegionShape-regionRole-PropertyShape-08,
+        modshape:SignalRegionShape-releaseStartFrame-PropertyShape-09,
+        modshape:SignalRegionShape-startFrameInclusive-PropertyShape-10 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:SignalRegionShape-SPARQLConstraint-01,
+        modshape:SignalRegionShape-SPARQLConstraint-02,
+        modshape:SignalRegionShape-SPARQLConstraint-03,
+        modshape:SignalRegionShape-SPARQLConstraint-04,
+        modshape:SignalRegionShape-SPARQLConstraint-05 ;
+    sh:targetClass modaudio:SignalRegion .
+
+modshape:SustainLoopRegionShape a sh:NodeShape ;
+    rdfs:label "sustain loop region shape"@en ;
+    sh:name "sustain loop region shape"@en ;
+    sh:property modshape:SustainLoopRegionShape-crossfadeFrames-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:SustainLoopRegionShape-SPARQLConstraint-01 ;
+    sh:targetClass modaudio:SustainLoopRegion .
+
+modshape:TuningEntryShape a sh:NodeShape ;
+    rdfs:label "tuning entry shape"@en ;
+    sh:message "The focus node must satisfy the named logical, node-kind, or lexical constraint declared by this shape."@en ;
+    sh:name "tuning entry shape"@en ;
+    sh:property modshape:TuningEntryShape-targetFrequencyHz-PropertyShape-01,
+        modshape:TuningEntryShape-tuningOffsetCents-PropertyShape-02 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modaudio:TuningEntry ;
+    sh:xone ( modshape:TuningEntryShape-xone-Alternative-NodeShape-01 modshape:TuningEntryShape-xone-Alternative-NodeShape-02 ) .
+
+modshape:TuningMapShape a sh:NodeShape ;
+    rdfs:label "tuning map shape"@en ;
+    sh:name "tuning map shape"@en ;
+    sh:property modshape:TuningMapShape-hasTuningReference-PropertyShape-01,
+        modshape:TuningMapShape-tuningEntries-PropertyShape-02,
+        modshape:TuningMapShape-tuningSystem-PropertyShape-03 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modaudio:TuningMap .
+
+modshape:TuningReferenceShape a sh:NodeShape ;
+    rdfs:label "tuning reference shape"@en ;
+    sh:name "tuning reference shape"@en ;
+    sh:property modshape:TuningReferenceShape-referenceFrequencyHz-PropertyShape-01,
+        modshape:TuningReferenceShape-referencePitchDesignation-PropertyShape-02 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modaudio:TuningReference .
+
+modshape:AudioSignalShape-channelCount-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "channel count property constraint"@en ;
+    sh:datatype xsd:positiveInteger ;
+    sh:maxCount 1 ;
+    sh:message "An audio signal requires one positive channel count."@en ;
+    sh:minCount 1 ;
+    sh:name "channel count property constraint"@en ;
+    sh:path modaudio:channelCount ;
+    sh:severity sh:Violation .
+
+modshape:AudioSignalShape-sampleRate-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "sample rate property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:message "An audio signal requires one positive decimal sample rate in hertz."@en ;
+    sh:minCount 1 ;
+    sh:minExclusive 0 ;
+    sh:name "sample rate property constraint"@en ;
+    sh:path modaudio:sampleRate ;
+    sh:severity sh:Violation .
+
+modshape:AudioSignalShape-totalFrames-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "total frames property constraint"@en ;
+    sh:datatype xsd:positiveInteger ;
+    sh:maxCount 1 ;
+    sh:message "An audio signal requires one positive total-frame count."@en ;
+    sh:minCount 1 ;
+    sh:name "total frames property constraint"@en ;
+    sh:path modaudio:totalFrames ;
+    sh:severity sh:Violation .
+
+modshape:LoopPointSetShape-SPARQLConstraint-01 rdfs:label "loop point set shape sparqlconstraint 01"@en ;
+    sh:message "Every loop region in a loop point set must use the same fixed audio signal as the set."@en ;
+    sh:name "loop point set shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modaudio: <https://w3id.org/modavis/ontology/audio#>
+      SELECT $this WHERE {
+        $this modaudio:appliesToSignal ?signal ; modaudio:hasLoopRegion ?region .
+        FILTER NOT EXISTS { ?region modaudio:appliesToSignal ?signal . }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:LoopPointSetShape-appliesToSignal-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "applies to signal property constraint"@en ;
+    sh:class modaudio:AudioSignal ;
+    sh:maxCount 1 ;
+    sh:message "Applies to signal constraint: exactly 1 value(s) are required; values must be instances of AudioSignal."@en ;
+    sh:minCount 1 ;
+    sh:name "applies to signal property constraint"@en ;
+    sh:path modaudio:appliesToSignal ;
+    sh:severity sh:Violation .
+
+modshape:LoopPointSetShape-confidence-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "confidence property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 1 ;
+    sh:message "Confidence constraint: at most 1 value(s) are permitted; values must use the decimal datatype; value must be at least 0; value must be at most 1."@en ;
+    sh:minInclusive 0 ;
+    sh:name "confidence property constraint"@en ;
+    sh:path modaudio:confidence ;
+    sh:severity sh:Violation .
+
+modshape:LoopPointSetShape-hasLoopRegion-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "has loop region property constraint"@en ;
+    sh:class modaudio:SustainLoopRegion ;
+    sh:message "Has loop region constraint: at least 1 value(s) are required; values must be instances of SustainLoopRegion."@en ;
+    sh:minCount 1 ;
+    sh:name "has loop region property constraint"@en ;
+    sh:path modaudio:hasLoopRegion ;
+    sh:severity sh:Violation .
+
+modshape:LoopPointSetShape-loopabilityAssessment-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "loopability assessment property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Loopability assessment constraint: at most 1 value(s) are permitted; values must have node kind IRI."@en ;
+    sh:name "loopability assessment property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modaudio:loopabilityAssessment ;
+    sh:severity sh:Violation .
+
+modshape:SampleExtractionRegionShape-assignmentConfidence-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "assignment confidence property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 1 ;
+    sh:message "Assignment confidence constraint: at most 1 value(s) are permitted; values must use the decimal datatype; value must be at least 0; value must be at most 1."@en ;
+    sh:minInclusive 0 ;
+    sh:name "assignment confidence property constraint"@en ;
+    sh:path modaudio:assignmentConfidence ;
+    sh:severity sh:Violation .
+
+modshape:SampleExtractionRegionShape-assignmentMethod-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "assignment method property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Assignment method constraint: at most 1 value(s) are permitted; values must have node kind IRI."@en ;
+    sh:name "assignment method property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modaudio:assignmentMethod ;
+    sh:severity sh:Violation .
+
+modshape:SampleExtractionRegionShape-captureSequenceIndex-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "capture sequence index property constraint"@en ;
+    sh:datatype xsd:nonNegativeInteger ;
+    sh:maxCount 1 ;
+    sh:message "Capture sequence index constraint: at most 1 value(s) are permitted; values must use the nonNegativeInteger datatype."@en ;
+    sh:name "capture sequence index property constraint"@en ;
+    sh:path modaudio:captureSequenceIndex ;
+    sh:severity sh:Violation .
+
+modshape:SampleExtractionRegionShape-takeNumber-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "take number property constraint"@en ;
+    sh:datatype xsd:positiveInteger ;
+    sh:maxCount 1 ;
+    sh:message "Take number constraint: at most 1 value(s) are permitted; values must use the positiveInteger datatype."@en ;
+    sh:name "take number property constraint"@en ;
+    sh:path modaudio:takeNumber ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-SPARQLConstraint-01 rdfs:label "sample playback parameters shape sparqlconstraint 01"@en ;
+    sh:message "A loop point set selected for playback must apply to the sample being played."@en ;
+    sh:name "sample playback parameters shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modaudio: <https://w3id.org/modavis/ontology/audio#>
+      SELECT $this WHERE {
+        $this modaudio:playsSample ?sample ; modaudio:usesLoopPointSet ?loopSet .
+        FILTER NOT EXISTS { ?loopSet modaudio:appliesToSignal ?sample . }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-SPARQLConstraint-02 rdfs:label "sample playback parameters shape sparqlconstraint 02"@en ;
+    sh:message "A release region selected for playback must apply to the sample being played."@en ;
+    sh:name "sample playback parameters shape sparqlconstraint 02"@en ;
+    sh:select """
+      PREFIX modaudio: <https://w3id.org/modavis/ontology/audio#>
+      SELECT $this WHERE {
+        $this modaudio:playsSample ?sample ; modaudio:usesReleaseRegion ?region .
+        FILTER NOT EXISTS { ?region modaudio:appliesToSignal ?sample . }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-SPARQLConstraint-03 rdfs:label "sample playback parameters shape sparqlconstraint 03"@en ;
+    sh:message "A round-robin index requires a non-empty round-robin group identifier."@en ;
+    sh:name "sample playback parameters shape sparqlconstraint 03"@en ;
+    sh:select """
+      PREFIX modaudio: <https://w3id.org/modavis/ontology/audio#>
+      SELECT $this WHERE {
+        $this modaudio:roundRobinIndex ?index .
+        FILTER NOT EXISTS { $this modaudio:roundRobinGroup ?group . }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-channelPolicy-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "channel policy property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Channel policy constraint: at most 1 value(s) are permitted; values must have node kind IRI."@en ;
+    sh:name "channel policy property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modaudio:channelPolicy ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-controlReleasePolicy-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "control release policy property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Control release policy constraint: at most 1 value(s) are permitted; values must have node kind IRI."@en ;
+    sh:name "control release policy property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modaudio:controlReleasePolicy ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-gainDB-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "gain db property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:message "Gain db constraint: at most 1 value(s) are permitted; values must use the decimal datatype."@en ;
+    sh:name "gain db property constraint"@en ;
+    sh:path modaudio:gainDB ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-latencyCompensationFrames-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "latency compensation frames property constraint"@en ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    sh:message "Latency compensation frames constraint: at most 1 value(s) are permitted; values must use the integer datatype."@en ;
+    sh:name "latency compensation frames property constraint"@en ;
+    sh:path modaudio:latencyCompensationFrames ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-normalizationGainDB-PropertyShape-05 a sh:PropertyShape ;
+    rdfs:label "normalization gain db property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:message "Normalization gain db constraint: at most 1 value(s) are permitted; values must use the decimal datatype."@en ;
+    sh:name "normalization gain db property constraint"@en ;
+    sh:path modaudio:normalizationGainDB ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-pitchTrackingPolicy-PropertyShape-06 a sh:PropertyShape ;
+    rdfs:label "pitch tracking policy property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Pitch tracking policy constraint: at most 1 value(s) are permitted; values must have node kind IRI."@en ;
+    sh:name "pitch tracking policy property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modaudio:pitchTrackingPolicy ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-playsSample-PropertyShape-07 a sh:PropertyShape ;
+    rdfs:label "plays sample property constraint"@en ;
+    sh:class modaudio:AudioSample ;
+    sh:maxCount 1 ;
+    sh:message "Plays sample constraint: exactly 1 value(s) are required; values must be instances of AudioSample."@en ;
+    sh:minCount 1 ;
+    sh:name "plays sample property constraint"@en ;
+    sh:path modaudio:playsSample ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-roundRobinGroup-PropertyShape-08 a sh:PropertyShape ;
+    rdfs:label "round robin group property constraint"@en ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:message "Round robin group constraint: at most 1 value(s) are permitted; values must use the string datatype; lexical length must be at least 1."@en ;
+    sh:minLength 1 ;
+    sh:name "round robin group property constraint"@en ;
+    sh:path modaudio:roundRobinGroup ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-roundRobinIndex-PropertyShape-09 a sh:PropertyShape ;
+    rdfs:label "round robin index property constraint"@en ;
+    sh:datatype xsd:nonNegativeInteger ;
+    sh:maxCount 1 ;
+    sh:message "Round robin index constraint: at most 1 value(s) are permitted; values must use the nonNegativeInteger datatype."@en ;
+    sh:name "round robin index property constraint"@en ;
+    sh:path modaudio:roundRobinIndex ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-selectionPriority-PropertyShape-10 a sh:PropertyShape ;
+    rdfs:label "selection priority property constraint"@en ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    sh:message "Selection priority constraint: at most 1 value(s) are permitted; values must use the integer datatype."@en ;
+    sh:name "selection priority property constraint"@en ;
+    sh:path modaudio:selectionPriority ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-sourceFundamentalHz-PropertyShape-11 a sh:PropertyShape ;
+    rdfs:label "source fundamental hz property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:message "Source fundamental hz constraint: at most 1 value(s) are permitted; values must use the decimal datatype; value must be greater than 0."@en ;
+    sh:minExclusive 0 ;
+    sh:name "source fundamental hz property constraint"@en ;
+    sh:path modaudio:sourceFundamentalHz ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-targetFrequencyHz-PropertyShape-12 a sh:PropertyShape ;
+    rdfs:label "target frequency hz property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:message "Target frequency hz constraint: at most 1 value(s) are permitted; values must use the decimal datatype; value must be greater than 0."@en ;
+    sh:minExclusive 0 ;
+    sh:name "target frequency hz property constraint"@en ;
+    sh:path modaudio:targetFrequencyHz ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-tuningOffsetCents-PropertyShape-13 a sh:PropertyShape ;
+    rdfs:label "tuning offset cents property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:message "Tuning offset cents constraint: at most 1 value(s) are permitted; values must use the decimal datatype."@en ;
+    sh:name "tuning offset cents property constraint"@en ;
+    sh:path modaudio:tuningOffsetCents ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-usesLoopPointSet-PropertyShape-14 a sh:PropertyShape ;
+    rdfs:label "uses loop point set property constraint"@en ;
+    sh:class modaudio:LoopPointSet ;
+    sh:maxCount 1 ;
+    sh:message "Uses loop point set constraint: at most 1 value(s) are permitted; values must be instances of LoopPointSet."@en ;
+    sh:name "uses loop point set property constraint"@en ;
+    sh:path modaudio:usesLoopPointSet ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-usesReleaseRegion-PropertyShape-15 a sh:PropertyShape ;
+    rdfs:label "uses release region property constraint"@en ;
+    sh:class modaudio:ReleaseRegion ;
+    sh:maxCount 1 ;
+    sh:message "Uses release region constraint: at most 1 value(s) are permitted; values must be instances of ReleaseRegion."@en ;
+    sh:name "uses release region property constraint"@en ;
+    sh:path modaudio:usesReleaseRegion ;
+    sh:severity sh:Violation .
+
+modshape:SamplePlaybackParametersShape-usesTuningMap-PropertyShape-16 a sh:PropertyShape ;
+    rdfs:label "uses tuning map property constraint"@en ;
+    sh:class modaudio:TuningMap ;
+    sh:maxCount 1 ;
+    sh:message "Uses tuning map constraint: at most 1 value(s) are permitted; values must be instances of TuningMap."@en ;
+    sh:name "uses tuning map property constraint"@en ;
+    sh:path modaudio:usesTuningMap ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-SPARQLConstraint-01 rdfs:label "signal region shape sparqlconstraint 01"@en ;
+    sh:message "A region reference-channel index must be smaller than the fixed signal's channel count."@en ;
+    sh:name "signal region shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modaudio: <https://w3id.org/modavis/ontology/audio#>
+      SELECT $this WHERE {
+        $this modaudio:appliesToSignal ?signal ; modaudio:referenceChannelIndex ?index .
+        ?signal modaudio:channelCount ?count .
+        FILTER (?index >= ?count)
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-SPARQLConstraint-02 rdfs:label "signal region shape sparqlconstraint 02"@en ;
+    sh:message "A region's release start frame cannot exceed the fixed signal's total frame count."@en ;
+    sh:name "signal region shape sparqlconstraint 02"@en ;
+    sh:select """
+      PREFIX modaudio: <https://w3id.org/modavis/ontology/audio#>
+      SELECT $this WHERE {
+        $this modaudio:appliesToSignal ?signal ; modaudio:releaseStartFrame ?release .
+        ?signal modaudio:totalFrames ?total .
+        FILTER (?release > ?total)
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-SPARQLConstraint-03 rdfs:label "signal region shape sparqlconstraint 03"@en ;
+    sh:message "A region's release start frame cannot precede its inclusive start frame."@en ;
+    sh:name "signal region shape sparqlconstraint 03"@en ;
+    sh:select """
+      PREFIX modaudio: <https://w3id.org/modavis/ontology/audio#>
+      SELECT $this WHERE {
+        $this modaudio:startFrameInclusive ?start ; modaudio:releaseStartFrame ?release .
+        FILTER (?release < ?start)
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-SPARQLConstraint-04 rdfs:label "signal region shape sparqlconstraint 04"@en ;
+    sh:message "A signal region's exclusive end frame cannot exceed the fixed signal's total frame count."@en ;
+    sh:name "signal region shape sparqlconstraint 04"@en ;
+    sh:select """
+      PREFIX modaudio: <https://w3id.org/modavis/ontology/audio#>
+      SELECT $this WHERE {
+        $this modaudio:appliesToSignal ?signal ; modaudio:endFrameExclusive ?end .
+        ?signal modaudio:totalFrames ?total .
+        FILTER (?end > ?total)
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-SPARQLConstraint-05 rdfs:label "signal region shape sparqlconstraint 05"@en ;
+    sh:message "A signal region's exclusive end frame must be greater than its inclusive start frame."@en ;
+    sh:name "signal region shape sparqlconstraint 05"@en ;
+    sh:select """
+      PREFIX modaudio: <https://w3id.org/modavis/ontology/audio#>
+      SELECT $this WHERE {
+        $this modaudio:startFrameInclusive ?start ; modaudio:endFrameExclusive ?end .
+        FILTER (?end <= ?start)
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-appliesToSignal-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "applies to signal property constraint"@en ;
+    sh:class modaudio:AudioSignal ;
+    sh:maxCount 1 ;
+    sh:message "Applies to signal constraint: exactly 1 value(s) are required; values must be instances of AudioSignal."@en ;
+    sh:minCount 1 ;
+    sh:name "applies to signal property constraint"@en ;
+    sh:path modaudio:appliesToSignal ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-boundaryCensoring-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "boundary censoring property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Boundary censoring constraint: at most 1 value(s) are permitted; values must have node kind IRI."@en ;
+    sh:name "boundary censoring property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modaudio:boundaryCensoring ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-boundaryConfidence-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "boundary confidence property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 1 ;
+    sh:message "Boundary confidence constraint: at most 1 value(s) are permitted; values must use the decimal datatype; value must be at least 0; value must be at most 1."@en ;
+    sh:minInclusive 0 ;
+    sh:name "boundary confidence property constraint"@en ;
+    sh:path modaudio:boundaryConfidence ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-endFrameExclusive-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "end frame exclusive property constraint"@en ;
+    sh:datatype xsd:positiveInteger ;
+    sh:maxCount 1 ;
+    sh:message "End frame exclusive constraint: exactly 1 value(s) are required; values must use the positiveInteger datatype."@en ;
+    sh:minCount 1 ;
+    sh:name "end frame exclusive property constraint"@en ;
+    sh:path modaudio:endFrameExclusive ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-exitPolicy-PropertyShape-05 a sh:PropertyShape ;
+    rdfs:label "exit policy property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Exit policy constraint: at most 1 value(s) are permitted; values must have node kind IRI."@en ;
+    sh:name "exit policy property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modaudio:exitPolicy ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-playbackMode-PropertyShape-06 a sh:PropertyShape ;
+    rdfs:label "playback mode property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Playback mode constraint: at most 1 value(s) are permitted; values must have node kind IRI."@en ;
+    sh:name "playback mode property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modaudio:playbackMode ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-referenceChannelIndex-PropertyShape-07 a sh:PropertyShape ;
+    rdfs:label "reference channel index property constraint"@en ;
+    sh:datatype xsd:nonNegativeInteger ;
+    sh:maxCount 1 ;
+    sh:message "Reference channel index constraint: at most 1 value(s) are permitted; values must use the nonNegativeInteger datatype."@en ;
+    sh:name "reference channel index property constraint"@en ;
+    sh:path modaudio:referenceChannelIndex ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-regionRole-PropertyShape-08 a sh:PropertyShape ;
+    rdfs:label "region role property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Region role constraint: at most 1 value(s) are permitted; values must have node kind IRI."@en ;
+    sh:name "region role property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modaudio:regionRole ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-releaseStartFrame-PropertyShape-09 a sh:PropertyShape ;
+    rdfs:label "release start frame property constraint"@en ;
+    sh:datatype xsd:nonNegativeInteger ;
+    sh:maxCount 1 ;
+    sh:message "Release start frame constraint: at most 1 value(s) are permitted; values must use the nonNegativeInteger datatype."@en ;
+    sh:name "release start frame property constraint"@en ;
+    sh:path modaudio:releaseStartFrame ;
+    sh:severity sh:Violation .
+
+modshape:SignalRegionShape-startFrameInclusive-PropertyShape-10 a sh:PropertyShape ;
+    rdfs:label "start frame inclusive property constraint"@en ;
+    sh:datatype xsd:nonNegativeInteger ;
+    sh:maxCount 1 ;
+    sh:message "Start frame inclusive constraint: exactly 1 value(s) are required; values must use the nonNegativeInteger datatype."@en ;
+    sh:minCount 1 ;
+    sh:name "start frame inclusive property constraint"@en ;
+    sh:path modaudio:startFrameInclusive ;
+    sh:severity sh:Violation .
+
+modshape:SustainLoopRegionShape-SPARQLConstraint-01 rdfs:label "sustain loop region shape sparqlconstraint 01"@en ;
+    sh:message "A loop crossfade cannot be longer than the loop interval."@en ;
+    sh:name "sustain loop region shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modaudio: <https://w3id.org/modavis/ontology/audio#>
+      SELECT $this WHERE {
+        $this modaudio:startFrameInclusive ?start ;
+              modaudio:endFrameExclusive ?end ;
+              modaudio:crossfadeFrames ?crossfade .
+        FILTER (?crossfade > (?end - ?start))
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:SustainLoopRegionShape-crossfadeFrames-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "crossfade frames property constraint"@en ;
+    sh:datatype xsd:nonNegativeInteger ;
+    sh:maxCount 1 ;
+    sh:message "Crossfade frames constraint: at most 1 value(s) are permitted; values must use the nonNegativeInteger datatype."@en ;
+    sh:name "crossfade frames property constraint"@en ;
+    sh:path modaudio:crossfadeFrames ;
+    sh:severity sh:Violation .
+
+modshape:TuningEntryShape-logicalControl-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "logical control property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Logical control constraint: exactly 1 value(s) are required; values must have node kind IRI."@en ;
+    sh:minCount 1 ;
+    sh:name "logical control property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modaudio:logicalControl ;
+    sh:severity sh:Violation .
+
+modshape:TuningEntryShape-soundingComponent-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "sounding component property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Sounding component constraint: exactly 1 value(s) are required; values must have node kind IRI."@en ;
+    sh:minCount 1 ;
+    sh:name "sounding component property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modaudio:soundingComponent ;
+    sh:severity sh:Violation .
+
+modshape:TuningEntryShape-targetFrequencyHz-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "target frequency hz property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:message "A tuning entry requires one positive target frequency in hertz."@en ;
+    sh:minCount 1 ;
+    sh:minExclusive 0 ;
+    sh:name "target frequency hz property constraint"@en ;
+    sh:path modaudio:targetFrequencyHz ;
+    sh:severity sh:Violation .
+
+modshape:TuningEntryShape-tuningOffsetCents-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "tuning offset cents property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:message "Tuning offset cents constraint: at most 1 value(s) are permitted; values must use the decimal datatype."@en ;
+    sh:name "tuning offset cents property constraint"@en ;
+    sh:path modaudio:tuningOffsetCents ;
+    sh:severity sh:Violation .
+
+modshape:TuningEntryShape-xone-Alternative-NodeShape-01 a sh:NodeShape ;
+    rdfs:label "tuning entry shape xone alternative node shape 01"@en ;
+    sh:name "tuning entry shape xone alternative node shape 01"@en ;
+    sh:property modshape:TuningEntryShape-soundingComponent-PropertyShape-03 ;
+    sh:severity sh:Violation .
+
+modshape:TuningEntryShape-xone-Alternative-NodeShape-02 a sh:NodeShape ;
+    rdfs:label "tuning entry shape xone alternative node shape 02"@en ;
+    sh:name "tuning entry shape xone alternative node shape 02"@en ;
+    sh:property modshape:TuningEntryShape-logicalControl-PropertyShape-04 ;
+    sh:severity sh:Violation .
+
+modshape:TuningMapShape-hasTuningReference-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "has tuning reference property constraint"@en ;
+    sh:class modaudio:TuningReference ;
+    sh:maxCount 1 ;
+    sh:message "Has tuning reference constraint: at most 1 value(s) are permitted; values must be instances of TuningReference."@en ;
+    sh:name "has tuning reference property constraint"@en ;
+    sh:path modaudio:hasTuningReference ;
+    sh:severity sh:Violation .
+
+modshape:TuningMapShape-tuningEntries-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "tuning entries property constraint"@en ;
+    sh:class modaudio:TuningEntry ;
+    sh:message "Tuning entries constraint: at least 1 value(s) are required; values must be instances of TuningEntry."@en ;
+    sh:minCount 1 ;
+    sh:name "tuning entries property constraint"@en ;
+    sh:path modaudio:tuningEntries ;
+    sh:severity sh:Violation .
+
+modshape:TuningMapShape-tuningSystem-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "tuning system property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Tuning system constraint: at most 1 value(s) are permitted; values must have node kind IRI."@en ;
+    sh:name "tuning system property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modaudio:tuningSystem ;
+    sh:severity sh:Violation .
+
+modshape:TuningReferenceShape-referenceFrequencyHz-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "reference frequency hz property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:message "A tuning reference requires one positive reference frequency in hertz."@en ;
+    sh:minCount 1 ;
+    sh:minExclusive 0 ;
+    sh:name "reference frequency hz property constraint"@en ;
+    sh:path modaudio:referenceFrequencyHz ;
+    sh:severity sh:Violation .
+
+modshape:TuningReferenceShape-referencePitchDesignation-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "reference pitch designation property constraint"@en ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:message "Reference pitch designation constraint: exactly 1 value(s) are required; values must use the string datatype; lexical length must be at least 1."@en ;
+    sh:minCount 1 ;
+    sh:minLength 1 ;
+    sh:name "reference pitch designation property constraint"@en ;
+    sh:path modaudio:referencePitchDesignation ;
+    sh:severity sh:Violation .

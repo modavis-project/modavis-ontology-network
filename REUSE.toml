@@ -1,0 +1,15 @@
+version = 1
+SPDX-PackageName = "MODAVIS Ontology Network"
+SPDX-PackageDownloadLocation = "https://github.com/modavis-project/modavis-ontology-network"
+
+[[annotations]]
+path = ["ontology/**", "vocab/**", "shapes/**", "examples/**", "context/**", "config/**", "docs/**", "publication-preview/**", "w3id/README.md", ".zenodo.json", "AUTHORS.md", "CHANGELOG.md", "CITATION.cff", "CONTRIBUTING.md", "DESIGN.md", "GOVERNANCE.md", "LICENSE", "README.md", "SECURITY.md", "VERSION", "catalog-v001.xml"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Dominik Ukolov and contributors"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+[[annotations]]
+path = [".github/**", "scripts/**", "tests/**", "w3id/.htaccess", ".gitignore", "LICENSE-CODE", "REUSE.toml", "requirements-dev.in", "requirements-dev.txt"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Dominik Ukolov and contributors"
+SPDX-License-Identifier = "Apache-2.0"

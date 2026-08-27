@@ -1,0 +1,31 @@
+@prefix modavis: <https://w3id.org/modavis/ontology/core#> .
+@prefix modpubshape: <https://w3id.org/modavis/shapes/publication/0.1.0#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+modpubshape:LegacyMDVSCompatibilityShape a sh:NodeShape ;
+    rdfs:label "legacy mdvscompatibility shape"@en ;
+    sh:name "legacy mdvscompatibility shape"@en ;
+    sh:property modpubshape:LegacyMDVSCompatibilityShape-mdvsIdentifier-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf modavis:mdvsIdentifier .
+
+modpubshape:ManagedResourceHttpsIdentityShape a sh:NodeShape ;
+    rdfs:label "managed resource https identity shape"@en ;
+    sh:message "A MODAVIS-managed public record requires a stable HTTPS identity IRI. Legacy MDVS strings are optional compatibility data, not identity."@en ;
+    sh:name "managed resource https identity shape"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:pattern "^https://" ;
+    sh:severity sh:Violation ;
+    sh:targetClass modavis:MODAVISManagedResource .
+
+modpubshape:LegacyMDVSCompatibilityShape-mdvsIdentifier-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "mdvs identifier property constraint"@en ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:message "When a legacy MDVS v1 identifier is retained, it must use the historical lexical form MDVS:TYPE:XXXX-XXXX-C. This does not establish uniqueness, allocation authority, or persistent-identifier status."@en ;
+    sh:name "mdvs identifier property constraint"@en ;
+    sh:path modavis:mdvsIdentifier ;
+    sh:pattern "^MDVS:[A-Z]{4}:[0-9A-HJKMNP-TV-Z]{4}-[0-9A-HJKMNP-TV-Z]{4}-[0-9A-HJKMNP-TV-Z]$" ;
+    sh:severity sh:Violation .

@@ -1,0 +1,6 @@
+@prefix ex: <https://example.org/modavis/invalid/knowledge-identity/> .
+@prefix modheritage: <https://w3id.org/modavis/ontology/heritage#> .
+@prefix modinst: <https://w3id.org/modavis/ontology/instrument#> .
+
+ex:collapsed-resource a modheritage:CuratedKnowledgeCollection,
+                        modinst:MusicalInstrument .

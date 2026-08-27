@@ -1,0 +1,108 @@
+{
+  "status": "released",
+  "policy": "Every external semantic dependency used normatively must be pinned to an immutable specification or release artifact before publication.",
+  "dependencies": [
+    {
+      "name": "RDF 1.1 Concepts and Abstract Syntax",
+      "namespace": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "role": "normative platform vocabulary",
+      "pin": "W3C Recommendation 25 February 2014"
+    },
+    {
+      "name": "OWL 2 Web Ontology Language",
+      "namespace": "http://www.w3.org/2002/07/owl#",
+      "role": "normative ontology language",
+      "pin": "W3C Recommendation 11 December 2012"
+    },
+    {
+      "name": "SKOS Simple Knowledge Organization System",
+      "namespace": "http://www.w3.org/2004/02/skos/core#",
+      "role": "normative concept-scheme model",
+      "pin": "W3C Recommendation 18 August 2009"
+    },
+    {
+      "name": "PROV-O",
+      "namespace": "http://www.w3.org/ns/prov#",
+      "role": "normative provenance reuse",
+      "pin": "W3C Recommendation 30 April 2013"
+    },
+    {
+      "name": "Web Annotation Vocabulary",
+      "namespace": "http://www.w3.org/ns/oa#",
+      "role": "normative selector reuse",
+      "pin": "W3C Recommendation 23 February 2017"
+    },
+    {
+      "name": "SHACL",
+      "namespace": "http://www.w3.org/ns/shacl#",
+      "role": "normative validation language",
+      "pin": "W3C Recommendation 20 July 2017"
+    },
+    {
+      "name": "JSON-LD 1.1",
+      "namespace": "https://www.w3.org/ns/json-ld#",
+      "role": "normative context and distribution syntax",
+      "pin": "W3C Recommendation 16 July 2020"
+    },
+    {
+      "name": "Data Catalog Vocabulary (DCAT) 3",
+      "namespace": "http://www.w3.org/ns/dcat#",
+      "role": "release distribution catalog",
+      "pin": "W3C Recommendation 22 August 2024"
+    },
+    {
+      "name": "RDF Dataset Canonicalization (RDFC-1.0)",
+      "namespace": null,
+      "role": "normative canonicalization contract for fixed knowledge-snapshot materializations",
+      "pin": "W3C Recommendation 21 May 2024; https://www.w3.org/TR/2024/REC-rdf-canon-20240521/"
+    },
+    {
+      "name": "SPDX 2.2 RDF terms",
+      "namespace": "http://spdx.org/rdf/terms#",
+      "role": "qualified distribution checksums in the DCAT catalog",
+      "pin": "SPDX Specification 2.2.2"
+    },
+    {
+      "name": "CIDOC CRM",
+      "namespace": null,
+      "role": "candidate external alignment",
+      "pin": null,
+      "status": "deferred beyond 0.1.0 pending exact-version mapping review"
+    },
+    {
+      "name": "Pipe Organ Ontology (PON)",
+      "namespace": null,
+      "role": "candidate external alignment",
+      "pin": null,
+      "status": "deferred beyond 0.1.0 pending exact-version mapping review"
+    },
+    {
+      "name": "MODAVIS Release 1.3 operational vocabularies",
+      "namespace": null,
+      "role": "implementation background, not a normative dependency",
+      "pin": null,
+      "status": "no immutable public release vocabulary artifact is identified; no normative mapping is claimed in 0.1.0"
+    },
+    {
+      "name": "Virtual Acoustic Object (VAO) Standard 0.4.0",
+      "namespace": "https://w3id.org/modavis/vao/",
+      "role": "downstream co-release application and container profile",
+      "pin": "https://w3id.org/modavis/vao/0.4.0/specification-bundle",
+      "status": "not imported by MODAVIS; the VAO-owned 0.4.0 mapping binds to MODAVIS 0.1.0 and is released only after both immutable source tags exist"
+    },
+    {
+      "name": "ECHOES Heritage Digital Twin Ontology (HDTO) 1.1",
+      "namespace": "http://isl.ics.forth.gr/ontology/echoes/",
+      "role": "non-normative public design input and future interoperability candidate",
+      "pin": "Git commit 17ce0edc8cea407f67351498cc5e3ba16a58c0eb and Zenodo DOI 10.5281/zenodo.20445938",
+      "status": "reviewed but not imported, copied, mapped, or required by MODAVIS 0.1.0; repository-level vocabulary licensing must be clarified before any term-level reuse"
+    },
+    {
+      "name": "RDF 1.2 and SHACL 1.2 draft families",
+      "namespace": null,
+      "role": "monitored future standards",
+      "pin": null,
+      "status": "not normative for 0.1.0; RDF 1.2 is a Candidate Recommendation and SHACL 1.2 is a Working Draft, while this release remains on RDF 1.1 and SHACL 2017"
+    }
+  ]
+}

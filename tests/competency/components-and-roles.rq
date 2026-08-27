@@ -1,0 +1,13 @@
+PREFIX modavis: <https://w3id.org/modavis/ontology/core#>
+PREFIX modinst: <https://w3id.org/modavis/ontology/instrument#>
+
+SELECT ?instrument ?component ?role WHERE {
+  ?instrument a modinst:MusicalInstrument ;
+              modinst:hasComponent ?component .
+  OPTIONAL {
+    ?assignment a modinst:FunctionalRoleAssignment ;
+                modinst:roleOfComponent ?component ;
+                modinst:assignedRole ?role .
+  }
+}
+ORDER BY ?instrument ?component ?role

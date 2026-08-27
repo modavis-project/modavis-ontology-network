@@ -1,0 +1,686 @@
+@prefix modassert: <https://w3id.org/modavis/ontology/assertion#> .
+@prefix modavis: <https://w3id.org/modavis/ontology/core#> .
+@prefix modevidence: <https://w3id.org/modavis/ontology/evidence#> .
+@prefix modheritage: <https://w3id.org/modavis/ontology/heritage#> .
+@prefix modmedia: <https://w3id.org/modavis/ontology/media#> .
+@prefix modprov: <https://w3id.org/modavis/ontology/provenance#> .
+@prefix modshape: <https://w3id.org/modavis/shapes/exchange/0.1.0#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix recognitionstatus: <https://w3id.org/modavis/vocab/heritage-recognition-status/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+modshape:CuratedKnowledgeCollectionShape a sh:NodeShape ;
+    rdfs:label "curated knowledge collection shape"@en ;
+    sh:name "curated knowledge collection shape"@en ;
+    sh:property modshape:CuratedKnowledgeCollectionShape-curatedBy-PropertyShape-02,
+        modshape:CuratedKnowledgeCollectionShape-currentSnapshot-PropertyShape-04,
+        modshape:CuratedKnowledgeCollectionShape-documentsResource-PropertyShape-01,
+        modshape:CuratedKnowledgeCollectionShape-hasKnowledgeSnapshot-PropertyShape-03 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:CuratedKnowledgeCollectionShape-SPARQLConstraint-01,
+        modshape:CuratedKnowledgeCollectionShape-SPARQLConstraint-02 ;
+    sh:targetClass modheritage:CuratedKnowledgeCollection .
+
+modshape:HeritageRecognitionShape a sh:NodeShape ;
+    rdfs:label "heritage recognition shape"@en ;
+    sh:name "heritage recognition shape"@en ;
+    sh:property modshape:HeritageRecognitionShape-hasEvidenceRelation-PropertyShape-07,
+        modshape:HeritageRecognitionShape-recognitionAssignedBy-PropertyShape-02,
+        modshape:HeritageRecognitionShape-recognitionBasis-PropertyShape-03,
+        modshape:HeritageRecognitionShape-recognitionRecordedBy-PropertyShape-06,
+        modshape:HeritageRecognitionShape-recognitionStatus-PropertyShape-04,
+        modshape:HeritageRecognitionShape-recognizesResource-PropertyShape-01,
+        modshape:HeritageRecognitionShape-supersedesRecognition-PropertyShape-08,
+        modshape:HeritageRecognitionShape-validDuring-PropertyShape-05 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:HeritageRecognitionShape-SPARQLConstraint-01,
+        modshape:HeritageRecognitionShape-SPARQLConstraint-02,
+        modshape:HeritageRecognitionShape-SPARQLConstraint-03 ;
+    sh:targetClass modheritage:HeritageRecognition .
+
+modshape:HistoricalClaimReviewShape a sh:NodeShape ;
+    rdfs:label "historical claim review shape"@en ;
+    sh:name "historical claim review shape"@en ;
+    sh:property modshape:HistoricalClaimReviewShape-producesAssertion-PropertyShape-03,
+        modshape:HistoricalClaimReviewShape-reviewRationale-PropertyShape-04,
+        modshape:HistoricalClaimReviewShape-reviewSubject-PropertyShape-01,
+        modshape:HistoricalClaimReviewShape-reviewsAssertion-PropertyShape-02 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:HistoricalClaimReviewShape-SPARQLConstraint-01,
+        modshape:HistoricalClaimReviewShape-SPARQLConstraint-02 ;
+    sh:targetClass modheritage:HistoricalClaimReview .
+
+modshape:KnowledgeIdentityBoundaryShape a sh:NodeShape ;
+    rdfs:label "knowledge identity boundary shape"@en ;
+    sh:name "knowledge identity boundary shape"@en ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:KnowledgeIdentityBoundaryShape-SPARQLConstraint-01 ;
+    sh:targetClass modheritage:CuratedKnowledgeCollection,
+        modheritage:KnowledgeSnapshot .
+
+modshape:KnowledgeMaintenanceActivityShape a sh:NodeShape ;
+    rdfs:label "knowledge maintenance activity shape"@en ;
+    sh:name "knowledge maintenance activity shape"@en ;
+    sh:property modshape:KnowledgeMaintenanceActivityShape-addedAssertion-PropertyShape-04,
+        modshape:KnowledgeMaintenanceActivityShape-maintainedCollection-PropertyShape-01,
+        modshape:KnowledgeMaintenanceActivityShape-previousSnapshot-PropertyShape-02,
+        modshape:KnowledgeMaintenanceActivityShape-removedAssertion-PropertyShape-05,
+        modshape:KnowledgeMaintenanceActivityShape-resultingSnapshot-PropertyShape-03 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:KnowledgeMaintenanceActivityShape-SPARQLConstraint-01,
+        modshape:KnowledgeMaintenanceActivityShape-SPARQLConstraint-02,
+        modshape:KnowledgeMaintenanceActivityShape-SPARQLConstraint-03,
+        modshape:KnowledgeMaintenanceActivityShape-SPARQLConstraint-04 ;
+    sh:targetClass modheritage:KnowledgeMaintenanceActivity .
+
+modshape:KnowledgeSnapshotShape a sh:NodeShape ;
+    rdfs:label "knowledge snapshot shape"@en ;
+    sh:name "knowledge snapshot shape"@en ;
+    sh:property modshape:KnowledgeSnapshotShape-canonicalMaterialization-PropertyShape-09,
+        modshape:KnowledgeSnapshotShape-canonicalizationProfile-PropertyShape-04,
+        modshape:KnowledgeSnapshotShape-includesAssertion-PropertyShape-02,
+        modshape:KnowledgeSnapshotShape-materializedAs-PropertyShape-06,
+        modshape:KnowledgeSnapshotShape-snapshotCreatedAt-PropertyShape-07,
+        modshape:KnowledgeSnapshotShape-snapshotCreatedBy-PropertyShape-08,
+        modshape:KnowledgeSnapshotShape-snapshotGraphIri-PropertyShape-05,
+        modshape:KnowledgeSnapshotShape-snapshotOfCollection-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:KnowledgeSnapshotShape-SPARQLConstraint-01,
+        modshape:KnowledgeSnapshotShape-SPARQLConstraint-02 ;
+    sh:targetClass modheritage:KnowledgeSnapshot .
+
+modshape:CuratedKnowledgeCollectionShape-SPARQLConstraint-01 rdfs:label "curated knowledge collection shape sparqlconstraint 01"@en,
+        "current snapshot membership constraint"@en ;
+    sh:message "The current snapshot must also be explicitly retained by the curated knowledge collection."@en ;
+    sh:name "curated knowledge collection shape sparqlconstraint 01"@en,
+        "current snapshot membership constraint"@en ;
+    sh:select """
+    PREFIX modheritage: <https://w3id.org/modavis/ontology/heritage#>
+    SELECT $this WHERE {
+      $this modheritage:currentSnapshot ?snapshot .
+      FILTER NOT EXISTS { $this modheritage:hasKnowledgeSnapshot ?snapshot . }
+    }
+  """ ;
+    sh:severity sh:Violation .
+
+modshape:CuratedKnowledgeCollectionShape-SPARQLConstraint-02 rdfs:label "curated knowledge collection shape sparqlconstraint 02"@en,
+        "retained snapshot backlink constraint"@en ;
+    sh:message "Every retained snapshot must identify the same curated knowledge collection through snapshotOfCollection."@en ;
+    sh:name "curated knowledge collection shape sparqlconstraint 02"@en,
+        "retained snapshot backlink constraint"@en ;
+    sh:select """
+    PREFIX modheritage: <https://w3id.org/modavis/ontology/heritage#>
+    SELECT $this WHERE {
+      $this modheritage:hasKnowledgeSnapshot ?snapshot .
+      FILTER NOT EXISTS { ?snapshot modheritage:snapshotOfCollection $this . }
+    }
+  """ ;
+    sh:severity sh:Violation .
+
+modshape:CuratedKnowledgeCollectionShape-curatedBy-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "collection curator property constraint"@en,
+        "curated by property constraint"@en ;
+    sh:class modavis:Agent ;
+    sh:message "A curated knowledge collection must identify at least one accountable curator."@en ;
+    sh:minCount 1 ;
+    sh:name "collection curator property constraint"@en,
+        "curated by property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modheritage:curatedBy ;
+    sh:severity sh:Violation .
+
+modshape:CuratedKnowledgeCollectionShape-currentSnapshot-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "current knowledge snapshot property constraint"@en,
+        "current snapshot property constraint"@en ;
+    sh:class modheritage:KnowledgeSnapshot ;
+    sh:maxCount 1 ;
+    sh:message "A curated knowledge collection must identify exactly one retained snapshot as current."@en ;
+    sh:minCount 1 ;
+    sh:name "current knowledge snapshot property constraint"@en,
+        "current snapshot property constraint"@en ;
+    sh:path modheritage:currentSnapshot ;
+    sh:severity sh:Violation .
+
+modshape:CuratedKnowledgeCollectionShape-documentsResource-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "documented resource property constraint"@en,
+        "documents resource property constraint"@en ;
+    sh:class modavis:IdentifiedResource ;
+    sh:message "A curated knowledge collection must identify at least one documentary subject."@en ;
+    sh:minCount 1 ;
+    sh:name "documented resource property constraint"@en,
+        "documents resource property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modheritage:documentsResource ;
+    sh:severity sh:Violation .
+
+modshape:CuratedKnowledgeCollectionShape-hasKnowledgeSnapshot-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "has knowledge snapshot property constraint"@en,
+        "retained knowledge snapshot property constraint"@en ;
+    sh:class modheritage:KnowledgeSnapshot ;
+    sh:message "A curated knowledge collection must retain at least one fixed knowledge snapshot."@en ;
+    sh:minCount 1 ;
+    sh:name "has knowledge snapshot property constraint"@en,
+        "retained knowledge snapshot property constraint"@en ;
+    sh:path modheritage:hasKnowledgeSnapshot ;
+    sh:severity sh:Violation .
+
+modshape:HeritageRecognitionShape-SPARQLConstraint-01 rdfs:label "heritage recognition evidence consistency constraint"@en,
+        "heritage recognition shape sparqlconstraint 01"@en ;
+    sh:message "Every heritage-recognition evidence relation must identify that recognition as the resource it evaluates."@en ;
+    sh:name "heritage recognition evidence consistency constraint"@en,
+        "heritage recognition shape sparqlconstraint 01"@en ;
+    sh:select """
+    PREFIX modevidence: <https://w3id.org/modavis/ontology/evidence#>
+    PREFIX modheritage: <https://w3id.org/modavis/ontology/heritage#>
+    SELECT $this WHERE {
+      $this modheritage:hasEvidenceRelation ?relation .
+      FILTER NOT EXISTS { ?relation modevidence:evaluates $this . }
+    }
+  """ ;
+    sh:severity sh:Violation .
+
+modshape:HeritageRecognitionShape-SPARQLConstraint-02 rdfs:label "heritage recognition shape sparqlconstraint 02"@en,
+        "heritage recognition supersession cycle constraint"@en ;
+    sh:message "A heritage-recognition supersession chain cannot contain a cycle."@en ;
+    sh:name "heritage recognition shape sparqlconstraint 02"@en,
+        "heritage recognition supersession cycle constraint"@en ;
+    sh:select """
+    PREFIX modheritage: <https://w3id.org/modavis/ontology/heritage#>
+    SELECT $this WHERE { $this modheritage:supersedesRecognition+ $this . }
+  """ ;
+    sh:severity sh:Violation .
+
+modshape:HeritageRecognitionShape-SPARQLConstraint-03 rdfs:label "heritage recognition shape sparqlconstraint 03"@en,
+        "heritage recognition supersession subject constraint"@en ;
+    sh:message "A heritage recognition may supersede only a recognition of the same resource."@en ;
+    sh:name "heritage recognition shape sparqlconstraint 03"@en,
+        "heritage recognition supersession subject constraint"@en ;
+    sh:select """
+    PREFIX modheritage: <https://w3id.org/modavis/ontology/heritage#>
+    SELECT $this WHERE {
+      $this modheritage:recognizesResource ?resource ;
+            modheritage:supersedesRecognition ?earlier .
+      FILTER NOT EXISTS { ?earlier modheritage:recognizesResource ?resource . }
+    }
+  """ ;
+    sh:severity sh:Violation .
+
+modshape:HeritageRecognitionShape-hasEvidenceRelation-PropertyShape-07 a sh:PropertyShape ;
+    rdfs:label "has evidence relation property constraint"@en,
+        "heritage recognition evidence property constraint"@en ;
+    sh:class modevidence:EvidenceRelation ;
+    sh:message "A heritage recognition must cite at least one qualified evidence relation."@en ;
+    sh:minCount 1 ;
+    sh:name "has evidence relation property constraint"@en,
+        "heritage recognition evidence property constraint"@en ;
+    sh:path modheritage:hasEvidenceRelation ;
+    sh:severity sh:Violation .
+
+modshape:HeritageRecognitionShape-recognitionAssignedBy-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "recognition assigned by property constraint"@en,
+        "recognition assigning agent property constraint"@en ;
+    sh:class modavis:Agent ;
+    sh:message "A heritage recognition must identify at least one accountable assigning agent."@en ;
+    sh:minCount 1 ;
+    sh:name "recognition assigned by property constraint"@en,
+        "recognition assigning agent property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modheritage:recognitionAssignedBy ;
+    sh:severity sh:Violation .
+
+modshape:HeritageRecognitionShape-recognitionBasis-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "recognition basis property constraint"@en ;
+    sh:class modavis:IdentifiedResource ;
+    sh:message "A heritage recognition must identify at least one citable criterion, policy, register, or other basis."@en ;
+    sh:minCount 1 ;
+    sh:name "recognition basis property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modheritage:recognitionBasis ;
+    sh:severity sh:Violation .
+
+modshape:HeritageRecognitionShape-recognitionRecordedBy-PropertyShape-06 a sh:PropertyShape ;
+    rdfs:label "recognition recorded by property constraint"@en,
+        "recognition recording activity property constraint"@en ;
+    sh:class modprov:ProcessingActivity ;
+    sh:maxCount 1 ;
+    sh:message "A heritage recognition must identify exactly one activity that created the MODAVIS record."@en ;
+    sh:minCount 1 ;
+    sh:name "recognition recorded by property constraint"@en,
+        "recognition recording activity property constraint"@en ;
+    sh:path modheritage:recognitionRecordedBy ;
+    sh:severity sh:Violation .
+
+modshape:HeritageRecognitionShape-recognitionStatus-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "recognition status property constraint"@en ;
+    sh:in ( recognitionstatus:proposed recognitionstatus:recognized recognitionstatus:declined recognitionstatus:withdrawn ) ;
+    sh:maxCount 1 ;
+    sh:message "A heritage recognition must use exactly one status from the governed MODAVIS recognition-status scheme."@en ;
+    sh:minCount 1 ;
+    sh:name "recognition status property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modheritage:recognitionStatus ;
+    sh:severity sh:Violation .
+
+modshape:HeritageRecognitionShape-recognizesResource-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "recognized resource property constraint"@en,
+        "recognizes resource property constraint"@en ;
+    sh:class modavis:IdentifiedResource ;
+    sh:maxCount 1 ;
+    sh:message "A heritage recognition must identify exactly one recognized resource IRI."@en ;
+    sh:minCount 1 ;
+    sh:name "recognized resource property constraint"@en,
+        "recognizes resource property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modheritage:recognizesResource ;
+    sh:severity sh:Violation .
+
+modshape:HeritageRecognitionShape-supersedesRecognition-PropertyShape-08 a sh:PropertyShape ;
+    rdfs:label "superseded recognition property constraint"@en,
+        "supersedes recognition property constraint"@en ;
+    sh:class modheritage:HeritageRecognition ;
+    sh:message "A superseded recognition must be another heritage recognition."@en ;
+    sh:name "superseded recognition property constraint"@en,
+        "supersedes recognition property constraint"@en ;
+    sh:path modheritage:supersedesRecognition ;
+    sh:severity sh:Violation .
+
+modshape:HeritageRecognitionShape-validDuring-PropertyShape-05 a sh:PropertyShape ;
+    rdfs:label "recognition validity property constraint"@en,
+        "valid during property constraint"@en ;
+    sh:class modavis:TimeSpan ;
+    sh:maxCount 1 ;
+    sh:message "A heritage recognition must carry exactly one explicit validity time span."@en ;
+    sh:minCount 1 ;
+    sh:name "recognition validity property constraint"@en,
+        "valid during property constraint"@en ;
+    sh:path modavis:validDuring ;
+    sh:severity sh:Violation .
+
+modshape:HistoricalClaimReviewShape-SPARQLConstraint-01 rdfs:label "historical claim review shape sparqlconstraint 01"@en,
+        "historical claim review subject consistency constraint"@en ;
+    sh:message "Every input and conclusion assertion in a historical claim review must assert about the review subject."@en ;
+    sh:name "historical claim review shape sparqlconstraint 01"@en,
+        "historical claim review subject consistency constraint"@en ;
+    sh:select """
+    PREFIX modassert: <https://w3id.org/modavis/ontology/assertion#>
+    PREFIX modheritage: <https://w3id.org/modavis/ontology/heritage#>
+    SELECT $this WHERE {
+      $this modheritage:reviewSubject ?subject .
+      $this (modheritage:reviewsAssertion|modheritage:producesAssertion) ?assertion .
+      FILTER NOT EXISTS { ?assertion modassert:assertsSubject ?subject . }
+    }
+  """ ;
+    sh:severity sh:Violation .
+
+modshape:HistoricalClaimReviewShape-SPARQLConstraint-02 rdfs:label "historical claim review conclusion lineage constraint"@en,
+        "historical claim review shape sparqlconstraint 02"@en ;
+    sh:message "The conclusion must be distinct from every input assertion and must identify the historical claim review as its generating activity."@en ;
+    sh:name "historical claim review conclusion lineage constraint"@en,
+        "historical claim review shape sparqlconstraint 02"@en ;
+    sh:select """
+    PREFIX modassert: <https://w3id.org/modavis/ontology/assertion#>
+    PREFIX modheritage: <https://w3id.org/modavis/ontology/heritage#>
+    SELECT $this WHERE {
+      $this modheritage:producesAssertion ?conclusion .
+      FILTER (
+        EXISTS { $this modheritage:reviewsAssertion ?conclusion } ||
+        NOT EXISTS { ?conclusion modassert:generatedBy $this }
+      )
+    }
+  """ ;
+    sh:severity sh:Violation .
+
+modshape:HistoricalClaimReviewShape-producesAssertion-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "historical review conclusion property constraint"@en,
+        "produces assertion property constraint"@en ;
+    sh:class modassert:Assertion ;
+    sh:maxCount 1 ;
+    sh:message "A historical claim review must identify exactly one distinct conclusion assertion."@en ;
+    sh:minCount 1 ;
+    sh:name "historical review conclusion property constraint"@en,
+        "produces assertion property constraint"@en ;
+    sh:path modheritage:producesAssertion ;
+    sh:severity sh:Violation .
+
+modshape:HistoricalClaimReviewShape-reviewRationale-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "historical review rationale property constraint"@en,
+        "review rationale property constraint"@en ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:message "A historical claim review must record exactly one non-empty xsd:string rationale."@en ;
+    sh:minCount 1 ;
+    sh:minLength 1 ;
+    sh:name "historical review rationale property constraint"@en,
+        "review rationale property constraint"@en ;
+    sh:path modheritage:reviewRationale ;
+    sh:severity sh:Violation .
+
+modshape:HistoricalClaimReviewShape-reviewSubject-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "historical claim review subject property constraint"@en,
+        "review subject property constraint"@en ;
+    sh:class modavis:IdentifiedResource ;
+    sh:maxCount 1 ;
+    sh:message "A historical claim review must identify exactly one reviewed subject."@en ;
+    sh:minCount 1 ;
+    sh:name "historical claim review subject property constraint"@en,
+        "review subject property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modheritage:reviewSubject ;
+    sh:severity sh:Violation .
+
+modshape:HistoricalClaimReviewShape-reviewsAssertion-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "reviewed historical assertion property constraint"@en,
+        "reviews assertion property constraint"@en ;
+    sh:class modassert:Assertion ;
+    sh:message "A historical claim review must identify at least one input assertion."@en ;
+    sh:minCount 1 ;
+    sh:name "reviewed historical assertion property constraint"@en,
+        "reviews assertion property constraint"@en ;
+    sh:path modheritage:reviewsAssertion ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeIdentityBoundaryShape-SPARQLConstraint-01 rdfs:label "knowledge identity boundary constraint"@en,
+        "knowledge identity boundary shape sparqlconstraint 01"@en ;
+    sh:message "A curated knowledge collection or fixed knowledge snapshot cannot also be a musical instrument, digital asset, digital surrogate, virtual-instrument product, version, or package."@en ;
+    sh:name "knowledge identity boundary constraint"@en,
+        "knowledge identity boundary shape sparqlconstraint 01"@en ;
+    sh:select """
+    PREFIX modinst: <https://w3id.org/modavis/ontology/instrument#>
+    PREFIX modmedia: <https://w3id.org/modavis/ontology/media#>
+    PREFIX modvmi: <https://w3id.org/modavis/ontology/virtual-instrument#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT DISTINCT $this WHERE {
+      $this a ?type .
+      ?type rdfs:subClassOf* ?forbiddenLayer .
+      FILTER (?forbiddenLayer IN (
+        modinst:MusicalInstrument,
+        modmedia:DigitalAsset,
+        modmedia:DigitalSurrogate,
+        modvmi:VirtualInstrumentProduct,
+        modvmi:VirtualInstrumentVersion,
+        modvmi:VirtualInstrumentPackage
+      ))
+    }
+  """ ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeMaintenanceActivityShape-SPARQLConstraint-01 rdfs:label "knowledge maintenance activity shape sparqlconstraint 01"@en,
+        "knowledge snapshot lineage consistency constraint"@en ;
+    sh:message "Previous and resulting snapshots must be distinct states of the maintained collection, and the resulting snapshot must identify this generating activity."@en ;
+    sh:name "knowledge maintenance activity shape sparqlconstraint 01"@en,
+        "knowledge snapshot lineage consistency constraint"@en ;
+    sh:select """
+    PREFIX modheritage: <https://w3id.org/modavis/ontology/heritage#>
+    SELECT $this WHERE {
+      $this modheritage:maintainedCollection ?collection ;
+            modheritage:resultingSnapshot ?result .
+      FILTER (
+        NOT EXISTS { ?result modheritage:snapshotOfCollection ?collection } ||
+        NOT EXISTS { ?result modheritage:snapshotCreatedBy $this } ||
+        EXISTS { $this modheritage:previousSnapshot ?result } ||
+        EXISTS {
+          $this modheritage:previousSnapshot ?previous .
+          FILTER NOT EXISTS { ?previous modheritage:snapshotOfCollection ?collection }
+        }
+      )
+    }
+  """ ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeMaintenanceActivityShape-SPARQLConstraint-02 rdfs:label "knowledge maintenance activity shape sparqlconstraint 02"@en,
+        "knowledge snapshot delta consistency constraint"@en ;
+    sh:message "The added and removed assertion lists must be non-empty as a combined delta and must exactly match the difference between the previous and resulting snapshots."@en ;
+    sh:name "knowledge maintenance activity shape sparqlconstraint 02"@en,
+        "knowledge snapshot delta consistency constraint"@en ;
+    sh:select """
+    PREFIX modheritage: <https://w3id.org/modavis/ontology/heritage#>
+    SELECT $this WHERE {
+      { FILTER NOT EXISTS { $this (modheritage:addedAssertion|modheritage:removedAssertion) ?change . } }
+      UNION {
+        $this modheritage:addedAssertion ?assertion ;
+              modheritage:resultingSnapshot ?result .
+        FILTER NOT EXISTS { ?result modheritage:includesAssertion ?assertion . }
+      }
+      UNION {
+        $this modheritage:addedAssertion ?assertion ;
+              modheritage:previousSnapshot ?previous .
+        ?previous modheritage:includesAssertion ?assertion .
+      }
+      UNION {
+        $this modheritage:removedAssertion ?assertion .
+        FILTER NOT EXISTS {
+          $this modheritage:previousSnapshot ?previous .
+          ?previous modheritage:includesAssertion ?assertion .
+        }
+      }
+      UNION {
+        $this modheritage:removedAssertion ?assertion ;
+              modheritage:resultingSnapshot ?result .
+        ?result modheritage:includesAssertion ?assertion .
+      }
+      UNION {
+        $this modheritage:resultingSnapshot ?result .
+        ?result modheritage:includesAssertion ?assertion .
+        FILTER NOT EXISTS {
+          $this modheritage:previousSnapshot ?previous .
+          ?previous modheritage:includesAssertion ?assertion .
+        }
+        FILTER NOT EXISTS { $this modheritage:addedAssertion ?assertion . }
+      }
+      UNION {
+        $this modheritage:previousSnapshot ?previous ;
+              modheritage:resultingSnapshot ?result .
+        ?previous modheritage:includesAssertion ?assertion .
+        FILTER NOT EXISTS { ?result modheritage:includesAssertion ?assertion . }
+        FILTER NOT EXISTS { $this modheritage:removedAssertion ?assertion . }
+      }
+      UNION {
+        $this modheritage:addedAssertion ?assertion ;
+              modheritage:removedAssertion ?assertion .
+      }
+    }
+  """ ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeMaintenanceActivityShape-SPARQLConstraint-03 rdfs:label "knowledge maintenance activity shape sparqlconstraint 03"@en,
+        "knowledge snapshot revision cycle constraint"@en ;
+    sh:message "A knowledge-snapshot revision chain cannot contain a cycle."@en ;
+    sh:name "knowledge maintenance activity shape sparqlconstraint 03"@en,
+        "knowledge snapshot revision cycle constraint"@en ;
+    sh:select """
+    PREFIX modheritage: <https://w3id.org/modavis/ontology/heritage#>
+    SELECT $this WHERE {
+      $this modheritage:previousSnapshot ?previous ;
+            modheritage:resultingSnapshot ?result .
+      ?result (^modheritage:previousSnapshot/modheritage:resultingSnapshot)+ ?previous .
+    }
+  """ ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeMaintenanceActivityShape-SPARQLConstraint-04 rdfs:label "knowledge maintenance activity shape sparqlconstraint 04"@en,
+        "knowledge snapshot revision chronology constraint"@en ;
+    sh:message "A resulting knowledge snapshot must have a creation time later than its previous snapshot."@en ;
+    sh:name "knowledge maintenance activity shape sparqlconstraint 04"@en,
+        "knowledge snapshot revision chronology constraint"@en ;
+    sh:select """
+    PREFIX modheritage: <https://w3id.org/modavis/ontology/heritage#>
+    SELECT $this WHERE {
+      $this modheritage:previousSnapshot ?previous ;
+            modheritage:resultingSnapshot ?result .
+      ?previous modheritage:snapshotCreatedAt ?previousTime .
+      ?result modheritage:snapshotCreatedAt ?resultTime .
+      FILTER (?resultTime <= ?previousTime)
+    }
+  """ ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeMaintenanceActivityShape-addedAssertion-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "added assertion property constraint"@en ;
+    sh:class modassert:Assertion ;
+    sh:message "Every added resource must be typed as a MODAVIS assertion."@en ;
+    sh:name "added assertion property constraint"@en ;
+    sh:path modheritage:addedAssertion ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeMaintenanceActivityShape-maintainedCollection-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "maintained collection property constraint"@en ;
+    sh:class modheritage:CuratedKnowledgeCollection ;
+    sh:maxCount 1 ;
+    sh:message "A knowledge maintenance activity must identify exactly one maintained collection."@en ;
+    sh:minCount 1 ;
+    sh:name "maintained collection property constraint"@en ;
+    sh:path modheritage:maintainedCollection ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeMaintenanceActivityShape-previousSnapshot-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "previous snapshot property constraint"@en ;
+    sh:class modheritage:KnowledgeSnapshot ;
+    sh:maxCount 1 ;
+    sh:message "A knowledge maintenance activity may identify at most one preceding snapshot."@en ;
+    sh:name "previous snapshot property constraint"@en ;
+    sh:path modheritage:previousSnapshot ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeMaintenanceActivityShape-removedAssertion-PropertyShape-05 a sh:PropertyShape ;
+    rdfs:label "removed assertion property constraint"@en ;
+    sh:class modassert:Assertion ;
+    sh:message "Every removed resource must be typed as a MODAVIS assertion."@en ;
+    sh:name "removed assertion property constraint"@en ;
+    sh:path modheritage:removedAssertion ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeMaintenanceActivityShape-resultingSnapshot-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "resulting snapshot property constraint"@en ;
+    sh:class modheritage:KnowledgeSnapshot ;
+    sh:maxCount 1 ;
+    sh:message "A knowledge maintenance activity must identify exactly one resulting snapshot."@en ;
+    sh:minCount 1 ;
+    sh:name "resulting snapshot property constraint"@en ;
+    sh:path modheritage:resultingSnapshot ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeSnapshotShape-SPARQLConstraint-01 rdfs:label "canonical snapshot materialization media type constraint"@en,
+        "knowledge snapshot shape sparqlconstraint 01"@en ;
+    sh:message "The canonical snapshot materialization must declare media type application/n-quads."@en ;
+    sh:name "canonical snapshot materialization media type constraint"@en,
+        "knowledge snapshot shape sparqlconstraint 01"@en ;
+    sh:select """
+    PREFIX modheritage: <https://w3id.org/modavis/ontology/heritage#>
+    PREFIX modmedia: <https://w3id.org/modavis/ontology/media#>
+    SELECT $this WHERE {
+      $this modheritage:canonicalMaterialization ?bitstream .
+      FILTER NOT EXISTS { ?bitstream modmedia:mediaType "application/n-quads" . }
+    }
+  """ ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeSnapshotShape-SPARQLConstraint-02 rdfs:label "knowledge snapshot self-checksum exclusion constraint"@en,
+        "knowledge snapshot shape sparqlconstraint 02"@en ;
+    sh:message "A knowledge snapshot must not carry a direct checksum; fix the exact canonical materialization bitstream to avoid an ambiguous or self-referential digest."@en ;
+    sh:name "knowledge snapshot self-checksum exclusion constraint"@en,
+        "knowledge snapshot shape sparqlconstraint 02"@en ;
+    sh:select """
+    PREFIX modevidence: <https://w3id.org/modavis/ontology/evidence#>
+    SELECT $this WHERE { $this modevidence:hasChecksum ?checksum . }
+  """ ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeSnapshotShape-canonicalMaterialization-PropertyShape-09 a sh:PropertyShape ;
+    rdfs:label "canonical materialization property constraint"@en,
+        "canonical snapshot materialization property constraint"@en ;
+    sh:class modmedia:Bitstream ;
+    sh:maxCount 1 ;
+    sh:message "A knowledge snapshot must identify exactly one checksum-fixed canonical N-Quads bitstream."@en ;
+    sh:minCount 1 ;
+    sh:name "canonical materialization property constraint"@en,
+        "canonical snapshot materialization property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modheritage:canonicalMaterialization ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeSnapshotShape-canonicalizationProfile-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "canonicalization profile property constraint"@en,
+        "snapshot canonicalization profile property constraint"@en ;
+    sh:hasValue <https://www.w3.org/TR/2024/REC-rdf-canon-20240521/> ;
+    sh:maxCount 1 ;
+    sh:message "A knowledge snapshot must identify exactly the immutable RDFC-1.0 W3C Recommendation as its canonicalization profile."@en ;
+    sh:minCount 1 ;
+    sh:name "canonicalization profile property constraint"@en,
+        "snapshot canonicalization profile property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modheritage:canonicalizationProfile ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeSnapshotShape-includesAssertion-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "includes assertion property constraint"@en,
+        "snapshot assertion membership property constraint"@en ;
+    sh:class modassert:Assertion ;
+    sh:message "A knowledge snapshot must explicitly include at least one assertion."@en ;
+    sh:minCount 1 ;
+    sh:name "includes assertion property constraint"@en,
+        "snapshot assertion membership property constraint"@en ;
+    sh:path modheritage:includesAssertion ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeSnapshotShape-materializedAs-PropertyShape-06 a sh:PropertyShape ;
+    rdfs:label "materialized as property constraint"@en,
+        "snapshot materialization property constraint"@en ;
+    sh:class modmedia:DigitalAsset ;
+    sh:message "Every snapshot materialization must be an identified digital asset."@en ;
+    sh:name "materialized as property constraint"@en,
+        "snapshot materialization property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modheritage:materializedAs ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeSnapshotShape-snapshotCreatedAt-PropertyShape-07 a sh:PropertyShape ;
+    rdfs:label "snapshot created at property constraint"@en,
+        "snapshot creation time property constraint"@en ;
+    sh:datatype xsd:dateTime ;
+    sh:maxCount 1 ;
+    sh:message "A knowledge snapshot must record exactly one timezone-qualified xsd:dateTime creation timestamp."@en ;
+    sh:minCount 1 ;
+    sh:name "snapshot created at property constraint"@en,
+        "snapshot creation time property constraint"@en ;
+    sh:path modheritage:snapshotCreatedAt ;
+    sh:pattern "(Z|[+-](0[0-9]|1[0-4]):[0-5][0-9])$" ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeSnapshotShape-snapshotCreatedBy-PropertyShape-08 a sh:PropertyShape ;
+    rdfs:label "snapshot created by property constraint"@en,
+        "snapshot generation activity property constraint"@en ;
+    sh:class modheritage:KnowledgeMaintenanceActivity ;
+    sh:maxCount 1 ;
+    sh:message "A knowledge snapshot must identify exactly one knowledge maintenance activity that created it."@en ;
+    sh:minCount 1 ;
+    sh:name "snapshot created by property constraint"@en,
+        "snapshot generation activity property constraint"@en ;
+    sh:path modheritage:snapshotCreatedBy ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeSnapshotShape-snapshotGraphIri-PropertyShape-05 a sh:PropertyShape ;
+    rdfs:label "snapshot graph IRI property constraint"@en,
+        "snapshot graph iri property constraint"@en ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:message "A knowledge snapshot must record exactly one absolute named-graph IRI."@en ;
+    sh:minCount 1 ;
+    sh:name "snapshot graph IRI property constraint"@en,
+        "snapshot graph iri property constraint"@en ;
+    sh:path modheritage:snapshotGraphIri ;
+    sh:pattern "^[A-Za-z][A-Za-z0-9+.-]*:" ;
+    sh:severity sh:Violation .
+
+modshape:KnowledgeSnapshotShape-snapshotOfCollection-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "snapshot collection property constraint"@en,
+        "snapshot of collection property constraint"@en ;
+    sh:class modheritage:CuratedKnowledgeCollection ;
+    sh:maxCount 1 ;
+    sh:message "A knowledge snapshot must identify exactly one curated knowledge collection."@en ;
+    sh:minCount 1 ;
+    sh:name "snapshot collection property constraint"@en,
+        "snapshot of collection property constraint"@en ;
+    sh:path modheritage:snapshotOfCollection ;
+    sh:severity sh:Violation .

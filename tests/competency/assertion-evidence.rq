@@ -1,0 +1,13 @@
+PREFIX modassert: <https://w3id.org/modavis/ontology/assertion#>
+PREFIX modevidence: <https://w3id.org/modavis/ontology/evidence#>
+
+SELECT ?assertion ?subject ?predicate ?object ?fragment ?role WHERE {
+  ?assertion a modassert:Assertion ;
+             modassert:assertsSubject ?subject ;
+             modassert:assertsPredicate ?predicate ;
+             modassert:assertsObject ?object ;
+             modassert:hasEvidenceRelation ?support .
+  ?support modevidence:usesFragment ?fragment ;
+           modevidence:evidenceRole ?role .
+}
+ORDER BY ?assertion ?fragment

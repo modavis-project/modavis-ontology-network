@@ -1,0 +1,469 @@
+@prefix assertionpredicate: <https://w3id.org/modavis/vocab/assertion-predicate/> .
+@prefix assertionstatus: <https://w3id.org/modavis/vocab/assertion-status/> .
+@prefix modassert: <https://w3id.org/modavis/ontology/assertion#> .
+@prefix modavis: <https://w3id.org/modavis/ontology/core#> .
+@prefix modevidence: <https://w3id.org/modavis/ontology/evidence#> .
+@prefix modinst: <https://w3id.org/modavis/ontology/instrument#> .
+@prefix modshape: <https://w3id.org/modavis/shapes/exchange/0.1.0#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+modshape:AssertionShape a sh:NodeShape ;
+    rdfs:label "assertion shape"@en ;
+    sh:message "The focus node must satisfy the named logical, node-kind, or lexical constraint declared by this shape."@en ;
+    sh:name "assertion shape"@en ;
+    sh:property modshape:AssertionShape-assertionStatus-PropertyShape-01,
+        modshape:AssertionShape-assertsLiteral-PropertyShape-02,
+        modshape:AssertionShape-assertsObject-PropertyShape-03,
+        modshape:AssertionShape-assertsPredicate-PropertyShape-04,
+        modshape:AssertionShape-assertsSubject-PropertyShape-05,
+        modshape:AssertionShape-confidence-PropertyShape-06,
+        modshape:AssertionShape-hasEvidenceRelation-PropertyShape-07 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:AssertionShape-SPARQLConstraint-01,
+        modshape:AssertionShape-SPARQLConstraint-02 ;
+    sh:targetClass modassert:Assertion ;
+    sh:xone ( modshape:AssertionShape-xone-Alternative-NodeShape-01 modshape:AssertionShape-xone-Alternative-NodeShape-02 ) .
+
+modshape:ConflictDecisionShape a sh:NodeShape ;
+    rdfs:label "conflict decision shape"@en ;
+    sh:name "conflict decision shape"@en ;
+    sh:property modshape:ConflictDecisionShape-chosenAssertion-PropertyShape-01,
+        modshape:ConflictDecisionShape-decidedBy-PropertyShape-02,
+        modshape:ConflictDecisionShape-decisionFor-PropertyShape-03,
+        modshape:ConflictDecisionShape-decisionRationale-PropertyShape-04 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:ConflictDecisionShape-SPARQLConstraint-01 ;
+    sh:targetClass modassert:ConflictDecision .
+
+modshape:ConflictSetShape a sh:NodeShape ;
+    rdfs:label "conflict set shape"@en ;
+    sh:name "conflict set shape"@en ;
+    sh:property modshape:ConflictSetShape-conflictCriterion-PropertyShape-01,
+        modshape:ConflictSetShape-hasConflictMember-PropertyShape-02 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modassert:ConflictSet .
+
+modshape:ProjectionShape a sh:NodeShape ;
+    rdfs:label "projection shape"@en ;
+    sh:message "The focus node must satisfy the named logical, node-kind, or lexical constraint declared by this shape."@en ;
+    sh:name "projection shape"@en ;
+    sh:property modshape:ProjectionShape-Path-PropertyShape-08,
+        modshape:ProjectionShape-projectionGeneratedBy-PropertyShape-01,
+        modshape:ProjectionShape-projectionGraphIri-PropertyShape-02,
+        modshape:ProjectionShape-projectionPredicateIri-PropertyShape-03,
+        modshape:ProjectionShape-projectionRule-PropertyShape-04,
+        modshape:ProjectionShape-projectionRuleVersion-PropertyShape-05,
+        modshape:ProjectionShape-projectionSubject-PropertyShape-06,
+        modshape:ProjectionShape-projectsAssertion-PropertyShape-07 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:ProjectionShape-SPARQLConstraint-01,
+        modshape:ProjectionShape-SPARQLConstraint-02,
+        modshape:ProjectionShape-SPARQLConstraint-03 ;
+    sh:targetClass modassert:Projection ;
+    sh:xone ( modshape:ProjectionShape-xone-Alternative-NodeShape-01 modshape:ProjectionShape-xone-Alternative-NodeShape-02 ) .
+
+modshape:AssertionShape-SPARQLConstraint-01 rdfs:label "assertion shape sparqlconstraint 01"@en ;
+    sh:message "An assertion-supersession chain cannot contain a cycle."@en ;
+    sh:name "assertion shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modassert: <https://w3id.org/modavis/ontology/assertion#>
+      SELECT $this WHERE { $this modassert:supersedes+ $this . }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:AssertionShape-SPARQLConstraint-02 rdfs:label "assertion shape sparqlconstraint 02"@en ;
+    sh:message "Every evidence relation linked from an assertion must identify that assertion as the resource it evaluates."@en ;
+    sh:name "assertion shape sparqlconstraint 02"@en ;
+    sh:select """
+      PREFIX modassert: <https://w3id.org/modavis/ontology/assertion#>
+      PREFIX modevidence: <https://w3id.org/modavis/ontology/evidence#>
+      SELECT $this WHERE {
+        $this modassert:hasEvidenceRelation ?relation .
+        FILTER NOT EXISTS { ?relation modevidence:evaluates $this . }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:AssertionShape-assertionStatus-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "assertion status property constraint"@en ;
+    sh:in ( assertionstatus:draft assertionstatus:accepted assertionstatus:rejected assertionstatus:superseded ) ;
+    sh:maxCount 1 ;
+    sh:message "Assertion status constraint: exactly 1 value(s) are required; values must have node kind IRI; values must belong to the enumerated release set."@en ;
+    sh:minCount 1 ;
+    sh:name "assertion status property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modassert:assertionStatus ;
+    sh:severity sh:Violation .
+
+modshape:AssertionShape-assertsLiteral-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "asserts literal property constraint"@en ;
+    sh:maxCount 0 ;
+    sh:message "Asserts literal constraint: at most 0 value(s) are permitted."@en ;
+    sh:name "asserts literal property constraint"@en ;
+    sh:path modassert:assertsLiteral ;
+    sh:severity sh:Violation .
+
+modshape:AssertionShape-assertsLiteral-PropertyShape-08 a sh:PropertyShape ;
+    rdfs:label "asserts literal property constraint"@en ;
+    sh:maxCount 0 ;
+    sh:message "Asserts literal constraint: at most 0 value(s) are permitted."@en ;
+    sh:name "asserts literal property constraint"@en ;
+    sh:path modassert:assertsLiteral ;
+    sh:severity sh:Violation .
+
+modshape:AssertionShape-assertsLiteral-PropertyShape-10 a sh:PropertyShape ;
+    rdfs:label "asserts literal property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Asserts literal constraint: exactly 1 value(s) are required; values must have node kind Literal."@en ;
+    sh:minCount 1 ;
+    sh:name "asserts literal property constraint"@en ;
+    sh:nodeKind sh:Literal ;
+    sh:path modassert:assertsLiteral ;
+    sh:severity sh:Violation .
+
+modshape:AssertionShape-assertsObject-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "asserts object property constraint"@en ;
+    sh:class modavis:Agent ;
+    sh:maxCount 1 ;
+    sh:message "The MODAVIS 0.1.0 has-builder assertion predicate requires an identified agent object, not a literal."@en ;
+    sh:minCount 1 ;
+    sh:name "asserts object property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modassert:assertsObject ;
+    sh:severity sh:Violation .
+
+modshape:AssertionShape-assertsObject-PropertyShape-09 a sh:PropertyShape ;
+    rdfs:label "asserts object property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Asserts object constraint: exactly 1 value(s) are required; values must have node kind IRI."@en ;
+    sh:minCount 1 ;
+    sh:name "asserts object property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modassert:assertsObject ;
+    sh:severity sh:Violation .
+
+modshape:AssertionShape-assertsObject-PropertyShape-11 a sh:PropertyShape ;
+    rdfs:label "asserts object property constraint"@en ;
+    sh:maxCount 0 ;
+    sh:message "Asserts object constraint: at most 0 value(s) are permitted."@en ;
+    sh:name "asserts object property constraint"@en ;
+    sh:path modassert:assertsObject ;
+    sh:severity sh:Violation .
+
+modshape:AssertionShape-assertsPredicate-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "asserts predicate property constraint"@en ;
+    sh:in ( assertionpredicate:has-builder ) ;
+    sh:maxCount 1 ;
+    sh:message "Asserts predicate constraint: exactly 1 value(s) are required; values must have node kind IRI; values must belong to the enumerated release set."@en ;
+    sh:minCount 1 ;
+    sh:name "asserts predicate property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modassert:assertsPredicate ;
+    sh:severity sh:Violation .
+
+modshape:AssertionShape-assertsSubject-PropertyShape-05 a sh:PropertyShape ;
+    rdfs:label "asserts subject property constraint"@en ;
+    sh:class modinst:MusicalInstrument ;
+    sh:maxCount 1 ;
+    sh:message "The MODAVIS 0.1.0 has-builder assertion predicate requires a musical-instrument subject."@en ;
+    sh:minCount 1 ;
+    sh:name "asserts subject property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modassert:assertsSubject ;
+    sh:severity sh:Violation .
+
+modshape:AssertionShape-confidence-PropertyShape-06 a sh:PropertyShape ;
+    rdfs:label "confidence property constraint"@en ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 1 ;
+    sh:message "Confidence constraint: at most 1 value(s) are permitted; values must use the decimal datatype; value must be at least 0; value must be at most 1."@en ;
+    sh:minInclusive 0 ;
+    sh:name "confidence property constraint"@en ;
+    sh:path modassert:confidence ;
+    sh:severity sh:Violation .
+
+modshape:AssertionShape-hasEvidenceRelation-PropertyShape-07 a sh:PropertyShape ;
+    rdfs:label "has evidence relation property constraint"@en ;
+    sh:class modevidence:EvidenceRelation ;
+    sh:message "Has evidence relation constraint: at least 1 value(s) are required; values must be instances of EvidenceRelation."@en ;
+    sh:minCount 1 ;
+    sh:name "has evidence relation property constraint"@en ;
+    sh:path modassert:hasEvidenceRelation ;
+    sh:severity sh:Violation .
+
+modshape:AssertionShape-xone-Alternative-NodeShape-01 a sh:NodeShape ;
+    rdfs:label "assertion shape xone alternative node shape 01"@en ;
+    sh:name "assertion shape xone alternative node shape 01"@en ;
+    sh:property modshape:AssertionShape-assertsLiteral-PropertyShape-08,
+        modshape:AssertionShape-assertsObject-PropertyShape-09 ;
+    sh:severity sh:Violation .
+
+modshape:AssertionShape-xone-Alternative-NodeShape-02 a sh:NodeShape ;
+    rdfs:label "assertion shape xone alternative node shape 02"@en ;
+    sh:name "assertion shape xone alternative node shape 02"@en ;
+    sh:property modshape:AssertionShape-assertsLiteral-PropertyShape-10,
+        modshape:AssertionShape-assertsObject-PropertyShape-11 ;
+    sh:severity sh:Violation .
+
+modshape:ConflictDecisionShape-SPARQLConstraint-01 rdfs:label "conflict decision shape sparqlconstraint 01"@en ;
+    sh:message "A chosen assertion must be a member of the conflict set addressed by the decision."@en ;
+    sh:name "conflict decision shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modassert: <https://w3id.org/modavis/ontology/assertion#>
+      SELECT $this WHERE {
+        $this modassert:decisionFor ?conflict ; modassert:chosenAssertion ?chosen .
+        FILTER NOT EXISTS { ?conflict modassert:hasConflictMember ?chosen . }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:ConflictDecisionShape-chosenAssertion-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "chosen assertion property constraint"@en ;
+    sh:class modassert:Assertion ;
+    sh:maxCount 1 ;
+    sh:message "Chosen assertion constraint: at most 1 value(s) are permitted; values must be instances of Assertion."@en ;
+    sh:name "chosen assertion property constraint"@en ;
+    sh:path modassert:chosenAssertion ;
+    sh:severity sh:Violation .
+
+modshape:ConflictDecisionShape-decidedBy-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "decided by property constraint"@en ;
+    sh:class modavis:Agent ;
+    sh:message "Decided by constraint: at least 1 value(s) are required; values must be instances of Agent; values must have node kind IRI."@en ;
+    sh:minCount 1 ;
+    sh:name "decided by property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modassert:decidedBy ;
+    sh:severity sh:Violation .
+
+modshape:ConflictDecisionShape-decisionFor-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "decision for property constraint"@en ;
+    sh:class modassert:ConflictSet ;
+    sh:maxCount 1 ;
+    sh:message "Decision for constraint: exactly 1 value(s) are required; values must be instances of ConflictSet."@en ;
+    sh:minCount 1 ;
+    sh:name "decision for property constraint"@en ;
+    sh:path modassert:decisionFor ;
+    sh:severity sh:Violation .
+
+modshape:ConflictDecisionShape-decisionRationale-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "decision rationale property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Decision rationale constraint: exactly 1 value(s) are required; lexical length must be at least 1."@en ;
+    sh:minCount 1 ;
+    sh:minLength 1 ;
+    sh:name "decision rationale property constraint"@en ;
+    sh:path modassert:decisionRationale ;
+    sh:severity sh:Violation .
+
+modshape:ConflictSetShape-conflictCriterion-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "conflict criterion property constraint"@en ;
+    sh:class modassert:ConflictCriterion ;
+    sh:maxCount 1 ;
+    sh:message "A conflict set requires one identified criterion explaining why its member assertions cannot all be accepted."@en ;
+    sh:minCount 1 ;
+    sh:name "conflict criterion property constraint"@en ;
+    sh:path modassert:conflictCriterion ;
+    sh:severity sh:Violation .
+
+modshape:ConflictSetShape-hasConflictMember-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "has conflict member property constraint"@en ;
+    sh:class modassert:Assertion ;
+    sh:message "Has conflict member constraint: at least 2 value(s) are required; values must be instances of Assertion."@en ;
+    sh:minCount 2 ;
+    sh:name "has conflict member property constraint"@en ;
+    sh:path modassert:hasConflictMember ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-Path-PropertyShape-08 a sh:PropertyShape ;
+    rdfs:label "property path property constraint"@en ;
+    sh:hasValue assertionstatus:accepted ;
+    sh:message "Property path constraint: the value accepted is required."@en ;
+    sh:name "property path property constraint"@en ;
+    sh:path ( modassert:projectsAssertion modassert:assertionStatus ) ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-SPARQLConstraint-01 rdfs:label "projection shape sparqlconstraint 01"@en ;
+    sh:message "A projection without a named target graph must include its exact projected RDF statement in the validation graph."@en ;
+    sh:name "projection shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modassert: <https://w3id.org/modavis/ontology/assertion#>
+      SELECT $this WHERE {
+        $this modassert:projectionSubject ?subject ;
+              modassert:projectionPredicateIri ?predicateIri .
+        FILTER NOT EXISTS { $this modassert:projectionGraphIri ?graph . }
+        FILTER NOT EXISTS {
+          $this modassert:projectionObject ?object .
+          BIND (IRI(STR(?predicateIri)) AS ?predicate)
+          ?subject ?predicate ?object .
+        }
+        FILTER NOT EXISTS {
+          $this modassert:projectionLiteral ?literal .
+          BIND (IRI(STR(?predicateIri)) AS ?predicate)
+          ?subject ?predicate ?literal .
+        }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-SPARQLConstraint-02 rdfs:label "projection shape sparqlconstraint 02"@en ;
+    sh:message "Projection subject and object values must reproduce the assertion being projected."@en ;
+    sh:name "projection shape sparqlconstraint 02"@en ;
+    sh:select """
+      PREFIX modassert: <https://w3id.org/modavis/ontology/assertion#>
+      SELECT $this WHERE {
+        $this modassert:projectsAssertion ?assertion ; modassert:projectionSubject ?subject .
+        { FILTER NOT EXISTS { ?assertion modassert:assertsSubject ?subject . } }
+        UNION
+        { $this modassert:projectionObject ?object . FILTER NOT EXISTS { ?assertion modassert:assertsObject ?object . } }
+        UNION
+        { $this modassert:projectionLiteral ?literal . FILTER NOT EXISTS { ?assertion modassert:assertsLiteral ?literal . } }
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-SPARQLConstraint-03 rdfs:label "projection shape sparqlconstraint 03"@en ;
+    sh:message "The projection predicate IRI must equal the projected-property mapping of the assertion predicate concept."@en ;
+    sh:name "projection shape sparqlconstraint 03"@en ;
+    sh:select """
+      PREFIX modassert: <https://w3id.org/modavis/ontology/assertion#>
+      PREFIX assertionpredicate: <https://w3id.org/modavis/vocab/assertion-predicate/>
+      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+      SELECT $this WHERE {
+        $this modassert:projectsAssertion ?assertion ; modassert:projectionPredicateIri ?projected .
+        ?assertion modassert:assertsPredicate ?predicate .
+        FILTER (
+          ?predicate != assertionpredicate:has-builder ||
+          ?projected != "https://w3id.org/modavis/ontology/instrument#hasBuilder"^^xsd:anyURI
+        )
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-projectionGeneratedBy-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "projection generated by property constraint"@en ;
+    sh:class prov:Activity ;
+    sh:maxCount 1 ;
+    sh:message "Projection generated by constraint: exactly 1 value(s) are required; values must be instances of Activity; values must have node kind IRI."@en ;
+    sh:minCount 1 ;
+    sh:name "projection generated by property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modassert:projectionGeneratedBy ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-projectionGraphIri-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "projection graph iri property constraint"@en ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:message "Projection graph iri constraint: at most 1 value(s) are permitted; values must use the anyURI datatype; lexical form must match the declared pattern."@en ;
+    sh:name "projection graph iri property constraint"@en ;
+    sh:path modassert:projectionGraphIri ;
+    sh:pattern "^[A-Za-z][A-Za-z0-9+.-]*:" ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-projectionLiteral-PropertyShape-09 a sh:PropertyShape ;
+    rdfs:label "projection literal property constraint"@en ;
+    sh:maxCount 0 ;
+    sh:message "Projection literal constraint: at most 0 value(s) are permitted."@en ;
+    sh:name "projection literal property constraint"@en ;
+    sh:path modassert:projectionLiteral ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-projectionLiteral-PropertyShape-11 a sh:PropertyShape ;
+    rdfs:label "projection literal property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Projection literal constraint: exactly 1 value(s) are required; values must have node kind Literal."@en ;
+    sh:minCount 1 ;
+    sh:name "projection literal property constraint"@en ;
+    sh:nodeKind sh:Literal ;
+    sh:path modassert:projectionLiteral ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-projectionObject-PropertyShape-10 a sh:PropertyShape ;
+    rdfs:label "projection object property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Projection object constraint: exactly 1 value(s) are required; values must have node kind IRI."@en ;
+    sh:minCount 1 ;
+    sh:name "projection object property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modassert:projectionObject ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-projectionObject-PropertyShape-12 a sh:PropertyShape ;
+    rdfs:label "projection object property constraint"@en ;
+    sh:maxCount 0 ;
+    sh:message "Projection object constraint: at most 0 value(s) are permitted."@en ;
+    sh:name "projection object property constraint"@en ;
+    sh:path modassert:projectionObject ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-projectionPredicateIri-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "projection predicate iri property constraint"@en ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:message "Projection predicate iri constraint: exactly 1 value(s) are required; values must use the anyURI datatype; lexical form must match the declared pattern."@en ;
+    sh:minCount 1 ;
+    sh:name "projection predicate iri property constraint"@en ;
+    sh:path modassert:projectionPredicateIri ;
+    sh:pattern "^[A-Za-z][A-Za-z0-9+.-]*:" ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-projectionRule-PropertyShape-04 a sh:PropertyShape ;
+    rdfs:label "projection rule property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Projection rule constraint: exactly 1 value(s) are required; values must have node kind IRI."@en ;
+    sh:minCount 1 ;
+    sh:name "projection rule property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modassert:projectionRule ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-projectionRuleVersion-PropertyShape-05 a sh:PropertyShape ;
+    rdfs:label "projection rule version property constraint"@en ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:message "Projection rule version constraint: exactly 1 value(s) are required; values must use the string datatype; lexical length must be at least 1."@en ;
+    sh:minCount 1 ;
+    sh:minLength 1 ;
+    sh:name "projection rule version property constraint"@en ;
+    sh:path modassert:projectionRuleVersion ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-projectionSubject-PropertyShape-06 a sh:PropertyShape ;
+    rdfs:label "projection subject property constraint"@en ;
+    sh:maxCount 1 ;
+    sh:message "Projection subject constraint: exactly 1 value(s) are required; values must have node kind IRI."@en ;
+    sh:minCount 1 ;
+    sh:name "projection subject property constraint"@en ;
+    sh:nodeKind sh:IRI ;
+    sh:path modassert:projectionSubject ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-projectsAssertion-PropertyShape-07 a sh:PropertyShape ;
+    rdfs:label "projects assertion property constraint"@en ;
+    sh:class modassert:Assertion ;
+    sh:maxCount 1 ;
+    sh:message "Projects assertion constraint: exactly 1 value(s) are required; values must be instances of Assertion."@en ;
+    sh:minCount 1 ;
+    sh:name "projects assertion property constraint"@en ;
+    sh:path modassert:projectsAssertion ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-xone-Alternative-NodeShape-01 a sh:NodeShape ;
+    rdfs:label "projection shape xone alternative node shape 01"@en ;
+    sh:name "projection shape xone alternative node shape 01"@en ;
+    sh:property modshape:ProjectionShape-projectionLiteral-PropertyShape-09,
+        modshape:ProjectionShape-projectionObject-PropertyShape-10 ;
+    sh:severity sh:Violation .
+
+modshape:ProjectionShape-xone-Alternative-NodeShape-02 a sh:NodeShape ;
+    rdfs:label "projection shape xone alternative node shape 02"@en ;
+    sh:name "projection shape xone alternative node shape 02"@en ;
+    sh:property modshape:ProjectionShape-projectionLiteral-PropertyShape-11,
+        modshape:ProjectionShape-projectionObject-PropertyShape-12 ;
+    sh:severity sh:Violation .

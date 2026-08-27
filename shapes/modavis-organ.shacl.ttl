@@ -1,0 +1,128 @@
+@prefix modinst: <https://w3id.org/modavis/ontology/instrument#> .
+@prefix modorgan: <https://w3id.org/modavis/ontology/organ#> .
+@prefix modshape: <https://w3id.org/modavis/shapes/exchange/0.1.0#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+modshape:OrganCouplerShape a sh:NodeShape ;
+    rdfs:label "organ coupler shape"@en ;
+    sh:name "organ coupler shape"@en ;
+    sh:property modshape:OrganCouplerShape-couplesFrom-PropertyShape-01,
+        modshape:OrganCouplerShape-couplesTo-PropertyShape-02,
+        modshape:OrganCouplerShape-intervalSemitones-PropertyShape-03 ;
+    sh:severity sh:Violation ;
+    sh:sparql modshape:OrganCouplerShape-SPARQLConstraint-01 ;
+    sh:targetClass modorgan:OrganCoupler .
+
+modshape:OrganPitchDesignationShape a sh:NodeShape ;
+    rdfs:label "organ pitch designation shape"@en ;
+    sh:name "organ pitch designation shape"@en ;
+    sh:property modshape:OrganPitchDesignationShape-hasNominalPitchDesignation-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf modorgan:hasNominalPitchDesignation .
+
+modshape:OrganStopShape a sh:NodeShape ;
+    rdfs:label "organ stop shape"@en ;
+    sh:name "organ stop shape"@en ;
+    sh:property modshape:OrganStopShape-rankCount-PropertyShape-01 ;
+    sh:severity sh:Violation ;
+    sh:targetClass modorgan:OrganStop .
+
+modshape:PipeOrganShape a sh:NodeShape ;
+    rdfs:label "pipe organ shape"@en ;
+    sh:message "A pipe organ requires a direct component projection or at least one qualified component membership."@en ;
+    sh:name "pipe organ shape"@en ;
+    sh:or ( modshape:PipeOrganShape-or-Alternative-NodeShape-01 modshape:PipeOrganShape-or-Alternative-NodeShape-02 ) ;
+    sh:severity sh:Violation ;
+    sh:targetClass modorgan:PipeOrgan .
+
+modshape:OrganCouplerShape-SPARQLConstraint-01 rdfs:label "organ coupler shape sparqlconstraint 01"@en ;
+    sh:message "An organ coupler must connect distinct components; model same-component effects separately."@en ;
+    sh:name "organ coupler shape sparqlconstraint 01"@en ;
+    sh:select """
+      PREFIX modorgan: <https://w3id.org/modavis/ontology/organ#>
+      SELECT $this WHERE {
+        $this modorgan:couplesFrom ?component ;
+              modorgan:couplesTo ?component .
+      }
+    """ ;
+    sh:severity sh:Violation .
+
+modshape:OrganCouplerShape-couplesFrom-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "couples from property constraint"@en ;
+    sh:class modorgan:OrganComponent ;
+    sh:maxCount 1 ;
+    sh:message "Couples from constraint: exactly 1 value(s) are required; values must be instances of OrganComponent."@en ;
+    sh:minCount 1 ;
+    sh:name "couples from property constraint"@en ;
+    sh:path modorgan:couplesFrom ;
+    sh:severity sh:Violation .
+
+modshape:OrganCouplerShape-couplesTo-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "couples to property constraint"@en ;
+    sh:class modorgan:OrganComponent ;
+    sh:maxCount 1 ;
+    sh:message "Couples to constraint: exactly 1 value(s) are required; values must be instances of OrganComponent."@en ;
+    sh:minCount 1 ;
+    sh:name "couples to property constraint"@en ;
+    sh:path modorgan:couplesTo ;
+    sh:severity sh:Violation .
+
+modshape:OrganCouplerShape-intervalSemitones-PropertyShape-03 a sh:PropertyShape ;
+    rdfs:label "interval semitones property constraint"@en ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    sh:message "Interval semitones constraint: at most 1 value(s) are permitted; values must use the integer datatype."@en ;
+    sh:name "interval semitones property constraint"@en ;
+    sh:path modorgan:intervalSemitones ;
+    sh:severity sh:Violation .
+
+modshape:OrganPitchDesignationShape-hasNominalPitchDesignation-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "has nominal pitch designation property constraint"@en ;
+    sh:datatype xsd:string ;
+    sh:message "An organ nominal-pitch designation must be a non-empty source-preserving string."@en ;
+    sh:minLength 1 ;
+    sh:name "has nominal pitch designation property constraint"@en ;
+    sh:path modorgan:hasNominalPitchDesignation ;
+    sh:severity sh:Violation .
+
+modshape:OrganStopShape-rankCount-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "rank count property constraint"@en ;
+    sh:datatype xsd:positiveInteger ;
+    sh:maxCount 1 ;
+    sh:message "Rank count constraint: at most 1 value(s) are permitted; values must use the positiveInteger datatype."@en ;
+    sh:name "rank count property constraint"@en ;
+    sh:path modorgan:rankCount ;
+    sh:severity sh:Violation .
+
+modshape:PipeOrganShape-hasComponent-PropertyShape-01 a sh:PropertyShape ;
+    rdfs:label "has component property constraint"@en ;
+    sh:class modinst:InstrumentComponent ;
+    sh:message "Has component constraint: at least 1 value(s) are required; values must be instances of InstrumentComponent."@en ;
+    sh:minCount 1 ;
+    sh:name "has component property constraint"@en ;
+    sh:path modinst:hasComponent ;
+    sh:severity sh:Violation .
+
+modshape:PipeOrganShape-hasMembership-PropertyShape-02 a sh:PropertyShape ;
+    rdfs:label "has membership property constraint"@en ;
+    sh:class modinst:ComponentMembership ;
+    sh:message "Has membership constraint: at least 1 value(s) are required; values must be instances of ComponentMembership."@en ;
+    sh:minCount 1 ;
+    sh:name "has membership property constraint"@en ;
+    sh:path modinst:hasMembership ;
+    sh:severity sh:Violation .
+
+modshape:PipeOrganShape-or-Alternative-NodeShape-01 a sh:NodeShape ;
+    rdfs:label "pipe organ shape or alternative node shape 01"@en ;
+    sh:name "pipe organ shape or alternative node shape 01"@en ;
+    sh:property modshape:PipeOrganShape-hasComponent-PropertyShape-01 ;
+    sh:severity sh:Violation .
+
+modshape:PipeOrganShape-or-Alternative-NodeShape-02 a sh:NodeShape ;
+    rdfs:label "pipe organ shape or alternative node shape 02"@en ;
+    sh:name "pipe organ shape or alternative node shape 02"@en ;
+    sh:property modshape:PipeOrganShape-hasMembership-PropertyShape-02 ;
+    sh:severity sh:Violation .
