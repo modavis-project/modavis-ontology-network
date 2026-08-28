@@ -397,6 +397,7 @@ def test_release_workflows_are_reusable_version_neutral_and_tag_gated():
     assert "0.1.0-rc.7.zip" not in validation
     assert 'python: ["3.11", "3.14"]' in validation
     assert "cross-python-reproducibility:" in validation
+    assert validation.count("if: github.ref == 'refs/tags/0.1.0'") == 5
     assert "--require-hashes -r requirements-dev.txt" in validation
     assert "6aa4bb8eeb41c0d05c30f3c91a7eb065" in validation
     assert 'tags:\n      - "0.1.0"' in publication
@@ -827,6 +828,12 @@ def test_jsonld_context_expands_core_virtual_instrument_terms():
 
 @pytest.fixture(scope="module")
 def built_candidates(tmp_path_factory):
+    tags_at_head = subprocess.check_output(
+        ["git", "tag", "--points-at", "HEAD"], cwd=ROOT, text=True
+    ).splitlines()
+    if "0.1.0" not in tags_at_head:
+        pytest.skip("immutable release rebuild tests require the exact 0.1.0 tag")
+
     outputs = []
     for label in ("first", "second"):
         output = tmp_path_factory.mktemp(f"release-{label}")
