@@ -1,5 +1,8 @@
 # MODAVIS Ontology Network
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22126086.svg)](https://doi.org/10.5281/zenodo.22126086)
+[![MODAVIS 0.1.0 persistent identifier](https://img.shields.io/badge/W3ID-MODAVIS%200.1.0-2C5F73.svg)](https://w3id.org/modavis/ontology/0.1.0)
+
 MODAVIS is a modular semantic standard for evidence-backed,
 time-aware, and provenance-aware knowledge about musical instruments and their
 digital representations. It is instrument-neutral, with pipe organs as a
@@ -118,6 +121,14 @@ ambiguity.
   [W3ID route registry](config/w3id-routes.json)
 - [Concrete W3ID submission rules](w3id/.htaccess)
 - [MDVS v1 compatibility boundary](docs/MDVS_V1_COMPATIBILITY.md)
+
+## Project context and acknowledgement
+
+This work was developed as part of the **MODAVIS** doctoral research project
+(2022–2026). Dominik Ukolov's doctoral research was supported by the German
+Academic Scholarship Foundation (*Studienstiftung des deutschen Volkes*).
+Funding and affiliations do not imply endorsement of the project's technical
+or scientific claims.
 
 Semantic artifacts and documentation use CC BY 4.0. Release tooling and test
 code use Apache-2.0. No affiliated institution is represented as an endorser or
