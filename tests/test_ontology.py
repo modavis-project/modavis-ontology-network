@@ -791,7 +791,9 @@ def test_vao_interoperability_guide_matches_the_downstream_binding():
     assert binding["mappingIRI"] == "https://w3id.org/modavis/vao/0.6.0/modavis-mapping"
     assert "vao:LogicalAsset rdfs:subClassOf modmedia:DigitalAsset" in text
     assert "vao:Realization rdfs:subClassOf modmedia:Bitstream" in text
-    assert "v0.6.0/Profiles/MMIC/1.0.0/mechanical-music.ttl" in text
+    mmic_profile = "https://w3id.org/modavis/vao/profile/mmic/1.0.0"
+    for suffix in ("", "/schema.json", "/ontology"):
+        assert f"]({mmic_profile}{suffix})" in text
     assert not any("/vao/" in str(value) for value in ontology_graph().objects(None, OWL.imports))
 
 
