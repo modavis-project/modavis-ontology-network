@@ -34,10 +34,10 @@ Canonical identifier root: `https://w3id.org/modavis/`
 | `vocab` | reviewed SKOS concepts used by the modules and profiles |
 
 `ontology/modavis-network.ttl` imports the complete normative module set by
-immutable 0.1.0 version IRI. VAO does not belong to that import closure: it is
-a downstream container and application profile. The final VAO 0.4.0 co-release
-binds to MODAVIS 0.1.0 through an exact, VAO-owned mapping; MODAVIS never imports
-VAO.
+immutable 0.1.0 version IRI. The [VAO 0.6.0 mapping](https://w3id.org/modavis/vao/0.6.0/modavis-mapping)
+imports this version of the network. VAO also maintains the separate MMIC 1.0.0
+ontology for mechanical music carriers. See the
+[interoperability guide](docs/VAO_INTEROPERABILITY.md) for manifest and RDF examples.
 
 ## Identity commitments
 

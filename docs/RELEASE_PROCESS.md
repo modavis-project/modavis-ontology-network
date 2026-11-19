@@ -54,3 +54,15 @@ checksums, archive contents, and W3ID targets before authorization.
 
 The builder and checkers do not push, tag, deploy, submit W3ID rules, or mint a
 DOI. A failed gate or unresolved approval stops publication.
+
+## Update the Pages documentation
+
+For a documentation-only update, run the `publish-documentation` workflow
+on `main`. It verifies the published 0.1.0 ZIP by SHA-256, copies its site,
+and replaces the VAO section on the unversioned homepage. It also serves
+the original site under `archive/0.1.0/`. Verify release site checksums
+against that snapshot or the ZIP. The original checksum for `index.html`
+refers to the homepage in the snapshot.
+
+Run the release workflow from the signed release tag when publishing an
+ontology release.

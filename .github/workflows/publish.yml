@@ -63,7 +63,7 @@ jobs:
 
   pages:
     needs: validate
-    if: github.event.repository.visibility == 'public'
+    if: github.ref == 'refs/tags/0.1.0' && github.event.repository.visibility == 'public'
     runs-on: ubuntu-latest
     permissions:
       contents: read

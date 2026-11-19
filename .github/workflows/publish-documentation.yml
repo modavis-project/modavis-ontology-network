@@ -1,0 +1,37 @@
+name: publish-documentation
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  pages:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Add current guidance to the 0.1.0 site
+        run: |
+          curl --fail --location --silent --show-error --retry 3 \
+            --output "$RUNNER_TEMP/modavis-ontology-0.1.0.zip" \
+            https://github.com/modavis-project/modavis-ontology-network/releases/download/0.1.0/modavis-ontology-0.1.0.zip
+          python3 scripts/build_documentation_site.py "$RUNNER_TEMP/modavis-ontology-0.1.0.zip" "$RUNNER_TEMP/modavis-site"
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: ${{ runner.temp }}/modavis-site
+      - name: Deploy documentation
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0

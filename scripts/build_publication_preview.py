@@ -420,18 +420,7 @@ def build_html() -> str:
       <div class="module-grid">__MODULE_CARDS__</div>
     </section>
 
-    <section id="vao" class="vao-section">
-      <div class="section-head"><div><p class="eyebrow">Related exchange standard</p><h2>Virtual Acoustic Object · VAO 0.4.0</h2></div><p>VAO is a downstream container and application profile, not an ontology module. Its final co-release binding uses MODAVIS 0.1.0 terms directly and adds an exact VAO-owned mapping.</p></div>
-      <div class="vao-bridge" aria-label="Relationship between MODAVIS, VAO, and implementations">
-        <div class="vao-bridge-node"><strong>MODAVIS Ontologies</strong><span>Instruments, components, states, configurations, evidence, assertions, events, provenance, and governed concepts.</span></div>
-        <div class="vao-arrow" aria-hidden="true">→</div>
-        <div class="vao-bridge-node vao-focus"><strong>VAO · .vao</strong><span>One ZIP64 object containing the semantic graph, audio, 3D models, animations, interaction data, paradata, analyses, rights, and fixity.</span></div>
-        <div class="vao-arrow" aria-hidden="true">→</div>
-        <div class="vao-bridge-node"><strong>OrgRec & VAOM</strong><span>OrgRec uses VAO as its primary exchange format. VAOM is the instrument-neutral manager, validator, and authoring environment.</span></div>
-      </div>
-      <div class="vao-links"><a href="../docs/VAO_INTEROPERABILITY.md">Co-release interoperability contract</a><a href="../examples/valid/virtual-pipe-organ.ttl">Virtual pipe-organ example</a></div>
-      <p class="vao-boundary"><strong>Dependency direction:</strong> VAO 0.4.0 binds to the immutable MODAVIS 0.1.0 network and owns the conservative mapping graph. MODAVIS does not import VAO; the two validation regimes remain separate.</p>
-    </section>
+__VAO_SECTION__
 
     <section id="terms">
       <div class="section-head"><h2>Term reference</h2><p>This preview is generated from the checked-in OWL and SKOS graphs. Search by label, compact name, IRI, definition, or module.</p></div>
@@ -575,6 +564,7 @@ def build_html() -> str:
         "__SHAPE_COUNT__": str(stats["shapes"]),
         "__TERM_TOTAL__": str(len(terms)),
         "__MODULE_CARDS__": cards,
+        "__VAO_SECTION__": (ROOT / "docs" / "vao-section.html").read_text(encoding="utf-8").rstrip(),
         "__TERM_JSON__": term_json,
         "__MODULE_JSON__": module_json,
     }

@@ -84,11 +84,11 @@
       "status": "no immutable public release vocabulary artifact is identified; no normative mapping is claimed in 0.1.0"
     },
     {
-      "name": "Virtual Acoustic Object (VAO) Standard 0.4.0",
+      "name": "Virtual Acoustic Object (VAO) Standard 0.6.0",
       "namespace": "https://w3id.org/modavis/vao/",
-      "role": "downstream co-release application and container profile",
-      "pin": "https://w3id.org/modavis/vao/0.4.0/specification-bundle",
-      "status": "not imported by MODAVIS; the VAO-owned 0.4.0 mapping binds to MODAVIS 0.1.0 and is released only after both immutable source tags exist"
+      "role": "downstream exchange and preservation standard",
+      "pin": "https://w3id.org/modavis/vao/0.6.0/specification-bundle",
+      "status": "The VAO 0.6.0 mapping imports MODAVIS 0.1.0. MMIC 1.0.0 belongs to VAO."
     },
     {
       "name": "ECHOES Heritage Digital Twin Ontology (HDTO) 1.1",

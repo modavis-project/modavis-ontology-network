@@ -783,15 +783,15 @@ def test_processing_activity_accepts_explicit_used_software_association():
     assert conforms, report_text
 
 
-def test_exact_vao_040_corelease_binding_is_downstream_and_not_imported():
+def test_vao_interoperability_guide_matches_the_downstream_binding():
     text = (ROOT / "docs" / "VAO_INTEROPERABILITY.md").read_text(encoding="utf-8")
-    normalized = " ".join(text.split())
-    assert "https://w3id.org/modavis/vao/0.4.0/modavis-mapping" in text
-    assert "VAO-owned" in text
-    assert "modavisBinding" in text
+    binding = json.loads(text.split("```json\n", 1)[1].split("\n```", 1)[0])["modavisBinding"]
+    assert binding["ontologyVersionIRI"] == "https://w3id.org/modavis/ontology/0.1.0"
+    assert binding["mappingVersion"] == "0.6.0"
+    assert binding["mappingIRI"] == "https://w3id.org/modavis/vao/0.6.0/modavis-mapping"
     assert "vao:LogicalAsset rdfs:subClassOf modmedia:DigitalAsset" in text
     assert "vao:Realization rdfs:subClassOf modmedia:Bitstream" in text
-    assert "VAO as a whole is not a MODAVIS ontology module" in normalized
+    assert "v0.6.0/Profiles/MMIC/1.0.0/mechanical-music.ttl" in text
     assert not any("/vao/" in str(value) for value in ontology_graph().objects(None, OWL.imports))
 
 

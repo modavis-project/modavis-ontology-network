@@ -368,16 +368,17 @@
     </section>
 
     <section id="vao" class="vao-section">
-      <div class="section-head"><div><p class="eyebrow">Related exchange standard</p><h2>Virtual Acoustic Object · VAO 0.4.0</h2></div><p>VAO is a downstream container and application profile, not an ontology module. Its final co-release binding uses MODAVIS 0.1.0 terms directly and adds an exact VAO-owned mapping.</p></div>
-      <div class="vao-bridge" aria-label="Relationship between MODAVIS, VAO, and implementations">
-        <div class="vao-bridge-node"><strong>MODAVIS Ontologies</strong><span>Instruments, components, states, configurations, evidence, assertions, events, provenance, and governed concepts.</span></div>
-        <div class="vao-arrow" aria-hidden="true">→</div>
-        <div class="vao-bridge-node vao-focus"><strong>VAO · .vao</strong><span>One ZIP64 object containing the semantic graph, audio, 3D models, animations, interaction data, paradata, analyses, rights, and fixity.</span></div>
-        <div class="vao-arrow" aria-hidden="true">→</div>
-        <div class="vao-bridge-node"><strong>OrgRec & VAOM</strong><span>OrgRec uses VAO as its primary exchange format. VAOM is the instrument-neutral manager, validator, and authoring environment.</span></div>
+      <div class="section-head">
+        <h2>Virtual Acoustic Object (VAO) 0.6.0</h2>
+        <p>VAO describes digital resources and packages their files for exchange. Its 0.6.0 mapping uses the MODAVIS Ontology Network 0.1.0.</p>
       </div>
-      <div class="vao-links"><a href="../docs/VAO_INTEROPERABILITY.md">Co-release interoperability contract</a><a href="../examples/valid/virtual-pipe-organ.ttl">Virtual pipe-organ example</a></div>
-      <p class="vao-boundary"><strong>Dependency direction:</strong> VAO 0.4.0 binds to the immutable MODAVIS 0.1.0 network and owns the conservative mapping graph. MODAVIS does not import VAO; the two validation regimes remain separate.</p>
+      <p>The VAO mapping relates logical assets to MODAVIS digital assets and realizations to MODAVIS bitstreams. A VAO manifest can also use MODAVIS instrument and organ terms directly. The dependency runs from VAO to MODAVIS.</p>
+      <p>MMIC 1.0.0 is VAO’s optional profile for mechanical music carriers such as rolls, discs, and barrels. Its ontology and validation files are part of the VAO release.</p>
+      <div class="vao-links">
+        <a href="https://github.com/modavis-project/modavis-ontology-network/blob/main/docs/VAO_INTEROPERABILITY.md">Interoperability guide</a>
+        <a href="https://w3id.org/modavis/vao/0.6.0/modavis-mapping">VAO 0.6.0 mapping</a>
+        <a href="https://github.com/modavis-project/vao-standard/blob/v0.6.0/Docs/VAO_MMIC_PROFILE_1.0.0.md">MMIC 1.0.0 specification</a>
+      </div>
     </section>
 
     <section id="terms">

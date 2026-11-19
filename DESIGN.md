@@ -292,10 +292,10 @@ real reasoning value and the promotion is reviewed as a semantic change.
   governance join 0.1.0.
 - The Release 1.3 database has no immutable vocabulary-snapshot artifact. The
   ontology records this honestly and makes no nonexistent release pin.
-- The final checksum-pinned VAO 0.4.0 co-release owns its conservative mapping
-  to MODAVIS 0.1.0. MODAVIS does not import VAO, and the mapping claims only
-  universally valid container relationships while VAO examples use exact
-  MODAVIS instrument and organ term IRIs directly.
+- The VAO 0.6.0 mapping imports MODAVIS 0.1.0 and adds two media subclass
+  statements. VAO records can use MODAVIS instrument and organ IRIs directly.
+  MMIC 1.0.0 has its own VAO-maintained vocabulary and import closure. See the
+  [interoperability guide](docs/VAO_INTEROPERABILITY.md).
 - CIDOC CRM, PON, SOSA/SSN measurement, spatial semantics, and
   interaction-event semantics remain future reviewed alignments or modules.
   Their absence does not change the meaning of the 0.1.0 terms.
