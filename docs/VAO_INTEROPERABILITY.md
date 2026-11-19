@@ -50,13 +50,12 @@ describes how to create a 0.6.0 release from a complete 0.5.0 workspace.
 
 ## Mechanical music carriers
 
-[MMIC 1.0.0](https://github.com/modavis-project/vao-standard/blob/v0.6.0/Docs/VAO_MMIC_PROFILE_1.0.0.md)
-is an optional VAO profile for rolls, discs, barrels, and other carriers that
-encode mechanical music. VAO maintains its
-[mechanical-music ontology](https://github.com/modavis-project/vao-standard/blob/v0.6.0/Profiles/MMIC/1.0.0/mechanical-music.ttl)
-and [profile files](https://github.com/modavis-project/vao-standard/tree/v0.6.0/Profiles/MMIC/1.0.0).
-The MMIC version identifies the profile; 0.6.0 identifies the VAO format.
-Use the files from the release tag while the MMIC W3ID routes are unavailable.
+[MMIC 1.0.0](https://w3id.org/modavis/vao/profile/mmic/1.0.0) is an optional
+VAO profile for rolls, discs, barrels, and other carriers that encode mechanical
+music. The profile has a [JSON Schema](https://w3id.org/modavis/vao/profile/mmic/1.0.0/schema.json)
+and a [mechanical-music ontology](https://w3id.org/modavis/vao/profile/mmic/1.0.0/ontology).
+VAO 0.6.0 includes the [profile files](https://github.com/modavis-project/vao-standard/tree/v0.6.0/Profiles/MMIC/1.0.0)
+for offline use.
 
 ## Validation
 
